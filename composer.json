@@ -1,0 +1,23 @@
+{
+  "name": "hyva-themes/magento2-hyva-checkout-payplug",
+  "description": "Hyvä Compatibility module for Payplug_Payments",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*",
+    "hyva-themes/magento2-compat-module-fallback": "*",
+    "payplug/payplug-magento2": "*"
+  },
+  "authors": [{
+      "name": "Hyvä Themes B.V.",
+      "email": "info@hyva.io"
+  }],
+  "license": "see LICENSE.md",
+  "autoload": {
+    "files": [
+      "src/registration.php"
+    ],
+    "psr-4": {
+      "Hyva\\CheckoutPayplug\\": "src/"
+    }
+  }
+}
