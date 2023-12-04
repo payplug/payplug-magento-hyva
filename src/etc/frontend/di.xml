@@ -5,7 +5,19 @@
         <arguments>
             <argument name="placeOrderServiceList" xsi:type="array">
                 <item name="payplug_payments_standard" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-          </argument>
+                <item name="payplug_payments_oney" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_oney_without_fees" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_bancontact" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_sofort" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_satispay" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_amex" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_apple_pay" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_giropay" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_ideal" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_installment_plan" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_mybank" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+                <item name="payplug_payments_ondemand" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+            </argument>
         </arguments>
     </type>
 </config>
