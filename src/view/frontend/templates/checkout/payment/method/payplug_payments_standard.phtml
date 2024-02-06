@@ -11,21 +11,22 @@ declare(strict_types=1);
 </div>
 
 <!-- Set up a form with your divs -->
-<form id="payplug-payment-form" class="payplug IntegratedPayment -loaded">
-    <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder"></div>
-    <div class="payplug IntegratedPayment_container -scheme">
-        <div></div>
-        <div class="payplug IntegratedPayment_schemes">
-            <label class="payplug IntegratedPayment_scheme -visa"><input type="radio" name="schemeOptions" value="visa"/><span></span></label>
-            <label class="payplug IntegratedPayment_scheme -mastercard"><input type="radio" name="schemeOptions" value="mastercard" /><span></span></label>
-            <label class="payplug IntegratedPayment_scheme -cb"><input type="radio" name="schemeOptions" value="cb" /><span></span></label>
-        </div>
-    </div>
-    <div id="pan-input-container" class="payplug IntegratedPayment_container -pan pan-input-container" data-e2e-name="pan"></div>
-    <div id="cvv-input-container" class="payplug IntegratedPayment_container -cvv cvv-input-container" data-e2e-name="cvv"></div>
-    <div id="exp-input-container" class="payplug IntegratedPayment_container -exp exp-input-container" data-e2e-name="expiration"></div>
-</form>
-
+<div wire:id="checkout.payment.method.payplug_payments_standard" >
+  <form id="payplug-payment-form" class="payplug IntegratedPayment -loaded">
+      <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder"></div>
+      <div class="payplug IntegratedPayment_container -scheme">
+          <div></div>
+          <div class="payplug IntegratedPayment_schemes">
+              <label class="payplug IntegratedPayment_scheme -visa"><input type="radio" name="schemeOptions" value="visa"/><span></span></label>
+              <label class="payplug IntegratedPayment_scheme -mastercard"><input type="radio" name="schemeOptions" value="mastercard" /><span></span></label>
+              <label class="payplug IntegratedPayment_scheme -cb"><input type="radio" name="schemeOptions" value="cb" /><span></span></label>
+          </div>
+      </div>
+      <div id="pan-input-container" class="payplug IntegratedPayment_container -pan pan-input-container" data-e2e-name="pan"></div>
+      <div id="cvv-input-container" class="payplug IntegratedPayment_container -cvv cvv-input-container" data-e2e-name="cvv"></div>
+      <div id="exp-input-container" class="payplug IntegratedPayment_container -exp exp-input-container" data-e2e-name="expiration"></div>
+  </form>
+</div>
 <style>
     .IntegratedPayment {
         width: 100%;
@@ -353,7 +354,7 @@ declare(strict_types=1);
 
 <script>
 
-    const PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
+    window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
     // Create an instance of IntegratedPayment
 
 
@@ -406,7 +407,7 @@ declare(strict_types=1);
         },
 
         init: function(){
-            IntegratedPayment.props.api = new Payplug.IntegratedPayment(true);
+            IntegratedPayment.props.api = new Payplug.IntegratedPayment(false);
             IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX)
 
             // Add each payments fields
@@ -419,138 +420,6 @@ declare(strict_types=1);
             IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
 
         },
-        /*            onSubmit: function(e){
-                        if ( jQuery('#payment_method_payplug').is(':checked') ) {
-                            e.stopImmediatePropagation();
-                            e.preventDefault();
-                            //validate the form before create payment/submit payment
-                            if(!IntegratedPayment.props.api.validateForm()){
-                                return false;
-                            }
-
-                        }
-
-                    },
-                    getPayment: function(){
-
-                        request_url = payplug_integrated_payment_params.ajax_url;
-                        if(IntegratedPayment.props.order_review) {
-                            request_url = payplug_integrated_payment_params.order_review_url;
-                        }
-
-                        jQuery.ajax({
-                            type: 'POST',
-                            url: request_url, //NEED TO HAVE AN ENDPOINT FOR THIS,
-                            dataType: 'json',
-                            data: IntegratedPayment.form().serialize(),
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                //integrated.form.clearIntPayment();
-                                console.log(jqXHR);
-                                console.log(textStatus);
-                                console.log(errorThrown);
-                            },
-                            success: function (response) {
-                                if (response.result === "failure") {
-                                    IntegratedPayment.form().unblock();
-                                    var error_messages = response.messages || '';
-                                    IntegratedPayment.submit_error(error_messages);
-                                    return;
-                                }
-
-                                if(response.is_paid || IntegratedPayment.oneClickSelected()) {
-                                    document.location.href = response.redirect;
-                                    return;
-                                }
-
-                                IntegratedPayment.props.paymentId = response.payment_id;
-                                IntegratedPayment.props.return_url = response.redirect;
-                            },
-                            complete: function(response) {
-                                if (response.responseJSON.result != "failure") {
-                                    if (IntegratedPayment.oneClickSelected()) {
-                                        return;
-
-                                    } else {
-                                        IntegratedPayment.SubmitPayment();
-
-                                    }
-                                }
-                            }
-                        });
-                    },
-                    submit_error: function (error_message) {
-                        var parsedHtml = jQuery.parseHTML(error_message, document, false);
-                        jQuery('#woocommerce-NoticeGroup').remove();
-                        jQuery('<div></div>')
-                            .attr('id', 'woocommerce-NoticeGroup')
-                            .html(parsedHtml)
-                            .prependTo(IntegratedPayment.form());
-                        IntegratedPayment.form().unblock();
-                        IntegratedPayment.scroll_to_notices();
-                    },
-                    scroll_to_notices: function () {
-                        var scrollElement = jQuery('#woocommerce-NoticeGroup');
-                        jQuery('html, body').animate({
-                            scrollTop: (scrollElement.offset().top - 100)
-                        }, 500);
-                    },
-                    oneClickSelected: function () {
-                        var token = jQuery('input[name=wc-payplug-payment-token]:checked');
-                        return token.length > 0 && 'new' !== token.val();
-                    },
-                    SubmitPayment: function(){
-                        try {
-                            IntegratedPayment.props.api.pay(IntegratedPayment.props.paymentId, Payplug.Scheme.AUTO, {save_card: IntegratedPayment.props.save_card});
-                        } catch(error) {
-                            IntegratedPayment.submit_error(error.message);
-                            jQuery(".payplug.IntegratedPayment_error.-payment").show();
-                        }
-                    },
-                    resetIntegratedForm: function(){
-                        IntegratedPayment.props.form.cardHolder.clear();
-                        IntegratedPayment.props.form.pan.clear();
-                        IntegratedPayment.props.form.cvv.clear();
-                        IntegratedPayment.props.form.exp.clear();
-
-                        if(IntegratedPayment.props.save_card){
-                            jQuery('.payplug.IntegratedPayment .-saveCard').find('input').click();
-                        }
-
-                    },
-                    showValidationErrorMessages: function(){
-                        jQuery.each(IntegratedPayment.props.form, function (key, field) {
-                            field.onChange(function(err) {
-                                if (err.error) {
-                                    document.querySelector(".payplug.IntegratedPayment_error.-"+key).classList.remove("-hide");
-                                    document.querySelector('.'+key+'-input-container').classList.add("-invalid");
-
-                                    if (err.error.name === "FIELD_EMPTY") {
-                                        document.querySelector(".payplug.IntegratedPayment_error.-"+key).querySelector(".emptyField").classList.remove("-hide");
-                                        document.querySelector(".payplug.IntegratedPayment_error.-"+key).querySelector(".invalidField").classList.add("-hide");
-                                    } else {
-                                        document.querySelector(".payplug.IntegratedPayment_error.-"+key).querySelector(".invalidField").classList.remove("-hide");
-                                        document.querySelector(".payplug.IntegratedPayment_error.-"+key).querySelector(".emptyField").classList.add("-hide");
-                                    }
-                                } else {
-                                    document.querySelector(".payplug.IntegratedPayment_error.-"+key).classList.add("-hide");
-                                    document.querySelector('.'+key+'-input-container').classList.remove("-invalid");
-                                    document.querySelector(".payplug.IntegratedPayment_error.-"+key).querySelector(".invalidField").classList.add("-hide");
-                                    document.querySelector(".payplug.IntegratedPayment_error.-"+key).querySelector(".emptyField").classList.add("-hide");
-                                    IntegratedPayment.props.fieldsValid[key] = true;
-                                    IntegratedPayment.props.fieldsEmpty[key] = false;
-                                }
-                            });
-                        });
-                    },
-                    //on submit event
-                    submitEvent: function(){
-
-                        jQuery('form.woocommerce-checkout, form#order_review').bindFirst('submit', function(event){
-                            IntegratedPayment.form().block({ message: null, overlayCSS: { background: '#fff', opacity: 0.6 } });
-                            IntegratedPayment.onSubmit(event);
-                        });
-
-                    }*/
     };
 
 
@@ -559,26 +428,22 @@ declare(strict_types=1);
     window.addEventListener('checkout:payment:method-activate', (event) => {
         if (event.detail.method == "payplug_payments_standard") {
 
-            hyvaCheckout.payment.activate('payplug_standard_payment', {
+            hyvaCheckout.payment.activate('payplug_payments_standard', {
 
-                async placeOrder(data) {
+
+                async placeOrder(data, callback) {
 
                     console.log("placing order");
 
                     IntegratedPayment.props.api.validateForm();
-                    IntegratedPayment.props.api.onValidateForm(async ({isFormValid}) => {
+                    IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
                         if (isFormValid) {
 
 
-                                hyvaCheckout.main.getWireComponent().placeOrder().then(async function (result) {
-                                    var response = await fetch('<?php echo $block->getBaseUrl();?>/payplug_payments/payment/standard?should_redirect=0&integrated=1');
-                                    var json = await response.json();
-                                    console.log(json);
-                                    console.log(isFormValid);
-                                    IntegratedPayment.props.api.pay(response.payment_id, "AUTO", {save_card: 0});
-                                    console.log(result);
-                                });
-                                IntegratedPayment.props.api.onCompleted(function (event) {
+
+
+
+                                IntegratedPayment.props.api.onCompleted(async function (event) {
                                     console.log(event);
                                 });
                             document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
@@ -597,7 +462,16 @@ declare(strict_types=1);
                 },
                 async initialize() {
                     console.log("intializing");
+                    hyvaCheckout.navigation.addTask(async function () {
+                        hyvaCheckout.main.getWireComponent().placeOrder();
+                        var response = await fetch('<?php echo $block->getBaseUrl();?>/payplug_payments/payment/standard?should_redirect=0&integrated=1');
+                        var json = await response.json();
+                        console.log(json);
+                        console.log(json);
+                        IntegratedPayment.props.api.pay(json.payment_id, "AUTO");
 
+
+                    });
 
                         if (document.querySelector('#payplug-js')) {
                             return;
@@ -626,6 +500,7 @@ declare(strict_types=1);
                 },
 
                 async validate() {
+                    console.log("validation runing");
                     if (IntegratedPayment.props.api.validateForm()) {
                         document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
                     }
