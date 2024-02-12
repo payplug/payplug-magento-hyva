@@ -6,11 +6,7 @@ declare(strict_types=1);
 
 ?>
 
-<div>
-    <img src="<?php echo $block->getService()['logo'] ?>" alt="">
-</div>
 
-<!-- Set up a form with your divs -->
 <div wire:id="checkout.payment.method.payplug_payments_standard" >
   <form id="payplug-payment-form" class="payplug IntegratedPayment -loaded">
       <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder"></div>
