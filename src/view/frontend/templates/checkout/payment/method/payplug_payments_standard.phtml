@@ -1,10 +1,21 @@
 <?php
 declare(strict_types=1);
-/** @var Hyva\CheckoutPayplug\Block\Checkout\Payment\Method\Integrated $block */
 
-//dd($block);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+
+/** @var Hyva\CheckoutPayplug\Block\Checkout\Payment\Method\Integrated $block */
+/** @var ViewModelRegistry $viewModels */
+
+
+$icons = $viewModels->require(PayplugIcons::class);
+
+
 
 ?>
+
+
 
 
 <div wire:id="checkout.payment.method.payplug_payments_standard" >
@@ -13,7 +24,9 @@ declare(strict_types=1);
       <div class="payplug IntegratedPayment_container -scheme">
           <div></div>
           <div class="payplug IntegratedPayment_schemes">
-              <label class="payplug IntegratedPayment_scheme -visa"><input type="radio" name="schemeOptions" value="visa"/><span></span></label>
+              <label class="payplug IntegratedPayment_scheme -visa">
+                  <input type="radio" name="schemeOptions" value="visa"/><span></span>
+              </label>
               <label class="payplug IntegratedPayment_scheme -mastercard"><input type="radio" name="schemeOptions" value="mastercard" /><span></span></label>
               <label class="payplug IntegratedPayment_scheme -cb"><input type="radio" name="schemeOptions" value="cb" /><span></span></label>
           </div>
@@ -80,24 +93,25 @@ declare(strict_types=1);
         border-color: #E91932;
     }
     .IntegratedPayment_container.-cardHolder:before {
-        mask-image: url(../images/integrated/account.svg);
-        -webkit-mask-image: url(../images/integrated/account.svg);
+
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
     }
     .IntegratedPayment_container.-pan:before {
-        -webkit-mask-image: url(../images/integrated/card.svg);
-        mask-image: url(../images/integrated/card.svg);
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
     }
     .IntegratedPayment_container.-exp, .IntegratedPayment_container.-cvv {
         max-width: calc(50% - 2px);
         display: inline-block;
     }
     .IntegratedPayment_container.-cvv:before {
-        mask-image: url(../images/integrated/lock.svg);
-        -webkit-mask-image: url(../images/integrated/lock.svg);
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
     }
     .IntegratedPayment_container.-exp:before {
-        mask-image: url(../images/integrated/calendar.svg);
-        -webkit-mask-image: url(../images/integrated/calendar.svg);
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
     }
     .IntegratedPayment_container.-scheme {
         justify-content: space-between;
@@ -283,22 +297,22 @@ declare(strict_types=1);
         opacity: 1;
     }
     .IntegratedPayment_scheme.-visa span {
-        background-image: url(../images/integrated/visa-dark.svg);
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa-dark')); ?>');
     }
     .IntegratedPayment_scheme.-visa span:before {
-        background-image: url(../images/integrated/visa.svg);
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa')); ?>');
     }
     .IntegratedPayment_scheme.-mastercard span {
-        background-image: url(../images/integrated/mastercard-dark.svg);
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard-dark')); ?>');
     }
     .IntegratedPayment_scheme.-mastercard span:before {
-        background-image: url(../images/integrated/mastercard.svg);
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard')); ?>');
     }
     .IntegratedPayment_scheme.-cb span {
-        background-image: url(../images/integrated/cb-dark.svg);
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb-dark')); ?>');
     }
     .IntegratedPayment_scheme.-cb span:before {
-        background-image: url(../images/integrated/cb.svg);
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb')); ?>');
     }
     .IntegratedPayment .ipOverlay {
         left: 0;
@@ -444,11 +458,11 @@ declare(strict_types=1);
                                 });
                             document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
 
-
+                            //hyvaCheckout.main.getWireComponent().placeOrder();
 
                         } else {
                             console.log(isFormValid+ ": form not valid");
-                            document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = true;
+                           // document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = true;
                         }
                     });
 
@@ -459,13 +473,15 @@ declare(strict_types=1);
                 async initialize() {
                     console.log("intializing");
                     hyvaCheckout.navigation.addTask(async function () {
-                        hyvaCheckout.main.getWireComponent().placeOrder();
+
+                       // hyvaCheckout.main.getWireComponent().placeOrder();
+
                         var response = await fetch('<?php echo $block->getBaseUrl();?>/payplug_payments/payment/standard?should_redirect=0&integrated=1');
+
                         var json = await response.json();
                         console.log(json);
-                        console.log(json);
-                        IntegratedPayment.props.api.pay(json.payment_id, "AUTO");
 
+                        IntegratedPayment.props.api.pay(json.payment_id, "AUTO");
 
                     });
 

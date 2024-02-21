@@ -39,4 +39,10 @@
         </arguments>
     </type>
 
+    <type name="Hyva\CheckoutPayplug\ViewModel\PayplugIcons">
+        <arguments>
+            <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
+        </arguments>
+    </type>
+
 </config>
