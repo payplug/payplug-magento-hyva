@@ -63,7 +63,6 @@ class PlaceOrderService extends AbstractPlaceOrderService
 
         $order = $this->orderRepository->get($orderId);
 
-      //  dd($quote->getPayment()->getMethod());
         $checkoutUrl = $order->getPayment()->getAdditionalInformation('payment_url');
         if ($checkoutUrl) {
             return $checkoutUrl;
@@ -73,14 +72,10 @@ class PlaceOrderService extends AbstractPlaceOrderService
 
     }
 
-    public function canRedirect(): bool
-    {
-        //todo:: check if IP is enabled
-        return false;
-    }
-
     public function placeOrder(Quote $quote): int
     {
+        $paymentMethod = $this->paymentHelper->getMethodInstance($quote->getPayment()->getMethod());
+
         return (int) $this->cartManagement->placeOrder($quote->getId(), $quote->getPayment());
     }
 

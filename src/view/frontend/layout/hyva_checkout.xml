@@ -25,6 +25,24 @@
                 </arguments>
             </block>
 
+            <block name="checkout.payment.method.payplug_payments_oney"
+                   as="payplug_payments_oney"
+                   class="Payplug\Payments\Block\Oney\Simulation"
+                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_oney.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">
+                        \Hyva\CheckoutPayplug\Magewire\Oney
+                    </argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="svg" xsi:type="string">oney</item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+
+
             <block name="checkout.payment.method.payplug_payments_amex"
                    as="payplug_payments_amex">
                 <arguments>
