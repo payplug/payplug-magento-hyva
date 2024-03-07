@@ -17,16 +17,4 @@ class Oney extends Component implements EvaluationInterface {
         $this->sessionCheckout = $sessionCheckout;
     }
 
-    public function evaluateCompletion(EvaluationResultFactory $factory): EvaluationResultInterface
-    {
-        $quote = $this->sessionCheckout->getQuote();
-
-         dd($quote->getPayment());
-
-        return $factory->createBlocking();
-        // If this payment method is selected, only return a Success if all required data is present
-        /*return $this->isRequiredDataPresent()
-            ? $factory->createSuccess()
-            : $factory->createBlocking();*/
-    }
 }
