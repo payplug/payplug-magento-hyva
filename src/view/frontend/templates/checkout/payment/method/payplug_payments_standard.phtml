@@ -15,6 +15,8 @@ $icons = $viewModels->require(PayplugIcons::class);
 $config = $magewire->getConfig();
 $paymentConfig = $config['payment'];
 
+
+
 $t = function (string $text) use ($escaper) {
   return $escaper->escapeHtml(__($text));
 };
@@ -512,8 +514,8 @@ $tJs = function (string $text) use ($escaper) {
       init: function () {
 
         //TODO:: the is_sandbox needs to be dinamic
-        IntegratedPayment.props.api = new Payplug.IntegratedPayment(false);
-        IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX)
+        IntegratedPayment.props.api = new Payplug.IntegratedPayment(<?= $paymentConfig['payplug_payments_standard']['is_sandbox']; ?>);
+        IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
 
         IntegratedPayment.props.form = {};
         //draw Name
@@ -540,7 +542,6 @@ $tJs = function (string $text) use ($escaper) {
         hyvaCheckout.payment.activate('payplug_payments_standard', {
 
           initialize() {
-            console.log(" - initialize - ");
             this.loadHostedLib().then(()=>{
               if(!this.checkLoaded()){
                 IntegratedPayment.init();
@@ -590,8 +591,10 @@ $tJs = function (string $text) use ($escaper) {
             let self = this;
 
             return new Promise(async (resolve, reject) => {
+                IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
               console.log(IntegratedPayment.props.api.validateForm());
               IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                  magewire.plugins.loader.start();
                 console.log("onValidateForm");
                 if (isFormValid) {
                   console.log("all good :thumbs_up");
@@ -607,7 +610,7 @@ $tJs = function (string $text) use ($escaper) {
                         res.then( result => {
 
                           if(typeof result.error !== 'undefined' && result.error){
-                            alert(response.message);
+                            console.log(response.message);
                             window.location.replace(response.url);
                             reject();
                             throw new Error(`Error! status: ${response.message}`);
@@ -624,9 +627,17 @@ $tJs = function (string $text) use ($escaper) {
                                 console.log("token")
                                 console.log(event.token);
 
-//                                return true;
-                                window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
-                                return true;
+                                if (event.error) {
+                                    console.log(event.error);
+                                    magewire.plugins.loader.stop();
+                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+
+                                } else {
+                                    magewire.plugins.loader.stop();
+                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
+
+                                }
+
                              });
 
                             } else {
@@ -652,9 +663,12 @@ $tJs = function (string $text) use ($escaper) {
                     }
                 } else {
                   console.log(isFormValid + ": form not valid");
+                    magewire.plugins.loader.stop();
+                    return false;
                 }
               });
             });
+
           },
         }, document.getElementById('payplug-payment-form'), 'payment');
 
