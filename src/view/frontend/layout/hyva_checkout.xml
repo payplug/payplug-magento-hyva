@@ -30,9 +30,7 @@
                    class="Payplug\Payments\Block\Oney\Simulation"
                    template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_oney.phtml">
                 <arguments>
-                    <argument name="magewire" xsi:type="object">
-                        \Hyva\CheckoutPayplug\Magewire\Oney
-                    </argument>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
                             <item name="svg" xsi:type="string">oney</item>
@@ -41,7 +39,21 @@
                 </arguments>
             </block>
 
+            <block name="checkout.payment.method.payplug_payments_oney_without_fees"
+                   as="payplug_payments_oney_without_fees"
+                   class="Payplug\Payments\Block\Oney\Simulation"
+                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_oney.phtml">
+              <arguments>
+                <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
+                <argument name="metadata" xsi:type="array">
+                  <item name="icon" xsi:type="array">
+                    <item name="svg" xsi:type="string">oney</item>
+                  </item>
+                </argument>
+              </arguments>
+            </block>
 
+          <!-- TODO:: ADD ONEY WITHOUT FEES ANIMATION! -->
 
             <block name="checkout.payment.method.payplug_payments_amex"
                    as="payplug_payments_amex">

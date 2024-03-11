@@ -12,7 +12,6 @@ if (!$oneySimulation->getSuccess() || !empty($message)) {
     $hasError = true;
 }
 
-
 $isOneyWithoutFees = $oneySimulation->getMethod() === \Payplug\Payments\Gateway\Config\OneyWithoutFees::METHOD_CODE;
 $pricingHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
 
@@ -22,14 +21,13 @@ $pricingHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
 <div data-oney-container="payplug_payments_oney">
-
     <div class="oneyPayment oneyPayment-open"></div>
-
-
 </div>
 <div class="payment-method-content">
 
 </div>
+
+<span class="oneyPopin <?php if ($hasError): ?>oneyPopin-error<?php endif; ?>"></span>
 
 <style>
     .payplug-payments-cards {
@@ -82,48 +80,26 @@ $icons = $viewModels->require(PayplugIcons::class);
         background-size: 100%
     }
 
-    .oneyLogo-3x {
+    <?php if($isOneyWithoutFees): ?>
+      .oneyLogo-3x {
+          background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/3x')); ?>');
+      }
+
+      .oneyLogo-4x {
+          background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/4x')); ?>');
+      }
+    <?php else: ?>
+
+      .oneyLogo-3x {
         background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('3x')); ?>');
-    }
+      }
 
-    [data-oney-container='payplug_payments_oney_without_fees'] .oneyLogo-3x {
-        background-image: url('../Payplug_Payments/images/oney_without_fees/3x.svg')
-    }
-
-    .oney-it[data-oney-container='payplug_payments_oney_without_fees'] .oneyLogo-3x {
-        background-image: url('../Payplug_Payments/images/oney_without_fees/3x-it.svg');
-        height: 50px
-    }
-
-    .oneyLogo-4x {
+      .oneyLogo-4x {
         background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('4x')); ?>');
-    }
+      }
 
-    [data-oney-container='payplug_payments_oney_without_fees'] .oneyLogo-4x {
-        background-image: url('../Payplug_Payments/images/oney_without_fees/4x.svg')
-    }
+    <?php endif; ?>
 
-    .oney-it[data-oney-container='payplug_payments_oney_without_fees'] .oneyLogo-4x {
-        background-image: url('../Payplug_Payments/images/oney_without_fees/4x-it.svg');
-        height: 50px
-    }
-
-    .oneyLogo-x3x4 {
-        background-image: url('../Payplug_Payments/images/oney/3x4x.svg')
-    }
-
-    .oney-without-fees .oneyLogo-x3x4 {
-        background-image: url('../Payplug_Payments/images/oney_without_fees/3x4x.svg');
-        margin-right: 5px
-    }
-
-    .oney-it.oney-without-fees .oneyLogo-x3x4 {
-        background-image: url('../Payplug_Payments/images/oney_without_fees/3x4x-it.svg')
-    }
-
-    .oneyLogo-tooltip {
-        background-image: url('../Payplug_Payments/images/oney/tooltip.svg')
-    }
 
     .oneyCta {
         display: block;
@@ -490,6 +466,7 @@ $icons = $viewModels->require(PayplugIcons::class);
     }
 
     .oneyPopin_error {
+        color: #b2b2b2;
         font-size: 14px;
         font-style: italic;
         font-weight: 400;
@@ -583,14 +560,6 @@ $icons = $viewModels->require(PayplugIcons::class);
         margin: 0 15px 0 0;
         max-width: 100%;
         width: 165px
-    }
-
-    .oneyPayment-disabled .oneyPayment_logo {
-        background-image: url('../Payplug_Payments/images/oney/3x4x-alt.svg')
-    }
-
-    .oney-without-fees .oneyPayment-disabled .oneyPayment_logo {
-        background-image: url('../Payplug_Payments/images/oney_without_fees/3x4x-alt.svg')
     }
 
     .oneyPayment_cta {
@@ -5326,7 +5295,13 @@ $icons = $viewModels->require(PayplugIcons::class);
     }
 
     var getPaymentTypeLabel = function() {
+
+      <?php if($isOneyWithoutFees): ?>
         return "<?= $block->escapeHtml(__('Payment in %1 without fees')) ;?>";
+
+      <?php else: ?>
+        return "<?= $block->escapeHtml(__('Payment in %1')) ;?>";
+      <?php endif; ?>
     }
 
     var buildOneyDetail = function(){
@@ -5336,23 +5311,34 @@ $icons = $viewModels->require(PayplugIcons::class);
 
         var label = getPaymentTypeLabel();
 
-        <?php foreach ($oneySimulation->getOptions() as $option): ?>
-            var type = "<?= $option->getType(); ?>";
-            var option = document.createElement('label');
-            option.setAttribute('data-type', type);
-            option.classList.add('oneyOption', 'oneyOption-' + type);
-            // Title
-            var title =  document.createElement('div');
-            title.classList.add('oneyOption_title');
-            var tmpSpan = document.createElement('span');
-            tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + type);
+        <?php if ($hasError): ?>
+          var error_is_displayed = document.querySelector("p.oneyPopin_error");
+          if( typeof(error_is_displayed) === 'undefined' || error_is_displayed === null ){
+            var error_message = document.createElement('p');
+            error_message.classList.add('oneyPopin_error');
+            error_message.innerHTML = "<?= /* @noEscape */ $message; ?>";
+            tmpDiv.appendChild(error_message);
+          }
 
-            title.append(tmpSpan);
-            title.innerHTML += label.replace('%1', type);
+        <?php else: ?>
+          <?php foreach ($oneySimulation->getOptions() as $option): ?>
+              var type = "<?= $option->getType(); ?>";
+              var option = document.createElement('label');
+              option.setAttribute('data-type', type);
+              option.classList.add('oneyOption', 'oneyOption-' + type);
+              // Title
+              var title =  document.createElement('div');
+              title.classList.add('oneyOption_title');
 
-            option.append(title);
+              var tmpSpan = document.createElement('span');
+              tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + type);
 
-            <?php if ($option->getSchedules()): ?>
+              title.append(tmpSpan);
+              title.innerHTML += label.replace('%1', type);
+
+              option.append(title);
+
+              <?php if ($option->getSchedules()): ?>
 
                 var detail = document.createElement('div');
                 detail.classList.add('oneyOption_prices');
@@ -5433,29 +5419,47 @@ $icons = $viewModels->require(PayplugIcons::class);
 
             option.append(radio);
 
-        optionsWrapper.append(option);
+            optionsWrapper.append(option);
 
-        <?php endforeach; ?>
+          <?php endforeach; ?>
+
+          tmpDiv.appendChild(optionsWrapper);
+
+        <?php endif; ?>
 
 
-        tmpDiv.appendChild(optionsWrapper);
+
 
         getOneyContainer().querySelector('.oneyPayment').appendChild(tmpDiv);
     }
 
+    var oney_type
     window.addEventListener('checkout:payment:method-activate', (event) => {
-        if (event.detail.method == "payplug_payments_oney") {
-            hyvaCheckout.payment.activate('payplug_payments_oney', {
+        if (event.detail.method == "payplug_payments_oney" || event.detail.method == "payplug_payments_oney_without_fees") {
+
+          switch (event.detail.method){
+            case "payplug_payments_oney":
+              oney_type = "payplug_payments_oney";
+              break;
+            case "payplug_payments_oney_without_fees":
+              oney_type = "payplug_payments_oney_without_fees";
+              break;
+            default:
+              oney_type = "payplug_payments_oney";
+          }
+
+
+            hyvaCheckout.payment.activate(oney_type, {
                 validate() {
                     return new Promise(async (resolve, reject) => {
                         var selected = document.querySelector('input[name="oney_type"]:checked');
-                        var option = await Magewire.find('checkout.payment.method.payplug_payments_oney').call('setOneyType', selected.value);
+                        var option = await Magewire.find('checkout.payment.method'+oney_type).call('setOneyType', selected.value);
                         console.log("placing order");
                         resolve();
                     })
 
                 }
-            }, document.getElementById('payment-method-view-payplug_payments_oney'));
+            }, document.getElementById('payment-method-view-'+oney_type));
             var oney = document.querySelector('.oneyOption_wrapper');
             if (oney) {
                 document.querySelector('.oneyOption_wrapper').remove();
