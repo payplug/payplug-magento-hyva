@@ -5271,7 +5271,6 @@ $icons = $viewModels->require(PayplugIcons::class);
         var selectedOption = getOneyContainer().querySelector('[data-type="'+ option +'"]');
         selectedOption.classList.add('oneyOption-selected');
 
-
         updatePlaceOrderButtonLabel(option);
     }
 
@@ -5322,23 +5321,23 @@ $icons = $viewModels->require(PayplugIcons::class);
 
         <?php else: ?>
           <?php foreach ($oneySimulation->getOptions() as $option): ?>
-              var type = "<?= $option->getType(); ?>";
-              var option = document.createElement('label');
-              option.setAttribute('data-type', type);
-              option.classList.add('oneyOption', 'oneyOption-' + type);
-              // Title
-              var title =  document.createElement('div');
-              title.classList.add('oneyOption_title');
+            var type = "<?= $option->getType(); ?>";
+            var option = document.createElement('label');
+            option.setAttribute('data-type', type);
+            option.classList.add('oneyOption', 'oneyOption-' + type);
+            // Title
+            var title =  document.createElement('div');
+            title.classList.add('oneyOption_title');
 
-              var tmpSpan = document.createElement('span');
-              tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + type);
+            var tmpSpan = document.createElement('span');
+            tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + type);
 
-              title.append(tmpSpan);
-              title.innerHTML += label.replace('%1', type);
+            title.append(tmpSpan);
+            title.innerHTML += label.replace('%1', type);
 
-              option.append(title);
+            option.append(title);
 
-              <?php if ($option->getSchedules()): ?>
+            <?php if ($option->getSchedules()): ?>
 
                 var detail = document.createElement('div');
                 detail.classList.add('oneyOption_prices');
@@ -5422,18 +5421,13 @@ $icons = $viewModels->require(PayplugIcons::class);
             optionsWrapper.append(option);
 
           <?php endforeach; ?>
-
-          tmpDiv.appendChild(optionsWrapper);
-
         <?php endif; ?>
 
-
-
-
+        tmpDiv.appendChild(optionsWrapper);
         getOneyContainer().querySelector('.oneyPayment').appendChild(tmpDiv);
     }
 
-    var oney_type
+    var oney_type = "";
     window.addEventListener('checkout:payment:method-activate', (event) => {
         if (event.detail.method == "payplug_payments_oney" || event.detail.method == "payplug_payments_oney_without_fees") {
 
@@ -5448,40 +5442,38 @@ $icons = $viewModels->require(PayplugIcons::class);
               oney_type = "payplug_payments_oney";
           }
 
+          hyvaCheckout.payment.activate(oney_type, {
+            validate() {
+                  return new Promise(async (resolve, reject) => {
+                      var selected = document.querySelector('input[name="oney_type"]:checked');
+                      var option = await Magewire.find('checkout.payment.method.'+oney_type).call('setOneyType', selected.value);
+                      console.log("placing order");
+                      resolve();
+                  })
 
-            hyvaCheckout.payment.activate(oney_type, {
-                validate() {
-                    return new Promise(async (resolve, reject) => {
-                        var selected = document.querySelector('input[name="oney_type"]:checked');
-                        var option = await Magewire.find('checkout.payment.method'+oney_type).call('setOneyType', selected.value);
-                        console.log("placing order");
-                        resolve();
-                    })
+              }
+          }, document.getElementById('payment-method-view-'+oney_type));
 
-                }
-            }, document.getElementById('payment-method-view-'+oney_type));
-            var oney = document.querySelector('.oneyOption_wrapper');
-            if (oney) {
-                document.querySelector('.oneyOption_wrapper').remove();
-                buildOneyDetail();
-            } else {
-                buildOneyDetail();
-            }
+          var oney = document.querySelector('.oneyOption_wrapper');
+          if (oney) {
+            document.querySelector('.oneyOption_wrapper').remove();
+            buildOneyDetail();
+          } else {
+            buildOneyDetail();
+          }
 
-            document.querySelector('.oneyOption_wrapper .oneyOption-3x').addEventListener('click', function () {
-                var selected = document.querySelector('input[name="oney_type"]:checked');
-                selectOneyOption(selected.value);
-            });
+          document.querySelector('.oneyOption_wrapper .oneyOption-3x').addEventListener('click', function () {
+              var selected = document.querySelector('input[name="oney_type"]:checked');
+              selectOneyOption(selected.value);
+          });
 
-            document.querySelector('.oneyOption_wrapper .oneyOption-4x').addEventListener('click',async function () {
-                var selected = document.querySelector('input[name="oney_type"]:checked');
-                selectOneyOption(selected.value);
-            });
+          document.querySelector('.oneyOption_wrapper .oneyOption-4x').addEventListener('click', function () {
+              var selected = document.querySelector('input[name="oney_type"]:checked');
+              selectOneyOption(selected.value);
+          });
 
         }
     });
-
-
 
 </script>
 
