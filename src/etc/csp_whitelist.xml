@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="payplug-script-qa" type="host">https://cdn-qa.payplug.com</value>
+                <value id="payplug-script-cd-qa" type="host">cdn-qa.payplug.com</value>
+                <value id="payplug-api" type="host">api.payplug.com</value>
+            </values>
+        </policy>
+         <policy id="frame-src">
+            <values>
+                <value id="api_payplug" type="host">api.payplug.com</value>
+                <value id="secure_payplug" type="host">secure-qa.payplug.com</value>
+                <value id="spayplug" type="host">*.payplug.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

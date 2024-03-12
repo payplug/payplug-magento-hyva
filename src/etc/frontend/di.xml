@@ -2,6 +2,17 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
+    <type name="Hyva\CompatModuleFallback\Model\CompatModuleRegistry">
+        <arguments>
+            <argument name="compatModules" xsi:type="array">
+                <item name="hyva-magento2-checkout-payplug" xsi:type="array">
+                    <item name="original_module" xsi:type="string">Payplug_Payments</item>
+                    <item name="compat_module" xsi:type="string">Hyva_CheckoutPayplug</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Hyva\Checkout\Model\Magewire\Payment\PlaceOrderServiceProvider">
         <arguments>
             <argument name="placeOrderServiceList" xsi:type="array">
@@ -23,6 +34,12 @@
     </type>
 
     <type name="Hyva\Theme\ViewModel\SvgIcons">
+        <arguments>
+            <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
+        </arguments>
+    </type>
+
+    <type name="Hyva\CheckoutPayplug\ViewModel\PayplugIcons">
         <arguments>
             <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
         </arguments>
