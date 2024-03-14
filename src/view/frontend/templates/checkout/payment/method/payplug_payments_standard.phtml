@@ -16,7 +16,6 @@ $config = $magewire->getConfig();
 $paymentConfig = $config['payment'];
 
 
-
 $t = function (string $text) use ($escaper) {
   return $escaper->escapeHtml(__($text));
 };
@@ -30,14 +29,12 @@ if(isset($paymentConfig["payplug_payments_standard"])){
   $integrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
 }
 
-if(!$integrated){
-
-  return;
-}
-
 ?>
-
+<?php
+if($integrated){
+?>
 <div wire:id="checkout.payment.method.payplug_payments_standard" xmlns:wire="http://www.w3.org/1999/xhtml">
+
   <form id="payplug-payment-form" class="payplug IntegratedPayment -loaded">
     <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
     </div>
@@ -90,6 +87,7 @@ if(!$integrated){
     </div>
 
   </form>
+
 </div>
 <style>
 
@@ -721,3 +719,11 @@ if(!$integrated){
 
 
 </script>
+    <?php
+} else {
+    ?>
+    <div wire:id="checkout.payment.method.payplug_payments_standard"></div>
+<?php
+}
+?>
+
