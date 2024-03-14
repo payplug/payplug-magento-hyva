@@ -25,6 +25,15 @@ $tJs = function (string $text) use ($escaper) {
   return $escaper->escapeJs(__($text));
 };
 
+$integrated = false;
+if(isset($paymentConfig["payplug_payments_standard"])){
+  $integrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
+}
+
+if(!$integrated){
+
+  return;
+}
 
 ?>
 
@@ -600,9 +609,6 @@ $tJs = function (string $text) use ($escaper) {
                   console.log("all good :thumbs_up");
 
                     try{
-
-                      //TODO:: replace the fetch with this event? maybe it's the same
-                      //hyvaCheckout.order.place()
 
                       fetch('<?php echo $block->getUrl("hyva_checkout_payplug/payment/standard");?>?should_redirect=0&integrated=1').then(response => {
                         let res = response.clone().json();

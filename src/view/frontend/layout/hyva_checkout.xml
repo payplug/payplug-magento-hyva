@@ -45,8 +45,6 @@
               </arguments>
             </block>
 
-          <!-- TODO:: ADD ONEY WITHOUT FEES ANIMATION! -->
-
             <block name="checkout.payment.method.payplug_payments_amex"
                    as="payplug_payments_amex">
                 <arguments>

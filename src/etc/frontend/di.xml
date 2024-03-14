@@ -2,13 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-<!--
-  <preference
-    for="Payplug\Payments\Controller\Payment\Standard"
-    type="Hyva\CheckoutPayplug\Controller\Payment\Standard"
-  />
--->
-
   <type name="Hyva\CompatModuleFallback\Model\CompatModuleRegistry">
       <arguments>
           <argument name="compatModules" xsi:type="array">
@@ -23,7 +16,7 @@
   <type name="Hyva\Checkout\Model\Magewire\Payment\PlaceOrderServiceProvider">
       <arguments>
           <argument name="placeOrderServiceList" xsi:type="array">
-              <item name="payplug_payments_standard" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\Method\Standard</item>
+              <item name="payplug_payments_standard" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_oney" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_oney_without_fees" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_bancontact" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
