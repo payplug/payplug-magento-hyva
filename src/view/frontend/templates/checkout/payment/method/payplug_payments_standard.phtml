@@ -626,22 +626,7 @@ if($integrated){
 
                               IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: 0});
                               IntegratedPayment.props.api.onCompleted(function (event) {
-                                console.log("placeorder")
-                                console.log(event)
-                                console.log("token")
-                                console.log(event.token);
-
-                                if (event.error) {
-                                    console.log(event.error);
-                                    magewire.plugins.loader.stop();
-                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
-
-                                } else {
-                                    magewire.plugins.loader.stop();
-                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
-
-                                }
-
+                                window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
                              });
 
                             } else {
