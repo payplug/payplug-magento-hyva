@@ -562,25 +562,14 @@ if(isset($paymentConfig["payplug_payments_standard"])){
               return_url: null
             },
             init: function () {
-
-              //TODO:: the is_sandbox needs to be dinamic
               IntegratedPayment.props.api = new Payplug.IntegratedPayment(<?= $paymentConfig['payplug_payments_standard']['is_sandbox']; ?>);
               IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
 
               IntegratedPayment.props.form = {};
-              //draw Name
               IntegratedPayment.props.form.cardHolder = {element: IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
-
-              //draw card
               IntegratedPayment.props.form.pan = {element:IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
-
-              //draw cvv
               IntegratedPayment.props.form.cvv = {element:IntegratedPayment.props.api.cvv(document.querySelector('#cvv-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'CVV'})};
-
-              //draw date
               IntegratedPayment.props.form.exp = {element:IntegratedPayment.props.api.expiration(document.querySelector('#exp-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Exp Date'})};
-
-              //draw schemes
               IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
 
             },
@@ -593,77 +582,61 @@ if(isset($paymentConfig["payplug_payments_standard"])){
             hyvaCheckout.payment.activate('payplug_payments_standard', {
               validate() {
 
-                  if (oneclick) {
-                    var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-                    Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
-                    hyvaCheckout.main.getWireComponent().placeOrder();
-                    resolve();
+                if (oneclick) {
+                  var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                  Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
+                  hyvaCheckout.main.getWireComponent().placeOrder();
+                  resolve();
 
-                  } else {
-                    console.log(" ***** ip ******");
-                    console.log(IntegratedPayment);
+                } else {
 
-                    return new Promise(async (resolve, reject) => {
-                      IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                      IntegratedPayment.props.api.validateForm()
-                      console.log("**** promise ****");
+                  return new Promise(async (resolve, reject) => {
+                    IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                    IntegratedPayment.props.api.validateForm()
+                    IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                    magewire.plugins.loader.start();
+                      if (isFormValid) {
+                        try{
+                          fetch('<?php echo $block->getUrl("hyva_checkout_payplug/payment/standard");?>?should_redirect=0&integrated=1').then(response => {
+                            let res = response.clone().json();
+                            res.then( result => {
+                              if(typeof result.error !== 'undefined' && result.error){
+                                window.location.replace(response.url);
+                                reject();
+                                throw new Error(`Error! status: ${response.message}`);
 
-                      IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                              }else{
+                                if (typeof result.payment_id !== undefined && result.payment_id) {
+                                  IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: 0});
+                                  IntegratedPayment.props.api.onCompleted(function (event) {
+                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
+                                  });
 
-                        console.log("**** on validate ****");
-                        console.log(isFormValid);
-
-                        magewire.plugins.loader.start();
-                        if (isFormValid) {
-                          console.log("**** is Valid ****");
-                          try{
-                            fetch('<?php echo $block->getUrl("hyva_checkout_payplug/payment/standard");?>?should_redirect=0&integrated=1').then(response => {
-                              let res = response.clone().json();
-                              res.then( result => {
-
-                                console.log("*********");
-                                console.log(result);
-                                console.log("*********");
-
-                                if(typeof result.error !== 'undefined' && result.error){
-                                  window.location.replace(response.url);
+                                } else {
+                                  window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
                                   reject();
-                                  throw new Error(`Error! status: ${response.message}`);
 
-                                }else{
-                                  if (typeof result.payment_id !== undefined && result.payment_id) {
-                                    IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: 0});
-                                    IntegratedPayment.props.api.onCompleted(function (event) {
-                                      window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
-                                    });
-
-                                  } else {
-                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
-                                    reject();
-
-                                  }
                                 }
-                              });
-                            }).catch(err => {
-                              reject();
-                              console.log(err);
+                              }
                             });
-                          } catch (error){
-                            reject()
+                          }).catch(err => {
+                            reject();
                             console.log(err);
-                          }
+                          });
+                        } catch (error){
+                          reject()
+                          console.log(err);
+                        }
 
-                        } else {
-
-                          console.log(isFormValid + ": form not valid");
+                      } else {
                           reject();
                           magewire.plugins.loader.stop();
                           return false;
-                        }
 
-                      });
+                      }
                     });
-                  }
+                  });
+                }
               },
               initialize() {
                   if(integrated){
