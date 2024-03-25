@@ -509,10 +509,10 @@ if(isset($paymentConfig["payplug_payments_standard"])){
 
   <script>
       (() => {
-        var oneclick = <?php echo !empty($payplugCards) ? 1 : 0; ?>;
-        var integrated = <?php echo $integrated ? 1 : 0; ?>;
 
         window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
+        var oneclick = <?php echo !empty($payplugCards) ? 1 : 0; ?>;
+        var integrated = <?php echo $integrated ? 1 : 0; ?>;
         if(integrated){
           var IntegratedPayment = {
             props: {
@@ -600,55 +600,69 @@ if(isset($paymentConfig["payplug_payments_standard"])){
                     resolve();
 
                   } else {
+                    console.log(" ***** ip ******");
+                    console.log(IntegratedPayment);
 
-
-                    /*return new Promise(async (resolve, reject) => {
-
+                    return new Promise(async (resolve, reject) => {
                       IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                      IntegratedPayment.props.api.validateForm()
+                      console.log("**** promise ****");
+
                       IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+
+                        console.log("**** on validate ****");
+                        console.log(isFormValid);
+
                         magewire.plugins.loader.start();
                         if (isFormValid) {
+                          console.log("**** is Valid ****");
                           try{
                             fetch('<?php echo $block->getUrl("hyva_checkout_payplug/payment/standard");?>?should_redirect=0&integrated=1').then(response => {
-                            let res = response.clone().json();
-                            res.then( result => {
-                              if(typeof result.error !== 'undefined' && result.error){
-                                window.location.replace(response.url);
-                                reject();
-                                throw new Error(`Error! status: ${response.message}`);
+                              let res = response.clone().json();
+                              res.then( result => {
 
-                              }else{
-                                if (typeof result.payment_id !== undefined && result.payment_id) {
-                                  IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: 0});
-                                  IntegratedPayment.props.api.onCompleted(function (event) {
-                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
-                                  });
+                                console.log("*********");
+                                console.log(result);
+                                console.log("*********");
 
-                                } else {
-                                  window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+                                if(typeof result.error !== 'undefined' && result.error){
+                                  window.location.replace(response.url);
                                   reject();
+                                  throw new Error(`Error! status: ${response.message}`);
 
+                                }else{
+                                  if (typeof result.payment_id !== undefined && result.payment_id) {
+                                    IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: 0});
+                                    IntegratedPayment.props.api.onCompleted(function (event) {
+                                      window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
+                                    });
+
+                                  } else {
+                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+                                    reject();
+
+                                  }
                                 }
-                              }
+                              });
+                            }).catch(err => {
+                              reject();
+                              console.log(err);
                             });
-                          }).catch(err => {
-                            reject();
+                          } catch (error){
+                            reject()
                             console.log(err);
-                          });
+                          }
 
-                        } catch (error){
-                          reject()
+                        } else {
+
+                          console.log(isFormValid + ": form not valid");
+                          reject();
+                          magewire.plugins.loader.stop();
+                          return false;
                         }
-                      } else {
 
-
-                        console.log(isFormValid + ": form not valid");
-                        magewire.plugins.loader.stop();
-                        return false;
-                      }
-
+                      });
                     });
-                  }); */
                   }
               },
               initialize() {
