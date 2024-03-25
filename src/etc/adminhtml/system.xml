@@ -10,10 +10,6 @@
         </section>
 
         <section id="payment" type="text" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
-            <group id="payplug_payments_standard" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                <field id="one_click" translate="label" type="select" sortOrder="60" showInDefault="0" showInWebsite="0" showInStore="0">
-                </field>
-            </group>
             <group id="payplug_payments_installment_plan" translate="label" type="text" sortOrder="3" showInDefault="0" showInWebsite="0" showInStore="0" >
             </group>
             <group id="payplug_payments_apple_pay" translate="label" type="text" sortOrder="7" showInDefault="0" showInWebsite="0" showInStore="0">

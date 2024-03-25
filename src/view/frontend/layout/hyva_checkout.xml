@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-
     <body>
         <referenceBlock name="checkout.payment.methods">
-
             <block name="checkout.payment.method.payplug_payments_standard"
                    as="payplug_payments_standard"
+                   class="\Hyva\CheckoutPayplug\Block\Standard"
                    template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_standard.phtml">
                 <arguments>
-                  <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Model\Magewire\Payment\Method\Standard</argument>
+                  <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Standard</argument>
                   <argument name="metadata" xsi:type="array">
-                    <item name="icon" xsi:type="array"><item name="svg" xsi:type="string">visa</item></item>
+                    <item name="icon" xsi:type="array">
+                      <item name="svg" xsi:type="string">visa</item>
+                    </item>
                   </argument>
                 </arguments>
 
@@ -123,8 +124,5 @@
             </block>
 
         </referenceBlock>
-
-
     </body>
-
 </page>
