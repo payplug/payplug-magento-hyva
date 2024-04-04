@@ -623,7 +623,6 @@ if(isset($paymentConfig["payplug_payments_standard"])){
                                       let save_card = document.querySelector("#payplug_save_card").checked;
                                     IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
                                     IntegratedPayment.props.api.onCompleted(function (event) {
-                                        console.log(event.error);
                                       window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
                                     });
 
