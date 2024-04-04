@@ -5,7 +5,7 @@
         <referenceBlock name="checkout.payment.methods">
             <block name="checkout.payment.method.payplug_payments_standard"
                    as="payplug_payments_standard"
-                   class="\Hyva\CheckoutPayplug\Block\Standard"
+                   class="Hyva\CheckoutPayplug\Block\Standard"
                    template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_standard.phtml">
                 <arguments>
                   <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Standard</argument>
