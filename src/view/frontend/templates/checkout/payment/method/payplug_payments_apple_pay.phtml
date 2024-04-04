@@ -1,0 +1,67 @@
+
+<div>
+
+</div>
+<apple-pay-button buttonstyle="black" type="pay" locale="en"></apple-pay-button>
+
+<script>
+    window.addEventListener('checkout:payment:method-activate', (event) => {
+        if (event.detail.method == "payplug_payments_apple_pay") {
+            hyvaCheckout.payment.activate('payplug_payments_apple_pay', {
+
+                initialize() {
+                    this.loadHostedLib().then(async ()=>{
+                        if(!this.checkLoaded()){
+                            var option =  await Magewire.find('checkout.payment.method.payplug_payments_apple_pay').call('getShipping');
+                            console.log(option);
+                        }
+                    });
+                },
+                loadHostedLib(){
+                    return new Promise((resolve, reject) => {
+
+                        if (!document.getElementById('payplug_hosted_lib')) {
+                            const script = document.createElement('script');
+                            script.src = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
+                            script.setAttribute('id', 'payplug_hosted_lib');
+                            document.head.append(script);
+                        }
+
+
+
+                        //if it's not loaded yet let's wait 100ms to load it
+                        let count = 0;
+                        const interval = setInterval(() => {
+                            count++;
+                            if (typeof Payplug !== 'undefined') {
+                                clearInterval(interval);
+                                resolve();
+                                return;
+                            }
+
+                            if (count > 100) {
+                                reject();
+                                clearInterval(interval);
+                                throw new Error('Unable to load Payplug');
+                            }
+                        }, 100);
+                    });
+                },
+                checkLoaded: function(){
+                    return document.body.contains(document.querySelector('apple-pay-button'));
+                },
+
+            });
+
+
+        } else {
+            var script = document.getElementById("payplug-js");
+            if (script) {
+                script.remove();
+            }
+            document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
+            hyvaCheckout.payment.method = null;
+        }
+
+    }, {once: true});
+</script>
