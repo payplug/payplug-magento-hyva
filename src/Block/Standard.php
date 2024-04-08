@@ -30,8 +30,8 @@ class Standard extends Template
     Template\Context $context,
     Session $customerSession,
     Card $helper,
-    array $data = [],
-    Config $config)
+    Config $config,
+    array $data = [])
   {
     parent::__construct($context, $data);
 
