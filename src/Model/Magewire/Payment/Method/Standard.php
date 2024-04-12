@@ -5,7 +5,7 @@ namespace Hyva\CheckoutPayplug\Model\Magewire\Payment\Method;
 
 use Magewirephp\Magewire\Component;
 use \Payplug\Payments\Model\Payment\Standard\ConfigProvider as Config;
-use Magento\Customer\Model\Session;
+use Hyva\Checkout\Model\Session;
 use \Payplug\Payments\Helper\Card;
 use Hyva\Checkout\Magewire\Main;
 
