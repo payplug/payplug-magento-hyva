@@ -616,11 +616,18 @@ if(isset($paymentConfig["payplug_payments_standard"])){
                                 if(typeof result.error !== 'undefined' && result.error){
                                   window.location.replace(response.url);
                                   reject();
-                                  throw new Error(`Error! status: ${response.message}`);
 
                                 }else{
                                   if (typeof result.payment_id !== undefined && result.payment_id) {
-                                      let save_card = document.querySelector("#payplug_save_card").checked;
+
+                                    let save_card = false;
+                                    if(document.querySelector("#payplug_save_card") != null &&
+                                      typeof document.querySelector("#payplug_save_card") != "undefined" &&
+                                      document.querySelector("#payplug_save_card").checked)
+                                    {
+                                      save_card = true;
+                                    }
+
                                     IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
                                     IntegratedPayment.props.api.onCompleted(function (event) {
                                       window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
