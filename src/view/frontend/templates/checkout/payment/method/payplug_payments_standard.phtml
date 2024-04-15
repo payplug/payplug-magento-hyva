@@ -652,6 +652,7 @@ if(isset($paymentConfig["payplug_payments_standard"])){
                         } else {
                           reject();
                           magewire.plugins.loader.stop();
+                          document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
                           return false;
 
                         }
