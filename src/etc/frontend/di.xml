@@ -47,7 +47,7 @@
 
   <type name="Hyva\CheckoutPayplug\Controller\Payment\Standard">
     <arguments>
-      <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+      <argument name="checkoutSession" xsi:type="object">Hyva\Checkout\Model\Session</argument>
     </arguments>
   </type>
 
