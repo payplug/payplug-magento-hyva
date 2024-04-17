@@ -27,14 +27,16 @@ $tJs = function (string $text) use ($escaper) {
 $payplugCards = $block->getPayplugCards();
 
 $integrated = false;
+$is_one_click = false;
 if(isset($paymentConfig["payplug_payments_standard"])){
   $integrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
+  $is_one_click = $paymentConfig["payplug_payments_standard"]["is_one_click"];
 }
 ?>
 
 <div wire:id="checkout.payment.method.payplug_payments_standard" xmlns:wire="http://www.w3.org/1999/xhtml">
 
-<?php if(!empty($payplugCards) && $paymentConfig["payplug_payments_standard"]['is_one_click']){ ?>
+<?php if(!empty($payplugCards) && $is_one_click){ ?>
     <ul class="payplug-payments-cards">
       <?php
           foreach ($payplugCards as $payplugCard){
@@ -81,7 +83,7 @@ if(isset($paymentConfig["payplug_payments_standard"])){
 <?php }?>
 
 <?php if($integrated){ ?>
-  <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?php echo !empty($payplugCards) ? '-hide' : '' ?>">
+  <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?php echo !empty($payplugCards) && $is_one_click ? '-hide' : '' ?>">
       <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
       </div>
       <div class="error-container cardholder-input-container">
@@ -523,7 +525,8 @@ if(isset($paymentConfig["payplug_payments_standard"])){
       (() => {
 
         window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
-        var oneclick = <?php echo !empty($payplugCards) ? 1 : 0; ?>;
+
+        var oneclick = <?php echo !empty($payplugCards) && $is_one_click ? 1 : 0; ?>;
         var integrated = <?php echo $integrated ? 1 : 0; ?>;
         if(integrated){
           var IntegratedPayment = {
@@ -704,21 +707,23 @@ if(isset($paymentConfig["payplug_payments_standard"])){
 
             }, document.getElementById('payplug-payment-form'), 'payment');
 
-            document.querySelector('ul.payplug-payments-cards li input').click()
-            document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
-              var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-              if(card.value === ''){
-                oneclick = false;
-                if(integrated){
-                  document.querySelector("#payplug-payment-form").classList.remove("-hide");
+            if(document.querySelector('ul.payplug-payments-cards li') != null ){
+              document.querySelector('ul.payplug-payments-cards li input').click()
+              document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
+                var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                if(card.value === ''){
+                  oneclick = false;
+                  if(integrated){
+                    document.querySelector("#payplug-payment-form").classList.remove("-hide");
+                  }
+                }else{
+                  oneclick = true;
+                  if(integrated) {
+                    document.querySelector("#payplug-payment-form").classList.add("-hide");
+                  }
                 }
-              }else{
-                oneclick = true;
-                if(integrated) {
-                  document.querySelector("#payplug-payment-form").classList.add("-hide");
-                }
-              }
-            });
+              });
+            }
 
           }else{
             var script = document.getElementById("payplug-js");
