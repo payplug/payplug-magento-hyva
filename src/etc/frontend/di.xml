@@ -16,7 +16,7 @@
   <type name="Hyva\Checkout\Model\Magewire\Payment\PlaceOrderServiceProvider">
       <arguments>
           <argument name="placeOrderServiceList" xsi:type="array">
-              <item name="payplug_payments_standard" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
+              <item name="payplug_payments_standard" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\DeferPlaceOrderService</item>
               <item name="payplug_payments_oney" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_oney_without_fees" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_bancontact" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
@@ -43,18 +43,6 @@
       <arguments>
           <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
       </arguments>
-  </type>
-
-  <type name="Hyva\CheckoutPayplug\Controller\Payment\Standard">
-    <arguments>
-      <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
-    </arguments>
-  </type>
-
-  <type name="Hyva\CheckoutPayplug\Model\Magewire\Payment\Method\Standard">
-    <arguments>
-      <argument name="sessionCheckout" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
-    </arguments>
   </type>
 
 </config>

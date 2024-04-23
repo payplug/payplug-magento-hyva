@@ -68,8 +68,7 @@
                 </arguments>
             </block>
 
-            <block name="checkout.payment.method.payplug_payments_giropay"
-                   as="payplug_payments_giropay">
+            <block name="checkout.payment.method.payplug_payments_giropay" as="payplug_payments_giropay">
                 <arguments>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
