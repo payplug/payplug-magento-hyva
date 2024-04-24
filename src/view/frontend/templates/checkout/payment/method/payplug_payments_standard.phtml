@@ -529,12 +529,6 @@ if(isset($paymentConfig["payplug_payments_standard"])){
         var oneclick = <?php echo !empty($payplugCards) && $is_one_click ? 1 : 0; ?>;
         var integrated = <?php echo $integrated ? 1 : 0; ?>;
 
-        var defer_pay = integrated;
-
-        console.log(defer_pay);
-
-        console.log("one-click");
-        console.log(oneclick);
 
         if(integrated){
           var IntegratedPayment = {
@@ -599,59 +593,6 @@ if(isset($paymentConfig["payplug_payments_standard"])){
           };
         }
 
-        if(defer_pay) {
-          window.addEventListener('checkout:init:evaluation', defer_function, true)
-        }
-
-
-
-          function defer_function(){
-          console.log("add event listenersss");
-
-          hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
-            // Just simulating a 5 seconds API request.
-            return new Promise(resolve => setTimeout(() => {
-              console.log('PayPlug payment completed.')
-
-              fetch('<?php echo $block->getUrl("payplug_payments/payment/standard");?>?should_redirect=0&integrated=1').then(response => {
-                let res = response.clone().json();
-                res.then( result => {
-                  if(typeof result.error !== 'undefined' && result.error){
-                    window.location.replace(response.url);
-                    reject();
-
-                  }else{
-                    if (typeof result.payment_id !== undefined && result.payment_id) {
-                      let save_card = false;
-                      if(document.querySelector("#payplug_save_card") != null &&
-                        typeof document.querySelector("#payplug_save_card") != "undefined" &&
-                        document.querySelector("#payplug_save_card").checked)
-                      {
-                        save_card = true;
-                      }
-
-                      IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
-                      IntegratedPayment.props.api.onCompleted(function (event) {
-                        window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
-                        resolve();
-                      });
-
-                    } else {
-                      window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
-                      reject();
-
-                    }
-                  }
-                });
-              });
-
-              resolve();
-            }, 5000)
-            );
-          })
-        }
-
-
         window.addEventListener('checkout:payment:method-activate', (event) => {
 
           if (event.detail.method == "payplug_payments_standard") {
@@ -666,17 +607,71 @@ if(isset($paymentConfig["payplug_payments_standard"])){
                 }
               },
               validate() {
-                if (oneclick){
-
-                  console.log("validated");
-                  var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-                  console.log(selected);
-                  Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
-                  hyvaCheckout.main.getWireComponent().placeOrder();
-                  return true;
+                var card_selected = false;
+                if(document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null){
+                  if(document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value){
+                    card_selected = true;
+                  }
                 }
 
-                console.log("finish validated");
+                if (oneclick && card_selected){
+                  var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                  Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
+                  hyvaCheckout.main.getWireComponent().placeOrder();
+                  resolve();
+                  return true;
+
+                }else{
+                  if(integrated){
+                    hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
+                      // Just simulating a 5 seconds API request.
+                      return new Promise((resolve) => {
+                        IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                        IntegratedPayment.props.api.validateForm()
+                        IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                          magewire.plugins.loader.start();
+                          if (isFormValid) {
+                            fetch('<?php echo $block->getUrl("payplug_payments/payment/standard");?>?should_redirect=0&integrated=1').then(response => {
+                              let res = response.clone().json();
+                              res.then(result => {
+                                if (typeof result.error !== 'undefined' && result.error) {
+                                  window.location.replace(response.url);
+                                  reject();
+
+                                } else {
+                                  if (typeof result.payment_id !== undefined && result.payment_id) {
+                                    let save_card = false;
+                                    if (document.querySelector("#payplug_save_card") != null &&
+                                      typeof document.querySelector("#payplug_save_card") != "undefined" &&
+                                      document.querySelector("#payplug_save_card").checked) {
+                                      save_card = true;
+                                    }
+
+                                    IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
+                                    IntegratedPayment.props.api.onCompleted(function (event) {
+                                      window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
+                                      resolve();
+                                    });
+
+                                  } else {
+                                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+                                    reject();
+
+                                  }
+                                }
+                              });
+                            });
+                          } else {
+                            reject();
+                            magewire.plugins.loader.stop();
+                            document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
+                            return false;
+                          }
+                        });
+                      });
+                    });
+                  }
+                }
               },
               loadHostedLib() {
                 return new Promise((resolve, reject) => {
