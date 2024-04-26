@@ -606,7 +606,7 @@ if(isset($paymentConfig["payplug_payments_standard"])){
                   });
                 }
               },
-              validate() {
+              async validate() {
                 var card_selected = false;
                 if(document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null){
                   if(document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value){
@@ -616,7 +616,7 @@ if(isset($paymentConfig["payplug_payments_standard"])){
 
                 if (oneclick && card_selected){
                   var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-                  Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
+                  await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
                   hyvaCheckout.main.getWireComponent().placeOrder();
                   resolve();
                   return true;
@@ -726,10 +726,6 @@ if(isset($paymentConfig["payplug_payments_standard"])){
 
           } else {
             var script = document.getElementById("payplug-js");
-
-            removeEventListener('checkout:init:evaluation', defer_function)
-
-
             if (script) {
               script.remove();
             }

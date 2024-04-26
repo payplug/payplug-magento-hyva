@@ -103,7 +103,7 @@ class DeferPlaceOrderService extends AbstractPlaceOrderService
         $this->oneclick = true;
       }
 
-        return (int) $this->cartManagement->placeOrder($quote->getId(), $quote->getPayment());
+      return (int) $this->cartManagement->placeOrder($quote->getId(), $quote->getPayment());
     }
     public function evaluateCompletion(EvaluationResultFactory $resultFactory, ?int $orderId = null): EvaluationResultInterface
     {
