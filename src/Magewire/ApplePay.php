@@ -9,7 +9,6 @@ use Hyva\Checkout\Magewire\Main;
 class ApplePay extends Main
 {
 
-
     /**
      *
      * @param string $oney_type
@@ -20,7 +19,19 @@ class ApplePay extends Main
 
         $quote = $this->sessionCheckout->getQuote();
 
-        return dd($quote->getShippingAddress()->);
+        return $quote;
     }
+
+
+    public function getConfig()
+    {
+        return $this->config->getConfig();
+    }
+
+    public function getOrderId()
+    {
+        return $this->sessionCheckout->getLastRealOrder();
+    }
+
 
 }
