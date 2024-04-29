@@ -40,6 +40,10 @@ class ApplePay extends Template
         return $this->config->getConfig();
     }
 
+    public function getBaseUrl(){
+      return $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
+    }
+
 
     public function getOrderId()
     {

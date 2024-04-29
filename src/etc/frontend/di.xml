@@ -46,16 +46,4 @@
       </arguments>
   </type>
 
-  <type name="Hyva\CheckoutPayplug\Controller\ApplePay\getTransactionData">
-      <arguments>
-          <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
-      </arguments>
-  </type>
-
-  <type name="Hyva\CheckoutPayplug\Model\Magewire\Payment\Method\ApplePay">
-      <arguments>
-          <argument name="sessionCheckout" xsi:type="object">\Magento\Checkout\Model\Session\Proxy</argument>
-      </arguments>
-  </type>
-
 </config>
