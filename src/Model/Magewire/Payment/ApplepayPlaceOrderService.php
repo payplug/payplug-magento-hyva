@@ -38,8 +38,6 @@ class ApplepayPlaceOrderService extends AbstractPlaceOrderService
 
     protected $quote = null;
 
-    protected $oneclick = false;
-
   /**
    * @var Config
    */
