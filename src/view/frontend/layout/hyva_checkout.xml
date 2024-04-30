@@ -140,8 +140,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\ApplePay</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                          <!-- TODO:: CHANGE THIS TO APPLE PAY -->
-                            <item name="svg" xsi:type="string">sofort</item>
+                            <item name="svg" xsi:type="string">apple_pay</item>
                         </item>
                     </argument>
                 </arguments>
