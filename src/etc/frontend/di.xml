@@ -28,7 +28,6 @@
               <item name="payplug_payments_ideal" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_installment_plan" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_mybank" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_apple_pay" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
               <item name="payplug_payments_ondemand" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
           </argument>
       </arguments>

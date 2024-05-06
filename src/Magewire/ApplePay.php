@@ -16,22 +16,8 @@ class ApplePay extends Main
      */
     public function getShipping()
     {
-
         $quote = $this->sessionCheckout->getQuote();
-
         return $quote;
     }
-
-
-    public function getConfig()
-    {
-        return $this->config->getConfig();
-    }
-
-    public function getOrderId()
-    {
-        return $this->sessionCheckout->getLastRealOrder();
-    }
-
 
 }

@@ -19,7 +19,7 @@ class ApplePay extends Template
     /**
      * @var SessionCheckout
      */
-    private $sessionCheckout;
+    private $customerSession;
 
     public function __construct(
         Template\Context $context,
@@ -32,7 +32,7 @@ class ApplePay extends Template
 
         $this->config = $config;
         $this->helper = $helper;
-        $this->sessionCheckout = $customerSession;
+        $this->customerSession = $customerSession;
     }
 
     public function getConfig()
@@ -43,12 +43,5 @@ class ApplePay extends Template
     public function getBaseUrl(){
       return $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
     }
-
-
-    public function getOrderId()
-    {
-        return $this->sessionCheckout->get;
-    }
-
 
 }

@@ -6,6 +6,7 @@
                 <value id="payplug-script-qa" type="host">https://cdn-qa.payplug.com</value>
                 <value id="payplug-script-cd-qa" type="host">cdn-qa.payplug.com</value>
                 <value id="payplug-api" type="host">api-qa.payplug.com</value>
+                <value id="apple_pay" type="host">applepay.cdn-apple.com</value>
             </values>
         </policy>
          <policy id="frame-src">
@@ -15,5 +16,10 @@
                 <value id="spayplug" type="host">*.payplug.com</value>
             </values>
         </policy>
+      <policy id="font-src">
+        <values>
+          <value id="apple_pay" type="host">applepay.cdn-apple.com</value>
+        </values>
+      </policy>
     </policies>
 </csp_whitelist>
