@@ -1,0 +1,59 @@
+<?php
+declare(strict_types=1);
+
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+
+/** @var ViewModelRegistry $viewModels */
+/** @var Hyva\CheckoutPayplug\Magewire\Ppro $magewire */
+/** @var \Magento\Framework\Escaper $escaper */
+
+/** @var Hyva\CheckoutPayplug\Block\Standard $block */
+
+$icons = $viewModels->require(PayplugIcons::class);
+
+
+
+
+$t = function (string $text) use ($escaper) {
+    return $escaper->escapeHtml(__($text));
+};
+
+$tJs = function (string $text) use ($escaper) {
+    return $escaper->escapeJs(__($text));
+};
+
+?>
+
+<span id="message" class="text-gray-500 font-medium text-sm">
+
+</span>
+
+    <script>
+        (() => {
+            window.addEventListener('checkout:payment:method-activate', (event) => {
+                let data = {
+                    'billingCountry': '<?php echo $magewire->getQuote()->getBillingAddress()->getCountryId(); ?>',
+                    'shippingCountry': '<?php echo $magewire->getQuote()->getShippingAddress()->getCountryId(); ?>',
+                    'paymentMethod': '<?php echo $magewire->getQuote()->getPayment()->getMethod(); ?>',
+                };
+                const body = new URLSearchParams(data);
+                fetch('<?php echo $block->getUrl("payplug_payments/ppro/isAvailable");?>'+'?form_key=' + hyva.getFormKey(), {
+                    method: 'post',
+                    body,
+                    headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
+                }).then( async response => {
+                    let res = await response.json();
+
+                    document.getElementById('message').textContent = res.data.message;
+
+                });
+
+            }, {once: true});
+
+
+        })();
+    </script>
+
+
