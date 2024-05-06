@@ -37,6 +37,7 @@
                 }))
               };
               let session = new ApplePaySession(3, request);
+
               hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', () => {
                 magewire.plugins.loader.start();
                 return new Promise((resolve) => {
@@ -55,7 +56,6 @@
                   };
                   session.onpaymentauthorized = event => {
                     const body = new URLSearchParams({form_key: hyva.getFormKey(), token: JSON.stringify(event.payment.token)});
-
                     fetch('<?php echo $block->getUrl("hyva_checkout_payplug/applepay/updateTransaction");?>', {
                       method: 'post',
                       credentials: "include",
@@ -64,20 +64,23 @@
                         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                       }
                     }).then( async response => {
-                      let res = await response;
+                      let res = await response.json();
                       let applePaySessionStatus = ApplePaySession.STATUS_SUCCESS;
                       if (res.error === true) {
                         applePaySessionStatus = ApplePaySession.STATUS_FAILURE;
                       }
+                      session.completePayment({
+                        "status": applePaySessionStatus
+                      });
 
-                      if (res.error === true) {
-                        window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
-                        reject();
+                        if (res.error === true) {
+                          window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+                          reject();
 
-                      }else{
-                        window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
-                        resolve();
-                      }
+                        }else{
+                          window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
+                          resolve();
+                        }
                     });
                   };
                   session.oncancel = event => {
