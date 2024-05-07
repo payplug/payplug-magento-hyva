@@ -132,6 +132,18 @@
                 </arguments>
             </block>
 
+            <block name="checkout.payment.method.payplug_payments_apple_pay"
+                   as="payplug_payments_apple_pay"
+                   class="Hyva\CheckoutPayplug\Block\ApplePay"
+                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_apple_pay.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\ApplePay</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array"><item name="svg" xsi:type="string">apple_pay</item></item>
+                    </argument>
+                </arguments>
+            </block>
+
         </referenceBlock>
     </body>
 </page>
