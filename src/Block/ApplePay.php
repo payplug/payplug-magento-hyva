@@ -25,8 +25,8 @@ class ApplePay extends Template
         Template\Context $context,
         \Magento\Checkout\Model\Session  $customerSession,
         Data $helper,
-        array $data = [],
-        Config $config)
+        Config $config,
+        array $data = [])
     {
         parent::__construct($context, $data);
 
