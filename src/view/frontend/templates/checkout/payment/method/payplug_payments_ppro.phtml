@@ -46,7 +46,7 @@ $tJs = function (string $text) use ($escaper) {
                 }).then( async response => {
                     let res = await response.json();
 
-                    if (typeof (res.data.message) != "undefined") {
+                    if (typeof res.data != "undefined" && typeof res.data.message != "undefined" ) {
                         document.getElementById('message').textContent = res.data.message;
                     }
 

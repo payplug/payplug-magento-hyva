@@ -5462,15 +5462,20 @@ $icons = $viewModels->require(PayplugIcons::class);
             buildOneyDetail();
           }
 
-          document.querySelector('.oneyOption_wrapper .oneyOption-3x').addEventListener('click', function () {
-              var selected = document.querySelector('input[name="oney_type"]:checked');
-              selectOneyOption(selected.value);
-          });
 
-          document.querySelector('.oneyOption_wrapper .oneyOption-4x').addEventListener('click', function () {
+          if( document.querySelector('.oneyOption_wrapper .oneyOption-3x') ){
+            document.querySelector('.oneyOption_wrapper .oneyOption-3x').addEventListener('click', function () {
               var selected = document.querySelector('input[name="oney_type"]:checked');
               selectOneyOption(selected.value);
-          });
+            });
+          }
+
+          if( document.querySelector('.oneyOption_wrapper .oneyOption-4x') ) {
+            document.querySelector('.oneyOption_wrapper .oneyOption-4x').addEventListener('click', function () {
+              var selected = document.querySelector('input[name="oney_type"]:checked');
+              selectOneyOption(selected.value);
+            });
+          }
 
         }
     });
