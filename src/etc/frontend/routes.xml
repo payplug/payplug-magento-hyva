@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/App/etc/routes.xsd">
+    <router id="standard">
+        <route id="hyva_checkout_payplug" frontName="hyva_checkout_payplug">
+            <module name="Hyva_CheckoutPayplug" />
+        </route>
+    </router>
+    <router id="applepay">
+        <route id="hyva_checkout_payplug" frontName="hyva_checkout_payplug">
+            <module name="Hyva_CheckoutPayplug" />
+        </route>
+    </router>
+</config>
