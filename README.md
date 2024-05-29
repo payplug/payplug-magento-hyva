@@ -6,18 +6,18 @@ Hyvä Compatibility module for Payplug_Payments
 
 ### Via packagist.com
 
-Hyvä Compatibility modules that are tagged as stable can be installed using composer via packagist.com:
+Hyvä Compatibility modules that are tagged as stable can be installed using composer via packagist.com (accessible for all Hyvä Checkout licensees):
 
 1. Install via composer
     ```
-   composer config repositories.hyva-themes/magento2-compat-module-fallback git git@gitlab.hyva.io:hyva-themes/magento2-compat-module-fallback.git
-   composer config repositories.hyva-themes/magento2-hyva-checkout-payplug git git@gitlab.hyva.io:hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug.git
-   composer require hyva-themes/magento2-hyva-checkout-payplug
+    composer require hyva-themes/magento2-hyva-checkout-payplug
     ```
 2. Enable module
     ```
     bin/magento setup:upgrade
-   ./bin/magento setup:di:compile
+
+    #you need to run following command only in production mode 
+   ./bin/magento setup:di:compile 
    ./bin/magento setup:static-content:deploy --force fr_FR it_IT en_US
    ./bin/magento cache:clean
     ```
