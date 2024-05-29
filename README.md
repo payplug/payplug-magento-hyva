@@ -36,14 +36,12 @@ This installation method is not suited for deployments, because gitlab requires 
    composer config repositories.hyva-themes/magento2-reset-theme git git@gitlab.hyva.io:hyva-themes/magento2-reset-theme.git
    composer config repositories.hyva-themes/magento2-email-module git git@gitlab.hyva.io:hyva-themes/magento2-email-module.git
    composer config repositories.hyva-themes/magento2-default-theme git git@gitlab.hyva.io:hyva-themes/magento2-default-theme.git
-   composer config repositories.hyva-themes/hyva-checkout git git@gitlab.hyva.io:hyva-checkout/checkout.git
+   composer config repositories.hyva-themes/magento2-hyva-checkout-payplug git git@gitlab.hyva.io:hyva-themes/magento2-hyva-checkout-payplug
+    ```
+2. Install Payplug Hyva Checkout
 
     ```
-2. Install Hyva Checkout
-
-    ```
-   composer require hyva-themes/magento2-default-theme --prefer-source
-   composer require hyva-themes/magento2-hyva-checkout
+   composer require hyva-themes/magento2-hyva-checkout-payplug --prefer-source
 
     ```
 
