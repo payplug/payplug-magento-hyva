@@ -2,7 +2,7 @@
 # magento2-hyva-checkout-payplug
 Hyvä Compatibility module for Payplug_Payments
 
-## Installation
+## Installation 
 
 ### Via packagist.com
 
