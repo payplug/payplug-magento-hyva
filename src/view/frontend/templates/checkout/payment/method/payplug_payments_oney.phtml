@@ -5447,7 +5447,6 @@ $icons = $viewModels->require(PayplugIcons::class);
                   return new Promise(async (resolve, reject) => {
                       var selected = document.querySelector('input[name="oney_type"]:checked');
                       var option = await Magewire.find('checkout.payment.method.'+oney_type).call('setOneyType', selected.value);
-                      console.log("placing order");
                       resolve();
                   })
 
