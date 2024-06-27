@@ -1,7 +1,13 @@
 <?php
 
-/** @var Hyva\CheckoutPayplug\Magewire\ApplePay $magewire */
-/** @var Hyva\CheckoutPayplug\Block\ApplePay $block */
+declare(strict_types=1);
+
+use Hyva\CheckoutPayplug\Magewire\ApplePay;
+use Hyva\CheckoutPayplug\Block\ApplePay as BlockApplePay;
+
+/** @var ApplePay $magewire */
+/** @var BlockApplePay $block */
+/** @var Escaper $escaper */
 
 ?>
 <div wire:id="checkout.payment.method.payplug_payments_apple_pay" xmlns:wire="http://www.w3.org/1999/xhtml">
@@ -23,14 +29,14 @@
             },
             validate() {
               let request = {
-                "countryCode": "<?= $magewire->getShipping()->getShippingAddress()->getCountryId(); ?>",
-                "currencyCode": "<?= $magewire->getShipping()->getData('quote_currency_code'); ?>",
+                "countryCode": "<?= $escaper->escapeHtml($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>",
+                "currencyCode": "<?= $escaper->escapeHtml($magewire->getShipping()->getData('quote_currency_code')); ?>",
                 "merchantCapabilities": ["supports3DS"],
                 "supportedNetworks": ["visa", "masterCard"],
                 "total": {
-                  "label": "<?= $block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name'] ?>",
+                  "label": "<?= $escaper->escapeHtml($block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name']); ?>",
                   "type": "final",
-                  "amount": '<?= $magewire->getShipping()->getData("grand_total"); ?>'
+                  "amount": '<?= $escaper->escapeHtml($magewire->getShipping()->getData("grand_total")); ?>'
                 },
                 'applicationData': btoa(JSON.stringify({
                   'apple_pay_domain': "<?= $block->getConfig()['payment']['payplug_payments_apple_pay']['domain'] ?>"
@@ -42,10 +48,10 @@
                 magewire.plugins.loader.start();
                 return new Promise((resolve) => {
                   session.onvalidatemerchant = async () =>  {
-                    fetch('<?php echo $block->getUrl("payplug_payments/applepay/getTransactionData");?>').then( async response => {
+                    fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/applepay/getTransactionData")) ;?>').then( async response => {
                       let res = await response.json();
                       if (res.error === true) {
-                        window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+                        window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/cancel');
                         reject();
 
                       }else{
@@ -56,7 +62,7 @@
                   };
                   session.onpaymentauthorized = event => {
                     const body = new URLSearchParams({form_key: hyva.getFormKey(), token: JSON.stringify(event.payment.token)});
-                    fetch('<?php echo $block->getUrl("hyva_checkout_payplug/applepay/updateTransaction");?>', {
+                    fetch('<?= $escaper->escapeUrl($block->getUrl("hyva_checkout_payplug/applepay/updateTransaction")); ?>', {
                       method: 'post',
                       credentials: "include",
                       body,
@@ -74,17 +80,17 @@
                       });
 
                         if (res.error === true) {
-                          window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+                          window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/cancel');
                           reject();
 
                         }else{
-                          window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/paymentReturn');
+                          window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/paymentReturn');
                           resolve();
                         }
                     });
                   };
                   session.oncancel = event => {
-                    window.location.replace('<?php echo $block->getBaseUrl();?>payplug_payments/payment/cancel');
+                    window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/cancel');
                   };
                   session.begin();
                 });

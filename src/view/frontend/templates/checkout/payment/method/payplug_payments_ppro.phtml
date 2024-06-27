@@ -1,20 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
-
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\CheckoutPayplug\Block\Standard;
+use Hyva\CheckoutPayplug\Magewire\Ppro;
 use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+use Magento\Framework\Escaper;
 
 /** @var ViewModelRegistry $viewModels */
-/** @var Hyva\CheckoutPayplug\Magewire\Ppro $magewire */
-/** @var \Magento\Framework\Escaper $escaper */
-
-/** @var Hyva\CheckoutPayplug\Block\Standard $block */
+/** @var Ppro $magewire */
+/** @var Escaper $escaper */
+/** @var Standard $block */
 
 $icons = $viewModels->require(PayplugIcons::class);
-
-
-
 
 $t = function (string $text) use ($escaper) {
     return $escaper->escapeHtml(__($text));
@@ -30,32 +29,32 @@ $tJs = function (string $text) use ($escaper) {
 
 </span>
 
-    <script>
-        (() => {
-            window.addEventListener('checkout:payment:method-activate', (event) => {
-                let data = {
-                    'billingCountry': '<?php echo $magewire->getQuote()->getBillingAddress()->getCountryId(); ?>',
-                    'shippingCountry': '<?php echo $magewire->getQuote()->getShippingAddress()->getCountryId(); ?>',
-                    'paymentMethod': '<?php echo $magewire->getQuote()->getPayment()->getMethod(); ?>',
-                };
-                const body = new URLSearchParams(data);
-                fetch('<?php echo $block->getUrl("payplug_payments/ppro/isAvailable");?>'+'?form_key=' + hyva.getFormKey(), {
-                    method: 'post',
-                    body,
-                    headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
-                }).then( async response => {
-                    let res = await response.json();
+<script>
+    (() => {
+        window.addEventListener('checkout:payment:method-activate', (event) => {
+            let data = {
+                'billingCountry': '<?= $escaper->escapeHtml($magewire->getQuote()->getBillingAddress()->getCountryId()); ?>',
+                'shippingCountry': '<?= $escaper->escapeHtml($magewire->getQuote()->getShippingAddress()->getCountryId()); ?>',
+                'paymentMethod': '<?= $escaper->escapeHtml($magewire->getQuote()->getPayment()->getMethod()); ?>',
+            };
+            const body = new URLSearchParams(data);
+            fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + '?form_key=' + hyva.getFormKey(), {
+                method: 'post',
+                body,
+                headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
+            }).then(async response => {
+                let res = await response.json();
 
-                    if (typeof res.data != "undefined" && typeof res.data.message != "undefined" ) {
-                        document.getElementById('message').textContent = res.data.message;
-                    }
+                if (typeof res.data != "undefined" && typeof res.data.message != "undefined") {
+                    document.getElementById('message').textContent = res.data.message;
+                }
 
-                });
+            });
 
-            }, {once: true});
+        }, {once: true});
 
 
-        })();
-    </script>
+    })();
+</script>
 
 
