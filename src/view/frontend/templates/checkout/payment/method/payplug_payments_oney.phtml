@@ -5066,7 +5066,8 @@ $icons = $viewModels->require(PayplugIcons::class);
 
         <?php if ($hasError): ?>
             var error_is_displayed = document.querySelector("p.oneyPopin_error");
-            if( typeof(error_is_displayed) === 'undefined' || error_is_displayed === null ){
+
+            if (typeof(error_is_displayed) === 'undefined' || error_is_displayed === null ){
                 var error_message = document.createElement('p');
                 error_message.classList.add('oneyPopin_error');
                 error_message.innerHTML = "<?= /* @noEscape */ $message; ?>";
