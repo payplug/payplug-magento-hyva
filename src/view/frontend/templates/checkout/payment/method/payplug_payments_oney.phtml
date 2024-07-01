@@ -1,13 +1,22 @@
 <?php
 
-use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+declare(strict_types=1);
 
-/** @var \Payplug\Payments\Block\Oney\Simulation $block */
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Payplug\Payments\Block\Oney\Simulation;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var Simulation $block */
 
 $hasError = false;
 $oneySimulation = $block->getOneySimulation();
-
 $message = $oneySimulation->getMessage();
+
 if (!$oneySimulation->getSuccess() || !empty($message)) {
     $hasError = true;
 }
@@ -15,8 +24,7 @@ if (!$oneySimulation->getSuccess() || !empty($message)) {
 $isOneyWithoutFees = $oneySimulation->getMethod() === \Payplug\Payments\Gateway\Config\OneyWithoutFees::METHOD_CODE;
 $pricingHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
 
-/** @var ViewModelRegistry $viewModels */
-
+/** @var PayplugIcons $viewModels */
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
 <div data-oney-container="payplug_payments_oney">
