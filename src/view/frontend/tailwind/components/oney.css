@@ -6,10 +6,10 @@
 
 .oney-checkout-error {
     color: #b2b2b2;
-}
 
-.oney-checkout-error.active {
-    margin-bottom: 15px;
+    &.active {
+        margin-bottom: 15px;
+    }
 }
 
 .oney-logo-checkout {
@@ -25,11 +25,6 @@
     background-size: 100%;
 }
 
-.oney-without-fees .oneyCta_logo {
-    background-size: 100%;
-    width: 170px;
-}
-
 .oneyPopin_error {
     color: #b2b2b2;
     font-size: 14px;
@@ -41,121 +36,114 @@
 .oneyPayment {
     max-height: 90px;
     overflow: hidden;
-}
 
-.oneyPayment-disabled {
-    max-height: none;
+    &-disabled {
+        max-height: none;
+
+        .oneyPayment_trigger {
+            color: #b2b2b2;
+            cursor: default;
+
+            &:hover {
+                background: #fbfbfb;
+            }
+
+            &::after {
+                display: none;
+            }
+        }
+    }
+
+    &-open {
+        max-height: 10000vh;
+    }
+
+    &_trigger {
+        align-items: center;
+        background: none;
+        border: none;
+        color: #333;
+        display: flex;
+        font-size: 17px;
+        font-weight: bold;
+        height: 88px;
+        letter-spacing: -1px;
+        padding: 0 15px;
+        position: relative;
+        text-align: left;
+        width: 100%;
+
+        &:hover {
+            background: #f6f6f6;
+        }
+    }
+
+    &_label {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.3em;
+    }
+
+    &_error {
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    &_logo {
+        background-size: 110%;
+        display: block;
+        height: 45px;
+        margin: 0 15px 0 0;
+        max-width: 100%;
+        width: 165px;
+    }
+
+    &_cta {
+        display: flex;
+        justify-content: center;
+        margin: 0 0 30px;
+        width: 100%;
+    }
+
+    &_button {
+        background: #81bc00;
+        border: none;
+        color: #fff;
+        font-size: 15px;
+        height: 50px;
+        width: 254px;
+    }
+
+    &_button-disabled {
+        background: #b2b2b2;
+    }
 }
 
 .oneyPayment-open {
-    max-height: 10000vh;
-}
+    .oneyPayment_trigger {
+        &:hover {
+            background: #fbfbfb;
+        }
 
-.oneyPayment_trigger {
-    align-items: center;
-    background: none;
-    border: none;
-    color: #333;
-    display: flex;
-    font-size: 17px;
-    font-weight: bold;
-    height: 88px;
-    letter-spacing: -1px;
-    padding: 0 15px;
-    position: relative;
-    text-align: left;
-    width: 100%;
-}
+        &:focus {
+            outline: 0;
+        }
 
-.oneyPayment-disabled .oneyPayment_trigger {
-    color: #b2b2b2;
-    cursor: default;
-}
-
-.oneyPayment-disabled .oneyPayment_trigger:hover {
-    background: #fbfbfb;
-}
-
-.oneyPayment_trigger:hover {
-    background: #f6f6f6;
-}
-
-.oneyPayment-open .oneyPayment_trigger:hover {
-    background: #fbfbfb;
-}
-
-.oneyPayment_trigger:focus {
-    outline: 0;
-}
-
-.oneyPayment_trigger:after {
-    align-items: center;
-    color: #777;
-    content: '\f054';
-    display: flex;
-    font-size: 25px;
-    height: 30px;
-    justify-content: center;
-    position: absolute;
-    right: 7px;
-    top: 50%;
-    width: 30px;
-}
-
-.oneyPayment-disabled .oneyPayment_trigger:after {
-    display: none;
-}
-
-.oneyPayment_label {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.3em;
-}
-
-.oneyPayment_error {
-    font-size: 14px;
-    font-style: italic;
-    font-weight: 400;
-}
-
-.oneyPayment_logo {
-    background-size: 110%;
-    display: block;
-    height: 45px;
-    margin: 0 15px 0 0;
-    max-width: 100%;
-    width: 165px;
-}
-
-.oneyPayment_cta {
-    display: flex;
-    justify-content: center;
-    margin: 0 0 30px;
-    width: 100%;
-}
-
-.oneyPayment_button {
-    background: #81bc00;
-    border: none;
-    color: #fff;
-    font-size: 15px;
-    height: 50px;
-    width: 254px;
-}
-
-.oneyPayment_button-disabled {
-    background: #b2b2b2;
-}
-
-.oneyPayment .more-info {
-    color: #7ebd00;
-    display: block;
-    font-size: 13px;
-    margin: 0 auto 15px;
-    padding: 0;
-    position: relative;
-    text-align: center;
-    width: 100px;
+        &::after {
+            align-items: center;
+            color: #777;
+            content: '\f054';
+            display: flex;
+            font-size: 25px;
+            height: 30px;
+            justify-content: center;
+            position: absolute;
+            right: 7px;
+            top: 50%;
+            width: 30px;
+        }
+    }
 }
 
 .oneyOption {
@@ -169,147 +157,142 @@
     padding: 30px;
     position: relative;
     width: calc(50% - 16px);
-}
 
-.oneyOption:after {
-    background: #81bc00;
-    bottom: -14px;
-    box-shadow: 0px -5px 10px 5px #fff inset;
-    content: '';
-    display: block;
-    height: 13px;
-    left: 0;
-    opacity: 0;
-    position: absolute;
-    right: 0;
-}
+    &::after {
+        background: #81bc00;
+        bottom: -14px;
+        box-shadow: 0px -5px 10px 5px #fff inset;
+        content: '';
+        display: block;
+        height: 13px;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+    }
 
-.oneyOption:hover {
-    border-color: #81bc00;
-}
+    &:hover {
+        border-color: #81bc00;
 
-.oneyOption:hover:after {
-    opacity: 1;
-}
+        &::after {
+            opacity: 1;
+        }
+    }
 
-.oneyOption-selected {
-    background: rgba(129, 188, 0, 0.15);
-    border-color: #81bc00;
-}
+    &-selected {
+        background: rgba(129, 188, 0, 0.15);
+        border-color: #81bc00;
 
-.oneyOption-selected:after {
-    opacity: 1;
-}
+        &::after {
+            opacity: 1;
+        }
+    }
 
-.oneyOption_wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 8px;
-    position: relative;
-}
+    &_wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 8px;
+        position: relative;
+    }
 
-.oneyOption_wrapper-loading {
-    justify-content: center;
-    padding: 16px;
+    &_wrapper-loading {
+        justify-content: center;
+        padding: 16px;
+    }
+
+    &_logo {
+        display: block;
+        height: 35px;
+        max-width: 100%;
+        width: 135px;
+    }
+
+    &_title {
+        align-items: center;
+        box-sizing: border-box;
+        color: #2f2930;
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+        font-weight: 500;
+        height: 90px;
+        justify-content: center;
+        padding: 0 0 35px;
+    }
+
+    &_prices {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+        width: 100%;
+
+        ul {
+            color: #2f2930;
+            display: flex;
+            flex-direction: column;
+            font-size: 15px;
+            font-weight: 600;
+            height: 100%;
+            margin: 0;
+            padding-left: 0;
+            width: 100%;
+
+            li {
+                border-bottom: 1px solid #dce0e8;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                line-height: 21px;
+                padding: 0 0 16px;
+
+                & + li {
+                    padding: 16px 0;
+                }
+
+                &:last-child {
+                    border: none;
+                    margin: auto 0 0;
+                    padding: 16px 0 0;
+                }
+
+                span {
+                    display: flex;
+                    font-weight: 600;
+                    max-width: 50%;
+
+                    &:first-child {
+                        font-weight: 500;
+                    }
+                }
+
+                small {
+                    display: block;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    &_legend {
+        color: #2f2930;
+        font-weight: 400;
+        margin: auto 0 0;
+        text-align: center;
+    }
+    
+    &_radio {
+        @apply sr-only;
+    }
 }
 
 .oneyOption_wrapper-loading + .oneyPayment_cta {
     display: none;
 }
 
-.oneyOption_logo {
-    display: block;
-    height: 35px;
-    max-width: 100%;
-    width: 135px;
-}
-
-.oneyOption_title {
-    align-items: center;
-    box-sizing: border-box;
-    color: #2f2930;
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-    font-weight: 500;
-    height: 90px;
-    justify-content: center;
-    padding: 0 0 35px;
-}
-
 .oney-it[data-oney-container='payplug_payments_oney_without_fees'] .oneyOption_title {
     height: 110px;
-}
-
-.oneyOption_prices {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.oneyOption_prices ul {
-    color: #2f2930;
-    display: flex;
-    flex-direction: column;
-    font-size: 15px;
-    font-weight: 600;
-    height: 100%;
-    margin: 0;
-    padding-left: 0;
-    width: 100%;
-}
-
-.oneyOption_prices ul li {
-    border-bottom: 1px solid #dce0e8;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    line-height: 21px;
-    padding: 0 0 16px;
-}
-
-.oneyOption_prices ul li + li {
-    padding: 16px 0;
-}
-
-.oneyOption_prices ul li:last-child {
-    border: none;
-    margin: auto 0 0;
-    padding: 16px 0 0;
-}
-
-.oneyOption_prices ul li span {
-    display: flex;
-    font-weight: 600;
-    max-width: 50%;
-}
-
-.oneyOption_prices ul li span:first-child {
-    font-weight: 500;
-}
-
-.oneyOption_prices ul li small {
-    display: block;
-    width: 100%;
-}
-
-.oneyOption_legend {
-    color: #2f2930;
-    font-weight: 400;
-    margin: auto 0 0;
-    text-align: center;
-}
-
-.oneyOption_radio {
-    height: 0;
-    left: 0;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    width: 0;
 }
 
 @media (max-width: 767px) {
@@ -347,85 +330,83 @@
         padding: 0;
         position: static;
         width: 100%;
-    }
 
-    .oneyOption:after {
-        display: none;
-    }
+        &::after {
+            display: none;
+        }
+    
+        &-selected {
+            background: none;
+            border: none;
 
-    .oneyOption-selected {
-        background: none;
-        border: none;
-    }
+            .oneyOption_title {
+                border-bottom: 5px solid #81bc00;
+            }
+        
+            .oneyOption_prices {
+                display: block;
+            }
+        }
+    
+        &_wrapper {
+            padding: 89px 0 0;
+            position: relative;
+        }
 
-    .oneyOption_wrapper {
-        padding: 89px 0 0;
-        position: relative;
-    }
+        &_wrapper-loading {
+            padding: 16px;
+        }
+    
+        &_logo {
+            height: 30px;
+            width: 100px;
+        }
 
-    .oney-it[data-oney-container='payplug_payments_oney_without_fees'] .oneyOption_wrapper {
-        padding: 109px 0 0;
-    }
+        &_prices {
+            border: 1px solid #dce0e8;
+            box-sizing: border-box;
+            display: none;
+            height: auto;
+            padding: 30px 16px;
+    
+            ul {
+                li {
+                    padding: 8px 0;
+                }
+            }
+        }
 
-    .oneyOption_wrapper-loading {
-        padding: 16px;
-    }
-
-    .oneyOption_logo {
-        height: 30px;
-        width: 100px;
+        &_title {
+            background: transparent;
+            border: 1px solid #dce0e8;
+            border-bottom: 5px solid transparent;
+            left: 0;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            width: 50%;
+        }
+    
+        &:nth-child(2) {
+            .oneyOption_title {
+                border-left: none;
+                left: 50%;
+            }
+        }
     }
 
     [data-oney-container='payplug_payments_oney_without_fees'] .oneyOption_logo {
         width: 150px;
     }
 
-    .oneyOption_title {
-        background: transparent;
-        border: 1px solid #dce0e8;
-        border-bottom: 5px solid transparent;
-        left: 0;
-        padding: 0;
-        position: absolute;
-        top: 0;
-        width: 50%;
-    }
+    .oney-it[data-oney-container='payplug_payments_oney_without_fees'] {
+        .oneyOption_wrapper {
+            padding: 109px 0 0;
+        }
 
-    .oneyOption:nth-child(2) .oneyOption_title {
-        border-left: none;
-        left: 50%;
-    }
-
-    .oneyOption-selected .oneyOption_title {
-        border-bottom: 5px solid #81bc00;
-    }
-
-    .oneyOption_prices {
-        border: 1px solid #dce0e8;
-        box-sizing: border-box;
-        display: none;
-        height: auto;
-        padding: 30px 16px;
-    }
-
-    .oneyOption-selected .oneyOption_prices {
-        display: block;
-    }
-
-    .oneyOption_prices ul li {
-        padding: 8px 0;
-    }
-
-    .oney-it[data-oney-container='payplug_payments_oney_without_fees'] .oneyLogo-3x,
-    .oney-it[data-oney-container='payplug_payments_oney_without_fees'] .oneyLogo-4x {
-        height: 55px;
-    }
-
-    .onestepcheckout-index-index .page-main .aw-onestep-main .payment-method-content .oneyPayment-open {
-        margin-bottom: 15px;
-    }
-
-    .onestepcheckout-index-index .page-main .aw-onestep-main .payment-method-content .oneyOption {
-        margin: 0;
+        .oneyLogo-3x,
+        .oneyLogo-4x {
+            height: 55px;
+        }
     }
 }
