@@ -54,12 +54,10 @@ $icons = $viewModels->require(PayplugIcons::class);
 </style>
 
 <script>
-    var getOneyContainer = function() {
-        return document.querySelector('[data-oney-container="payplug_payments_oney"]');
-    }
+    const oneyContainer = document.querySelector('[data-oney-container="payplug_payments_oney"]');
 
-    var getScheduleLabel = function (days) {
-        var scheduleLabels = [
+    const getScheduleLabel = (days) => {
+        const scheduleLabels = [
             {days: 30, label: "<?= $block->escapeHtml(__('In 30 days')); ?>" },
             {days: 60, label: "<?= $block->escapeHtml(__('In 60 days')); ?>" },
             {days: 90, label: "<?= $block->escapeHtml(__('In 90 days')); ?>" },
@@ -77,50 +75,51 @@ $icons = $viewModels->require(PayplugIcons::class);
         return label;
     }
 
-    var selectOneyOption = function(option) {
-        const oneyPayment = getOneyContainer().querySelector('.oneyPayment');
+    const selectOneyOption = (option) => {
+        const oneyPayment = oneyContainer.querySelector('.oneyPayment');
         const oldSelected = oneyPayment.querySelector('.oneyOption-selected');
+        const selectedOption = oneyContainer.querySelector('[data-type="'+ option +'"]');
 
-        if (oldSelected) {
-            oldSelected.classList.remove('oneyOption-selected');
-        }
-
-        const selectedOption = getOneyContainer().querySelector('[data-type="'+ option +'"]');
+        oldSelected && oldSelected.classList.remove('oneyOption-selected');
         selectedOption.classList.add('oneyOption-selected');
 
         updatePlaceOrderButtonLabel(option);
     }
 
-    var updatePlaceOrderButtonLabel= function(type) {
-        var label;
+    const updatePlaceOrderButtonLabel = (type) => {
+        let label;
 
         if (type === null) {
-            label = "<?= __('Place Order'); ?>";
-            hyva.replaceDomElement('.btn-primary[x-bind="buttonPlaceOrder()"]', '<button type="button" class="btn btn-primary\
-            disabled:opacity-10\
-            disabled:cursor-not-allowed\
-            bg-green-600 hover:bg-green-500" x-spread="buttonPlaceOrder()" x-bind="buttonPlaceOrder()" data-step="{&quot;place&quot;:true}">\
-            Valider la commande    </button>');
+            label = '<?= __('Place Order'); ?>';
+            hyva.replaceDomElement('.btn-primary[x-bind="buttonPlaceOrder()"]', `
+                <button type="button" 
+                        class="btn btn-primary disabled:opacity-10 disabled:cursor-not-allowed bg-green-600 hover:bg-green-500" 
+                        x-spread="buttonPlaceOrder()" 
+                        x-bind="buttonPlaceOrder()" 
+                        data-step="{'place':true}">
+                    Valider la commande    
+                </button>
+            `);
         } else {
             label = getPaymentTypeLabel().replace('%1', type);
-            hyva.replaceDomElement('.btn-primary[x-bind="buttonPlaceOrder()"]', '<button type="button" class="btn btn-primary\
-            disabled:opacity-10\
-            disabled:cursor-not-allowed\
-            bg-green-600 hover:bg-green-500" x-spread="buttonPlaceOrder()" x-bind="buttonPlaceOrder()" data-step="{&quot;place&quot;:true}">\
-            '+label+'</button>');
+            hyva.replaceDomElement('.btn-primary[x-bind="buttonPlaceOrder()"]', `
+                <button type="button" 
+                        class="btn btn-primary disabled:opacity-10 disabled:cursor-not-allowed bg-green-600 hover:bg-green-500" 
+                        x-spread="buttonPlaceOrder()"
+                        x-bind="buttonPlaceOrder()"
+                        data-step="{'place':true}">
+                    ${label}
+                </button>
+            `);
         }
     }
 
-    var getPaymentTypeLabel = function() {
-      <?php if($isOneyWithoutFees): ?>
-        return "<?= $block->escapeHtml(__('Payment in %1 without fees')) ;?>";
-
-      <?php else: ?>
-        return "<?= $block->escapeHtml(__('Payment in %1')) ;?>";
-      <?php endif; ?>
+    const getPaymentTypeLabel = () => {
+        <?php $label = $isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1'; ?>
+        return '<?= $block->escapeHtml(__($label)) ?>';
     }
 
-    var buildOneyDetail = function(){
+    const buildOneyDetail = () => {
         var tmpDiv = document.createElement('div');
         var optionsWrapper = document.createElement('div');
         optionsWrapper.classList.add('oneyOption_wrapper');
@@ -233,7 +232,7 @@ $icons = $viewModels->require(PayplugIcons::class);
         <?php endif; ?>
 
         tmpDiv.appendChild(optionsWrapper);
-        getOneyContainer().querySelector('.oneyPayment').appendChild(tmpDiv);
+        oneyContainer.querySelector('.oneyPayment').appendChild(tmpDiv);
     }
 
     const oneyOptionsHandler = () => {
@@ -255,7 +254,7 @@ $icons = $viewModels->require(PayplugIcons::class);
         }
     }
 
-    var oney_type = '';
+    let oney_type = '';
 
     window.addEventListener('checkout:payment:method-activate', (event) => {
         if (event.detail.method == 'payplug_payments_oney' || event.detail.method == 'payplug_payments_oney_without_fees') {
@@ -273,14 +272,14 @@ $icons = $viewModels->require(PayplugIcons::class);
         hyvaCheckout.payment.activate(oney_type, {
             validate() {
                 return new Promise(async (resolve, reject) => {
-                    var selected = document.querySelector('input[name="oney_type"]:checked');
-                    var option = await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
+                    const selected = document.querySelector('input[name="oney_type"]:checked');
+                    const option = await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
                         resolve();
                     });
                 }
             }, document.getElementById('payment-method-view-' + oney_type));
 
-            var oney = document.querySelector('.oneyOption_wrapper');
+            const oney = document.querySelector('.oneyOption_wrapper');
             oney && document.querySelector('.oneyOption_wrapper').remove();
 
             buildOneyDetail();
