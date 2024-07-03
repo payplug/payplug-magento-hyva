@@ -1,18 +1,16 @@
-/* To Tailwindify */
-
 .payplug-payments-cards {
-    padding-left: 2rem;
+    @apply pl-5;
 
     img {
-        display: inline;
+        @apply inline;
     }
 
     li {
-        margin-bottom: 1rem;
+        @apply mb-4;
     }
 
     .card-last4 {
-        vertical-align: top;
+        @apply align-top;
     }
 }
 
@@ -21,112 +19,65 @@
     &.pan-input-container,
     &.exp-input-container,
     &.cvv-input-container {
-        font-size: 14px;
+        @apply text-sm;
     }
-}
-
-#payplug-payment-form {
-    padding-left: 2rem;
 }
 
 #payplug-payment-form {
     &.IntegratedPayment {
         .exp-cvv-container {
-            display: flex;
-            gap: 10px;
-            justify-content: space-between;
-            margin-top: 10px;
+            @apply flex gap-3 justify-between mt-3;
         }
 
         .transaction-secured {
-            color: #212225;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
+            @apply flex justify-center items-center gap-3 w-full mt-3 text-[#212225];
 
             img {
-                height: 16px;
+                @apply h-4;
 
                 &.payplug-logo {
-                    min-width: 90px;
+                    @apply min-w-[90px];
                 }
             }
         }
 
         .transaction-secured,
         .policy {
-            font-size: 14px;
-            line-height: 21px;
-            width: 100%;
-            text-align: center;
-            font-size: 14px;
-            line-height: 21px;
+            @apply w-full text-sm text-center leading-[21px];
         }
 
         .policy {
             a {
-                display: block;
-                color: #909192;
-                text-decoration: underline;
+                @apply block underline text-[#909192];
             }
         }
 
         .invalid-field,
         .empty-field {
-            color: #e91932;
-            display: none;
+            @apply hidden text-[#e91932];
         }
     }
 }
 
 .IntegratedPayment {
-    width: 300px;
-    display: block;
-    justify-content: space-between;
-    margin-bottom: 0px;
-
-    &.-loaded {
-        margin-top: 20px;
-    }
+    @apply block justify-between w-[300px] mb-0;
 
     &_select {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 0 8px;
-        margin: 0 0 10px;
-        height: 36px;
-        width: 100%;
+        @apply h-9 w-full rounded-md py-0 px-2 mt-0 mx-0 mb-3 border border-solid border-[#ccc];
     }
 
     &_container {
-        display: flex;
-        padding: 0;
-        margin: 0 0 10px;
-        width: 100%;
-        position: relative;
+        @apply relative flex w-full p-0 m-0;
 
         &.-cardHolder,
         &.-pan,
         &.-exp,
         &.-cvv {
-            height: 40px;
-            line-height: 40px;
-            border-radius: 2px;
-            padding: 0 16px 0 50px;
-            cursor: text;
-            border: solid 1px #d5d6d8;
+            @apply h-10 rounded-sm py-0 pr-4 pl-12 border border-solid border-[#d5d6d8] leading-[40px] cursor-text;
 
             &::before {
-                content: '';
-                position: absolute;
-                top: 20%;
-                left: 16px;
-                width: 24px;
-                height: 24px;
-                background: #95999e 50% no-repeat;
-                background-size: 100% auto;
+                @apply content-[''] absolute w-6 h-6 left-4 top-[20%];
+                background: rgb(149, 153, 158) 50% center / 100% no-repeat;
             }
         }
 
@@ -134,261 +85,164 @@
         &.-pan.-focus,
         &.-exp.-focus,
         &.-cvv.-focus {
-            border-color: #2b343d;
+            @apply border-[#2b343d];
         }
 
         &.-cardHolder.-invalid,
         &.-pan.-invalid,
         &.-exp.-invalid,
         &.-cvv.-invalid {
-            border-color: #e91932;
+            @apply border-[#e91932];
         }
 
         &.-scheme {
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            height: 22px;
-            margin: 10px 0;
+            @apply justify-between items-center h-[22px] my-3 mx-0 text-sm font-bold uppercase;
         }
-        
+
         &.-saveCard {
-            display: flex;
-            height: auto;
-            align-items: center;
-            padding: 10px 0 0;
+            @apply flex h-auto items-center pt-0 pb-0 px-0;
         }
-        
+
         &.-saveCard label {
-            margin: 0;
-            cursor: pointer;
-            font-size: 12px;
-            color: #918f8f;
+            @apply m-0 cursor-pointer text-xs text-[#918f8f];
 
             &:hover {
-                color: #2b343d;
-                transition: 0.1s;
+                @apply transition text-[#2b343d];
 
                 span {
-                    border-color: #2b343d;
-                    transition: 0.1s;
+                    @apply border-[#2b343d] transition;
 
-                    &:before {
-                        opacity: 1;
+                    &::before {
+                        @apply opacity-100;
                     }
                 }
             }
 
             input {
-                display: none;
+                @apply hidden;
             }
 
             span {
-                border: 1px solid #d5d6d8;
-                border-radius: 2px;
-                cursor: pointer;
-                display: inline-block;
-                height: 16px;
-                margin: 0 10px -3px 0;
-                position: relative;
-                transition: border 0.4s;
-                width: 16px;
-    
+                @apply inline-block relative h-4 w-4 rounded-sm ml-0 mr-2.5 mt-0 border-solid border-[#d5d6d8] transition-[border] duration-[0.4s] cursor-pointer;
+
                 &::before {
-                    border: 2.5px solid #2b343d;
-                    border-radius: 1px;
-                    border-right: none;
-                    border-top: none;
-                    content: '';
-                    display: block;
-                    height: 3px;
-                    left: 50%;
-                    opacity: 0;
-                    position: absolute;
-                    top: 50%;
-                    transform: translate(-50%, -55%) rotate(-48deg);
-                    transition: opacity 0.4s;
-                    width: 9px;
-                }
+                    @apply content-[''] w-[9px] h-[3px] -translate-x-2/4 translate-y-[-55%] rotate-[-48deg] transition-opacity duration-[0.4s] border-[2.5px] border-solid border-[#2b343d];
+                } 
             }
         }
-        
+
         &.-deferred {
-            margin: 10px 0;
-            background: #e9eaeb;
-            padding: 4px 15px;
-            font-size: 12px;
-            color: #2b343d;
-            display: block;
-            text-align: center;
+            @apply block my-3 mx-0 py-1 px-4 text-xs text-center text-[#2b343d] bg-[#e9eaeb];
         }
-        
+
         &.-transaction {
-            display: inline-block;
-            margin-top: 10px;
+            @apply inline-block mt-3;
         }
-        
+
         &.-privacy-policy {
-            display: inline-block;
-            text-align: center;
+            @apply inline-block text-center;
         }
-        
+
         &.-privacy-policy a {
-            color: #918f8f;
-            font-size: 14px;
+            @apply text-sm text-[#918f8f];
         }
 
         img.lock-icon {
-            width: 18px;
-            float: left !important;
+            @apply !float-left w-[18px];
         }
-        
+
         .transaction-label {
-            font-size: 12px;
-            margin-left: 5px;
-            vertical-align: super;
+            @apply align-super text-xs ml-1;
         }
-        
+
         .payplug-logo {
-            width: 80px;
-            height: auto;
-            display: inline-block;
+            @apply inline-block w-20 h-auto align-text-top ml-[6px];
             float: inherit !important;
-            margin-left: 6px;
-            vertical-align: text-top;
         }
     }
 
     &_error {
-        color: #e91932;
-        font-size: 12px;
-        margin: -10px 0 10px;
-        width: 100%;
-        line-height: 18px;
-        padding-left: 4px;
+        @apply w-full mx-0 -mt-3 mb-3 pl-1 text-xs text-[#e91932] leading-[18px];
 
         &.-cardHolder {
-            margin: -10px 0 0;
+            @apply mx-0 -mt-3 mb-0;
         }
-        
+
         &.-exp,
         &.-cvv {
-            width: 100%;
+            @apply w-full;
             max-width: calc(49%);
         }
-        
+
         &.-cvv {
-            justify-self: flex-end;
-            margin: -10px 0 10px auto;
+            @apply self-end -mt-3 mr-0 mb-3 ml-auto;
         }
-        
+
         &.-payment,
         &.-fields,
         &.-api {
-            display: none;
+            @apply hidden items-center justify-center w-full mt-3 mx-0 mb-0 py-1 px-0 leading-[18px] text-center text-[#e91932];
             background: rgba(233, 25, 50, 0.08);
-            color: #e91932;
-            text-align: center;
-            width: 100%;
-            line-height: 18px;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0 0;
-            padding: 4px 0;
         }
-        
+
         &.-payment.-show,
         &.-fields.-show,
         &.-api.-show {
-            display: flex;
+            @apply flex;
         }
     }
 
     &_scheme {
-        margin: 0;
+        @apply m-0;
 
         span {
-            cursor: pointer;
-            display: block;
-            width: 33px;
-            height: 22px;
+            @apply block w-[33px] h-[22px] cursor-pointer;
             background: 50% no-repeat;
             background-size: 100% auto;
 
             &::before {
-                display: block;
-                width: 100%;
-                height: 100%;
-                content: '';
+                @apply content-[''] block w-full h-full opacity-0;
                 background: 50% no-repeat;
                 background-size: 100% auto;
-                opacity: 0;
             }
         }
-        
+
         input,
         span {
-            display: none;
+            @apply hidden;
 
             &:checked {
-                opacity: 1;
+                @apply opacity-100;
             }
         }
     }
-    
+
     &_schemes {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        width: 115px;
+        @apply flex justify-between items-center flex-wrap w-[115px];
     }
 
     .ipOverlay {
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        position: fixed;
+        @apply fixed left-0 top-0 w-full h-full z-[100];
         background-color: rgba(25, 25, 25, 0.5);
-        z-index: 100;
 
         &_inner {
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            position: absolute;
+            @apply absolute left-0 top-0 w-full h-full;
         }
-    
+
         &_content {
-            left: 50%;
-            position: absolute;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            @apply absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
         }
-    
+
         &_spinner {
-            width: 75px;
-            height: 75px;
-            display: inline-block;
-            border-width: 2px;
+            @apply fixed top-1/2 left-1/2 inline-block w-[75px] h-[75px] border-2 border-t-white rounded-full border-solid;
             border-color: rgba(255, 255, 255, 0.05);
-            border-top-color: #fff;
             animation: spin 1s infinite linear;
-            border-radius: 100%;
-            border-style: solid;
-            position: fixed;
-            top: 50%;
-            left: 50%;
         }
     }
 }
 
 .payplugIntegratedPayment_schemes label {
-    display: table-cell;
+    @apply table-cell;
 }
 
 .-hide {
@@ -397,10 +251,10 @@
 
 @keyframes spin {
     .IntegratedPayment .ipOverlay 0% {
-        transform: rotate(0deg);
+        @apply rotate-0;
     }
 
     .IntegratedPayment .ipOverlay 100% {
-        transform: rotate(360deg);
+        @apply rotate-[360deg];
     }
 }
