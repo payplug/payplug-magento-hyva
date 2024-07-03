@@ -236,6 +236,25 @@ $icons = $viewModels->require(PayplugIcons::class);
         getOneyContainer().querySelector('.oneyPayment').appendChild(tmpDiv);
     }
 
+    const oneyOptionsHandler = () => {
+        const oneyOption3x = document.querySelector('.oneyOption-3x');
+        const oneyOption4x = document.querySelector('.oneyOption-4x');
+        
+        if (oneyOption3x !== null){
+            oneyOption3x.addEventListener('click', function () {
+                const selected = oneyOption3x.querySelector('input[name="oney_type"]');
+                selectOneyOption(selected.value);
+            });
+        }
+
+        if (oneyOption4x !== null){
+            oneyOption4x.addEventListener('click', function () {
+                const selected = oneyOption4x.querySelector('input[name="oney_type"]');
+                selectOneyOption(selected.value);
+            });
+        }
+    }
+
     var oney_type = '';
 
     window.addEventListener('checkout:payment:method-activate', (event) => {
@@ -262,27 +281,10 @@ $icons = $viewModels->require(PayplugIcons::class);
             }, document.getElementById('payment-method-view-' + oney_type));
 
             var oney = document.querySelector('.oneyOption_wrapper');
+            oney && document.querySelector('.oneyOption_wrapper').remove();
 
-            if (oney) {
-                document.querySelector('.oneyOption_wrapper').remove();
-                buildOneyDetail();
-            } else {
-                buildOneyDetail();
-            }
-
-            if (document.querySelector('.oneyOption_wrapper .oneyOption-3x') ){
-                document.querySelector('.oneyOption_wrapper .oneyOption-3x').addEventListener('click', function () {
-                    var selected = document.querySelector('input[name="oney_type"]:checked');
-                    selectOneyOption(selected.value);
-                });
-            }
-
-            if (document.querySelector('.oneyOption_wrapper .oneyOption-4x') ) {
-                document.querySelector('.oneyOption_wrapper .oneyOption-4x').addEventListener('click', function () {
-                    var selected = document.querySelector('input[name="oney_type"]:checked');
-                    selectOneyOption(selected.value);
-                });
-            }
+            buildOneyDetail();
+            oneyOptionsHandler();
         }
     });
 </script>
