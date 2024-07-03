@@ -34,58 +34,6 @@ if(isset($paymentConfig["payplug_payments_standard"])){
 }
 ?>
 
-<style>
-  .IntegratedPayment_scheme.-visa span {
-      background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa-dark')); ?>');
-  }
-  
-  .IntegratedPayment_scheme.-visa span:before {
-      background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa')); ?>');
-  }
-  
-  .IntegratedPayment_scheme.-mastercard span {
-      background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard-dark')); ?>');
-  }
-  
-  .IntegratedPayment_scheme.-mastercard span:before {
-      background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard')); ?>');
-  }
-  
-  .IntegratedPayment_scheme.-cb span {
-      background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb-dark')); ?>');
-  }
-  
-  .IntegratedPayment_scheme.-cb span:before {
-      background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb')); ?>');
-  }
-  
-  .IntegratedPayment_container.-cardHolder:before {
-    mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
-    -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
-  }
-
-  .IntegratedPayment_container.-pan:before {
-    -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
-      mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
-  }
-  
-  .IntegratedPayment_container.-exp,
-  .IntegratedPayment_container.-cvv {
-      max-width: calc(140px);
-      display: block;
-  }
-
-  .IntegratedPayment_container.-cvv:before {
-      mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
-      -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
-  }
-
-  .IntegratedPayment_container.-exp:before {
-      mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
-      -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
-  }
-</style>
-
 <div wire:id="checkout.payment.method.payplug_payments_standard" xmlns:wire="http://www.w3.org/1999/xhtml">
 
 <?php if(!empty($payplugCards) && $is_one_click){ ?>
@@ -176,6 +124,58 @@ if(isset($paymentConfig["payplug_payments_standard"])){
       </div>
     </div>
 <?php }?>
+
+  <style>
+    .IntegratedPayment_scheme.-visa span {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa-dark')); ?>');
+    }
+    
+    .IntegratedPayment_scheme.-visa span:before {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa')); ?>');
+    }
+    
+    .IntegratedPayment_scheme.-mastercard span {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard-dark')); ?>');
+    }
+    
+    .IntegratedPayment_scheme.-mastercard span:before {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard')); ?>');
+    }
+    
+    .IntegratedPayment_scheme.-cb span {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb-dark')); ?>');
+    }
+    
+    .IntegratedPayment_scheme.-cb span:before {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb')); ?>');
+    }
+    
+    .IntegratedPayment_container.-cardHolder:before {
+      mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
+      -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
+    }
+
+    .IntegratedPayment_container.-pan:before {
+      -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
+    }
+    
+    .IntegratedPayment_container.-exp,
+    .IntegratedPayment_container.-cvv {
+        max-width: calc(140px);
+        display: block;
+    }
+
+    .IntegratedPayment_container.-cvv:before {
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
+    }
+
+    .IntegratedPayment_container.-exp:before {
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
+    }
+  </style>
 
   <script>
       (() => {
