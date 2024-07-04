@@ -1,0 +1,365 @@
+.oney-product {
+    @apply mb-[15px];
+}
+
+.oney-checkout-error {
+    @apply text-[#b2b2b2];
+
+    &.active {
+        @apply mb-[15px];
+    }
+}
+
+.oney-logo-checkout {
+    @apply max-w-[150px];
+}
+
+[data-oney-container='payplug_payments_oney_without_fees'] .oney-logo-checkout {
+    @apply max-w-[170px];
+}
+
+.oneyLogo {
+    background: 50% no-repeat;
+    background-size: 100%;
+}
+
+.oneyPopin_error {
+    @apply text-[#b2b2b2] text-sm italic font-normal m-0;
+}
+
+.oneyPayment {
+    @apply max-h-[90px] overflow-hidden;
+
+    &-disabled {
+        @apply max-h-[none];
+
+        .oneyPayment_trigger {
+            @apply text-[#b2b2b2] after:hidden cursor-default;
+
+            &:hover {
+                background: #fbfbfb;
+            }
+        }
+    }
+
+    &-open {
+        @apply max-h-[10000vh];
+    }
+
+    &_trigger {
+        @apply items-center text-[#333] flex text-[17px] font-[bold] h-[88px] tracking-[-1px] relative text-left w-full px-[15px] py-0 border-0;
+        background: none;
+
+        &:hover {
+            background: #f6f6f6;
+        }
+    }
+
+    &_label {
+        @apply flex flex-col leading-[1.3em];
+    }
+
+    &_error {
+        @apply text-sm italic font-normal;
+    }
+
+    &_logo {
+        @apply block h-[45px] max-w-full w-[165px] ml-0 mr-[15px] my-0;
+        background-size: 110%;
+    }
+
+    &_cta {
+        @apply flex justify-center w-full mt-0 mb-[30px] mx-0;
+    }
+
+    &_button {
+        @apply text-white text-[15px] h-[50px] w-[254px] border-0;
+        background: #81bc00;
+    }
+
+    &_button-disabled {
+        background: #b2b2b2;
+    }
+}
+
+.oneyPayment-open {
+    .oneyPayment_trigger {
+        &:hover {
+            background: #fbfbfb;
+        }
+
+        &:focus {
+            outline: 0;
+        }
+
+        &::after {
+            @apply content-['\f054'] absolute right-[7px] top-2/4 flex justify-center items-center h-[30px] w-[30px] text-[#777] text-[25px];
+        }
+    }
+}
+
+.oneyOption {
+    @apply box-border relative flex flex-col items-center mt-0 mb-[30px] mx-2 p-[30px] border border-solid border-[#dce0e8] cursor-pointer;
+    width: calc(50% - 16px);
+
+    &::after {
+        @apply content-[''] absolute -bottom-3.5 inset-x-0 block h-[13px] opacity-0 hover:border-[#81bc00] hover:opacity-100;
+        background: #81bc00;
+        box-shadow: 0px -5px 10px 5px #fff inset;
+    }
+
+    &-selected {
+        @apply hover:border-[#81bc00] after:hover:opacity-100;
+        background: rgba(129, 188, 0, 0.15);
+    }
+
+    &_wrapper {
+        @apply relative flex flex-wrap justify-center px-2 py-0;
+    }
+
+    &_wrapper-loading {
+        @apply justify-center p-4;
+    }
+
+    &_logo {
+        @apply block h-[35px] max-w-full w-[135px];
+    }
+
+    &_title {
+        @apply box-border flex flex-col justify-center items-center h-[90px] text-[#2f2930] text-[13px] font-medium pt-0 pb-[35px] px-0;
+    }
+
+    &_prices {
+        @apply flex flex-col justify-between h-full w-full;
+
+        ul {
+            @apply flex flex-col h-full w-full text-[#2f2930] text-[15px] font-semibold m-0 pl-0;
+
+            li {
+                @apply flex justify-between flex-wrap leading-[21px] pt-0 pb-4 px-0 border-b-[#dce0e8] border-b border-solid;
+
+                & + li {
+                    @apply px-0 py-4;
+                }
+
+                &:last-child {
+                    @apply mt-auto mb-0 mx-0 pt-4 pb-0 px-0 border-0;
+                }
+
+                span {
+                    @apply flex font-semibold max-w-[50%] first:font-medium;
+                }
+
+                small {
+                    @apply block w-full;
+                }
+            }
+        }
+    }
+
+    &_legend {
+        @apply text-[#2f2930] font-normal text-center mt-auto mb-0 mx-0;
+    }
+    
+    &_radio {
+        @apply sr-only;
+    }
+}
+
+.oneyOption_wrapper-loading + .oneyPayment_cta {
+    @apply hidden;
+}
+
+.oney-it[data-oney-container='payplug_payments_oney_without_fees'] .oneyOption_title {
+    @apply h-[110px];
+}
+
+@media (max-width: 767px) {
+    .oneyPopin-error {
+        @apply w-full px-2 py-0 top-0;
+        transform: none;
+        background: rgba(178, 178, 178, 0.1);
+    }
+
+    .oneyPayment-open {
+        @apply mb-[15px];
+    }
+
+    .oneyPayment_trigger {
+        @apply flex-col justify-center items-start;
+    }
+
+    .oneyPayment-disabled .oneyPayment_trigger {
+        @apply h-auto px-[15px] py-2;
+    }
+
+    .oneyPayment .more-info {
+        @apply mt-2.5;
+    }
+
+    .oneyOption {
+        @apply static w-full m-0 p-0 border-0 after:hidden;
+        background: none;
+    
+        &-selected {
+            @apply border-0;
+            background: none;
+
+            .oneyOption_title {
+                @apply border-b-[5px] border-b-[#81bc00] border-solid;
+            }
+        
+            .oneyOption_prices {
+                @apply block;
+            }
+        }
+    
+        &_wrapper {
+            @apply relative pt-[89px] pb-0 px-0;
+        }
+
+        &_wrapper-loading {
+            @apply p-4;
+        }
+    
+        &_logo {
+            @apply h-[30px] w-[100px];
+        }
+
+        &_prices {
+            @apply box-border hidden h-auto border px-4 py-[30px] border-solid border-[#dce0e8];
+    
+            ul {
+                li {
+                    @apply px-0 py-2;
+                }
+            }
+        }
+
+        &_title {
+            @apply absolute w-6/12 border p-0 border-b-[5px] border-b-transparent border-solid border-[#dce0e8] left-0 top-0;
+            background: transparent;
+        }
+    
+        &:nth-child(2) {
+            .oneyOption_title {
+                @apply border-l-0 left-2/4;
+            }
+        }
+    }
+
+    [data-oney-container='payplug_payments_oney_without_fees'] {
+        .oneyOption_logo {
+            @apply w-[150px];
+        }
+    }
+
+    .oney-it[data-oney-container='payplug_payments_oney_without_fees'] {
+        .oneyOption_wrapper {
+            @apply pt-[109px] pb-0 px-0;
+        }
+
+        .oneyLogo-3x,
+        .oneyLogo-4x {
+            @apply h-[55px];
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .onestep-checkout {
+        .oneyPopin-error {
+            @apply w-full px-2 py-0 top-0;
+            transform: none;
+            background: rgba(178, 178, 178, 0.1);
+        }
+    
+        .oneyPayment-open {
+            @apply mb-[15px];
+        }
+    
+        .oneyPayment_trigger {
+            @apply flex-col justify-center items-start;
+        }
+    
+        .oneyPayment-disabled .oneyPayment_trigger {
+            @apply h-auto px-[15px] py-2;
+        }
+    
+        .oneyPayment .more-info {
+            @apply mt-2.5;
+        }
+    
+        .oneyOption {
+            @apply static w-full m-0 p-0 border-0;
+            background: none;
+    
+            &::after {
+                @apply hidden;
+            }
+        
+            &-selected {
+                @apply border-0;
+                background: none;
+    
+                .oneyOption_title {
+                    @apply border-b-[5px] border-b-[#81bc00] border-solid;
+                }
+            
+                .oneyOption_prices {
+                    @apply block;
+                }
+            }
+        
+            &_wrapper {
+                @apply relative pt-[89px] pb-0 px-0;
+            }
+    
+            &_wrapper-loading {
+                @apply p-4;
+            }
+        
+            &_logo {
+                @apply h-[30px] w-[100px];
+            }
+    
+            &_prices {
+                @apply box-border hidden h-auto border px-4 py-[30px] border-solid border-[#dce0e8];
+        
+                ul {
+                    li {
+                        @apply px-0 py-2;
+                    }
+                }
+            }
+    
+            &_title {
+                @apply absolute w-6/12 border p-0 border-b-[5px] border-b-transparent border-solid border-[#dce0e8] left-0 top-0;
+                background: transparent;
+            }
+        
+            &:nth-child(2) {
+                .oneyOption_title {
+                    @apply left-2/4 border-l-[none];
+                }
+            }
+        }
+    
+        [data-oney-container='payplug_payments_oney_without_fees'] {
+            .oneyOption_logo {
+                @apply w-[150px];
+            }
+        }
+    
+        .oney-it[data-oney-container='payplug_payments_oney_without_fees'] {
+            .oneyOption_wrapper {
+                @apply pt-[109px] pb-0 px-0;
+            }
+    
+            .oneyLogo-3x,
+            .oneyLogo-4x {
+                @apply h-[55px];
+            }
+        }
+    }
+}

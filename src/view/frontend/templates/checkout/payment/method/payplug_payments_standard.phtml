@@ -65,22 +65,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 </label>
             </li>
         </ul>
-        <style>
-            .payplug-payments-cards {
-                padding-left: 2rem;
-            }
-            .payplug-payments-cards img {
-                display: inline;
-            }
-
-            .payplug-payments-cards li {
-                margin-bottom: 1rem;
-            }
-
-            .payplug-payments-cards .card-last4{
-                vertical-align: top;
-            }
-        </style>
     <?php endif; ?>
 
     <?php if ($integrated) : ?>
@@ -136,387 +120,58 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 <img class="payplug-logo" src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('payplug')); ?>"" alt="">
             </div>
         </div>
-        <style>
+  <style>
+    .IntegratedPayment_scheme.-visa span {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa-dark')); ?>');
+    }
 
-            .error-container.cardholder-input-container,
-            .error-container.pan-input-container,
-            .error-container.exp-input-container,
-            .error-container .cvv-input-container{
-                font-size: 14px;
-            }
+    .IntegratedPayment_scheme.-visa span:before {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa')); ?>');
+    }
 
-            #payplug-payment-form{
-                padding-left: 2rem;
-            }
+    .IntegratedPayment_scheme.-mastercard span {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard-dark')); ?>');
+    }
 
-            #payplug-payment-form.IntegratedPayment .exp-cvv-container {
-                display: flex;
-                gap: 10px;
-                justify-content: space-between;
-                margin-top: 10px;
-            }
+    .IntegratedPayment_scheme.-mastercard span:before {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard')); ?>');
+    }
 
-            #payplug-payment-form.IntegratedPayment .transaction-secured{
-                color: #212225;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
-                width: 100%;
-            }
+    .IntegratedPayment_scheme.-cb span {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb-dark')); ?>');
+    }
 
-            #payplug-payment-form.IntegratedPayment .transaction-secured img{
-                height: 16px;
-            }
+    .IntegratedPayment_scheme.-cb span:before {
+        background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb')); ?>');
+    }
 
-            #payplug-payment-form.IntegratedPayment .transaction-secured img.payplug-logo{
-                min-width: 90px;
-            }
+    .IntegratedPayment_container.-cardHolder:before {
+      mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
+      -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
+    }
 
-            #payplug-payment-form.IntegratedPayment .transaction-secured,
-            #payplug-payment-form.IntegratedPayment .policy{
-                font-size: 14px;
-                line-height: 21px;
-                width: 100%;
-                text-align: center;
-                font-size: 14px;
-                line-height: 21px;
-            }
+    .IntegratedPayment_container.-pan:before {
+      -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
+    }
 
-            #payplug-payment-form.IntegratedPayment .policy a{
-                display: block;
-                color: #909192;
-                text-decoration: underline;
-            }
+    .IntegratedPayment_container.-exp,
+    .IntegratedPayment_container.-cvv {
+        max-width: calc(140px);
+        display: block;
+    }
 
-            #payplug-payment-form.IntegratedPayment .invalid-field,
-            #payplug-payment-form.IntegratedPayment .empty-field {
-                color: #E91932;
-                display: none;
-            }
+      .IntegratedPayment_container.-cvv:before {
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
+      }
 
-            .IntegratedPayment {
-                width: 300px;
-                display: block;
-                justify-content: space-between;
-                margin-bottom: 0px;
-            }
-            .IntegratedPayment.-loaded {
-                margin-top: 20px;
-            }
-            .IntegratedPayment_select {
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                padding: 0 8px;
-                margin: 0 0 10px;
-                height: 36px;
-                width: 100%;
-            }
-            .IntegratedPayment_container {
-                display: flex;
-                padding: 0;
-                margin: 0 0 10px;
-                width: 100%;
-                position: relative;
-            }
-            .IntegratedPayment_container.-cardHolder, .IntegratedPayment_container.-pan, .IntegratedPayment_container.-exp, .IntegratedPayment_container.-cvv {
-                height: 40px;
-                line-height: 40px;
-                border-radius: 2px;
-                padding: 0 16px 0 50px;
-                cursor: text;
-                border: solid 1px #d5d6d8
-            }
-            .IntegratedPayment_container.-cardHolder:before, .IntegratedPayment_container.-pan:before, .IntegratedPayment_container.-exp:before, .IntegratedPayment_container.-cvv:before {
-                content: "";
-                position: absolute;
-                top: 20%;
-                left: 16px;
-                width: 24px;
-                height: 24px;
-                background: #95999e 50% no-repeat;
-                background-size: 100% auto;
-            }
-
-            .payplugIntegratedPayment_schemes label {
-                display: table-cell;
-            }
-
-            .IntegratedPayment_container.-cardHolder.-focus, .IntegratedPayment_container.-pan.-focus, .IntegratedPayment_container.-exp.-focus, .IntegratedPayment_container.-cvv.-focus {
-                border-color: #2b343d;
-            }
-            .IntegratedPayment_container.-cardHolder.-invalid, .IntegratedPayment_container.-pan.-invalid, .IntegratedPayment_container.-exp.-invalid, .IntegratedPayment_container.-cvv.-invalid {
-                border-color: #E91932;
-            }
-            .IntegratedPayment_container.-cardHolder:before {
-                mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
-                -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
-            }
-            .IntegratedPayment_container.-pan:before {
-                -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
-                mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
-            }
-            .IntegratedPayment_container.-exp, .IntegratedPayment_container.-cvv {
-                max-width: calc(140px);
-                display: block;
-            }
-            .IntegratedPayment_container.-cvv:before {
-                mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
-                -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
-            }
-            .IntegratedPayment_container.-exp:before {
-                mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
-                -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
-            }
-            .IntegratedPayment_container.-scheme {
-                justify-content: space-between;
-                align-items: center;
-                font-size: 14px;
-                font-weight: 700;
-                text-transform: uppercase;
-                height: 22px;
-                margin: 10px 0;
-            }
-            .IntegratedPayment_container.-saveCard {
-                display: flex;
-                height: auto;
-                align-items: center;
-                padding: 10px 0 0;
-            }
-            .IntegratedPayment_container.-saveCard label {
-                margin: 0;
-                cursor: pointer;
-                font-size: 12px;
-                color: #918f8f;
-            }
-
-            .IntegratedPayment_container.-saveCard label span {
-                border: 1px solid #d5d6d8;
-                border-radius: 2px;
-                cursor: pointer;
-                display: inline-block;
-                height: 16px;
-                margin: 0 10px -3px 0;
-                position: relative;
-                -webkit-transition: border .4s;
-                -moz-transition: border .4s;
-                -ms-transition: border .4s;
-                -o-transition: border .4s;
-                transition: border .4s;
-                width: 16px;
-            }
-            .IntegratedPayment_container.-saveCard label span:before {
-                border: 2.5px solid #2b343d;
-                border-radius: 1px;
-                border-right: none;
-                border-top: none;
-                content: "";
-                display: block;
-                height: 3px;
-                left: 50%;
-                opacity: 0;
-                position: absolute;
-                top: 50%;
-                -webkit-transform: translate(-50%,-55%) rotate(-48deg);
-                -moz-transform: translate(-50%,-55%) rotate(-48deg);
-                -ms-transform: translate(-50%,-55%) rotate(-48deg);
-                -o-transform: translate(-50%,-55%) rotate(-48deg);
-                transform: translate(-50%,-55%) rotate(-48deg);
-                -webkit-transition: opacity .4s;
-                -moz-transition: opacity .4s;
-                -ms-transition: opacity .4s;
-                -o-transition: opacity .4s;
-                transition: opacity .4s;
-                width: 9px;
-            }
-            .IntegratedPayment_container.-saveCard label input {
-                display: none;
-            }
-            .IntegratedPayment_container.-saveCard label:hover span {
-                border-color: #2b343d;
-                transition: 0.1s;
-            }
-            .IntegratedPayment_container.-saveCard label:hover {
-                color: #2b343d;
-                transition: 0.1s;
-            }
-            .IntegratedPayment_container.-saveCard.-checked label span:before {
-                opacity: 1;
-            }
-            .IntegratedPayment_container.-deferred {
-                margin: 10px 0;
-                background: #E9EAEB;
-                padding: 4px 15px;
-                font-size: 12px;
-                color: #2B343D;
-                display: block;
-                text-align: center;
-            }
-            .IntegratedPayment_container.-transaction{
-                display: inline-block;
-                margin-top: 10px;
-            }
-            .IntegratedPayment_container img.lock-icon{
-                width: 18px;
-                float: left !important;
-            }
-            .IntegratedPayment_container .transaction-label{
-                font-size: 12px;
-                margin-left: 5px;
-                vertical-align: super;
-            }
-            .IntegratedPayment_container .payplug-logo{
-                width: 80px;
-                height: auto;
-                display: inline-block;
-                float: inherit !important;
-                margin-left: 6px;
-                vertical-align: text-top;
-            }
-            .IntegratedPayment_container.-privacy-policy{
-                display: inline-block;
-                text-align: center;
-            }
-            .IntegratedPayment_container.-privacy-policy a{
-                color: #918f8f;
-                font-size: 14px;
-            }
-            .IntegratedPayment_error {
-                color: #E91932;
-                font-size: 12px;
-                margin: -10px 0 10px;
-                width: 100%;
-                line-height: 18px;
-                padding-left: 4px;
-            }
-            .IntegratedPayment_error.-cardHolder {
-                margin: -10px 0 0;
-            }
-            .IntegratedPayment_error.-exp, .IntegratedPayment_error.-cvv {
-                width: 100%;
-                max-width: calc(49%);
-            }
-            .IntegratedPayment_error.-cvv {
-                justify-self: flex-end;
-                margin: -10px 0 10px auto;
-            }
-            .-hide {
-                display: none;
-            }
-            .IntegratedPayment_error.-payment, .IntegratedPayment_error.-fields, .IntegratedPayment_error.-api {
-                display: none;
-                background: rgba(233,25,50,0.08);
-                color: #e91932;
-                text-align: center;
-                width: 100%;
-                line-height: 18px;
-                align-items: center;
-                justify-content: center;
-                margin: 10px 0 0;
-                padding: 4px 0;
-            }
-            .IntegratedPayment_error.-payment.-show, .IntegratedPayment_error.-fields.-show, .IntegratedPayment_error.-api.-show {
-                display: flex;
-            }
-            .IntegratedPayment_scheme {
-                margin: 0;
-            }
-            .IntegratedPayment_schemes {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                flex-wrap: wrap;
-                width: 115px;
-            }
-            .IntegratedPayment_scheme span {
-                cursor: pointer;
-                display: block;
-                width: 33px;
-                height: 22px;
-                background: 50% no-repeat;
-                background-size: 100% auto;
-            }
-            .IntegratedPayment_scheme span:before {
-                display: block;
-                width: 100%;
-                height: 100%;
-                content: "";
-                background: 50% no-repeat;
-                background-size: 100% auto;
-                opacity: 0;
-            }
-            .IntegratedPayment_scheme input {
-                display: none;
-            }
-            .IntegratedPayment_scheme input:checked + span:before {
-                opacity: 1;
-            }
-            .IntegratedPayment_scheme.-visa span {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa-dark')); ?>');
-            }
-            .IntegratedPayment_scheme.-visa span:before {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('visa')); ?>');
-            }
-            .IntegratedPayment_scheme.-mastercard span {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard-dark')); ?>');
-            }
-            .IntegratedPayment_scheme.-mastercard span:before {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('mastercard')); ?>');
-            }
-            .IntegratedPayment_scheme.-cb span {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb-dark')); ?>');
-            }
-            .IntegratedPayment_scheme.-cb span:before {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('cb')); ?>');
-            }
-            .IntegratedPayment .ipOverlay {
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                position: fixed;
-                background-color: rgba(25,25,25,0.5);
-                z-index: 100;
-            }
-            .IntegratedPayment .ipOverlay_inner {
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                position: absolute;
-            }
-            .IntegratedPayment .ipOverlay_content {
-                left: 50%;
-                position: absolute;
-                top: 50%;
-                transform: translate(-50%,-50%);
-            }
-            .IntegratedPayment .ipOverlay_spinner {
-                width: 75px;
-                height: 75px;
-                display: inline-block;
-                border-width: 2px;
-                border-color: rgba(255,255,255,0.05);
-                border-top-color: #fff;
-                animation: spin 1s infinite linear;
-                border-radius: 100%;
-                border-style: solid;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-            }
-            @keyframes spin {
-            .IntegratedPayment .ipOverlay 0% {
-                transform: rotate(0deg);
-            }
-            .IntegratedPayment .ipOverlay 100% {
-                transform: rotate(360deg);
-            }
-            }
-
-
-        </style>
-    <?php endif; ?>
+      .IntegratedPayment_container.-exp:before {
+        mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
+        -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
+      }
+  </style>
+  <?php endif; ?>
 
     <script>
         (() => {
