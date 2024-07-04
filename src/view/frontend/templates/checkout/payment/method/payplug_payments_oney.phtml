@@ -7,6 +7,8 @@ use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Payplug\Payments\Block\Oney\Simulation;
+use Magento\Framework\Pricing\Helper\Data;
+use Payplug\Payments\Gateway\Config\OneyWithoutFees;
 
 /** @var Escaper $escaper */
 /** @var Template $block */
@@ -256,9 +258,9 @@ $icons = $viewModels->require(PayplugIcons::class);
         hyvaCheckout.payment.activate(oney_type, {
             validate() {
                 return new Promise(async (resolve, reject) => {
-                    var selected = document.querySelector('input[name="oney_type"]:checked');
-                    var option = await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
-                      var option = await Magewire.find('checkout.payment.method.'+oney_type).call('setOneyType', selected.value);
+                        var selected = document.querySelector('input[name="oney_type"]:checked');
+                        var option = await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
+                        var option = await Magewire.find('checkout.payment.method.'+oney_type).call('setOneyType', selected.value);
                         resolve();
                     });
                 }
