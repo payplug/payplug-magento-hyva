@@ -18,24 +18,20 @@ $icons = $viewModels->require(PayplugIcons::class);
 $t = function (string $text) use ($escaper) {
     return $escaper->escapeHtml(__($text));
 };
-
 $tJs = function (string $text) use ($escaper) {
     return $escaper->escapeJs(__($text));
 };
-
 ?>
 
-<span id="message" class="text-gray-500 font-medium text-sm">
-
-</span>
+<span id="message" class="text-gray-500 font-medium text-sm"></span>
 
 <script>
     (() => {
         window.addEventListener('checkout:payment:method-activate', (event) => {
             let data = {
-                'billingCountry': '<?= $escaper->escapeHtml($magewire->getQuote()->getBillingAddress()->getCountryId()); ?>',
-                'shippingCountry': '<?= $escaper->escapeHtml($magewire->getQuote()->getShippingAddress()->getCountryId()); ?>',
-                'paymentMethod': '<?= $escaper->escapeHtml($magewire->getQuote()->getPayment()->getMethod()); ?>',
+                'billingCountry': '<?= $escaper->escapeJs($magewire->getQuote()->getBillingAddress()->getCountryId()); ?>',
+                'shippingCountry': '<?= $escaper->escapeJs($magewire->getQuote()->getShippingAddress()->getCountryId()); ?>',
+                'paymentMethod': '<?= $escaper->escapeJs($magewire->getQuote()->getPayment()->getMethod()); ?>',
             };
             const body = new URLSearchParams(data);
             fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + '?form_key=' + hyva.getFormKey(), {
@@ -44,17 +40,10 @@ $tJs = function (string $text) use ($escaper) {
                 headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
             }).then(async response => {
                 let res = await response.json();
-
                 if (typeof res.data != "undefined" && typeof res.data.message != "undefined") {
                     document.getElementById('message').textContent = res.data.message;
                 }
-
             });
-
         }, {once: true});
-
-
     })();
 </script>
-
-

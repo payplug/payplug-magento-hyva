@@ -175,9 +175,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
     <script>
         (() => {
-
             window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
-
             var oneclick = <?= !empty($payplugCards) && $is_one_click ? 1 : 0; ?>;
             var integrated = <?= $integrated ? 1 : 0; ?>;
 
@@ -230,9 +228,8 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                         return_url: null
                     },
                     init: function () {
-                        IntegratedPayment.props.api = new Payplug.IntegratedPayment(<?= $paymentConfig['payplug_payments_standard']['is_sandbox']; ?>);
+                        IntegratedPayment.props.api = new Payplug.IntegratedPayment(<?= $escaper->escapeJs($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>);
                         IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-
                         IntegratedPayment.props.form = {};
                         IntegratedPayment.props.form.cardHolder = {element: IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
                         IntegratedPayment.props.form.pan = {element:IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
@@ -263,14 +260,13 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                     card_selected = true;
                                 }
                             }
-
                             if (oneclick && card_selected) {
                                 var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                                 await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
                                 hyvaCheckout.main.getWireComponent().placeOrder();
                                 resolve();
-                                return true;
 
+                                return true;
                             } else {
                                 if (integrated) {
                                     hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
@@ -299,12 +295,12 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
                                                                     IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
                                                                     IntegratedPayment.props.api.onCompleted(function (event) {
-                                                                        window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/paymentReturn');
+                                                                        window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
                                                                         resolve();
                                                                     });
 
                                                                 } else {
-                                                                    window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/cancel');
+                                                                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
                                                                     reject();
 
                                                                 }
@@ -325,14 +321,12 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                         },
                         loadHostedLib() {
                             return new Promise((resolve, reject) => {
-
                                 if (!document.getElementById('payplug_hosted_lib')) {
                                     const script = document.createElement('script');
                                     script.src = 'https://cdn-qa.payplug.com/js/integrated-payment/v1@1/index.js';
                                     script.setAttribute('id', 'payplug_hosted_lib');
                                     document.head.append(script);
                                 }
-
                                 //if it's not loaded yet let's wait 100ms to load it
                                 let count = 0;
                                 const interval = setInterval(() => {
@@ -342,7 +336,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                         resolve();
                                         return;
                                     }
-
                                     if (count > 100) {
                                         reject();
                                         clearInterval(interval);
@@ -373,7 +366,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             }
                         });
                     }
-
                 } else {
                     var script = document.getElementById("payplug-js");
                     if (script) {
@@ -411,8 +403,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 observer.observe(exp, options)
                 observer.observe(cvv, options)
             }
-
         })();
     </script>
 </div>
-

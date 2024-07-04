@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 use Hyva\CheckoutPayplug\Magewire\ApplePay;
-use Hyva\CheckoutPayplug\Block\ApplePay as BlockApplePay;
+use Hyva\CheckoutPayplug\Block\ApplePay as ApplePayBlock;
+use Magento\Framework\Escaper;
 
 /** @var ApplePay $magewire */
-/** @var BlockApplePay $block */
+/** @var ApplePayBlock $block */
 /** @var Escaper $escaper */
 
 ?>
@@ -29,21 +30,20 @@ use Hyva\CheckoutPayplug\Block\ApplePay as BlockApplePay;
             },
             validate() {
               let request = {
-                "countryCode": "<?= $escaper->escapeHtml($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>",
-                "currencyCode": "<?= $escaper->escapeHtml($magewire->getShipping()->getData('quote_currency_code')); ?>",
+                "countryCode": "<?= $escaper->escapeJs($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>",
+                "currencyCode": "<?= $escaper->escapeJs($magewire->getShipping()->getData('quote_currency_code')); ?>",
                 "merchantCapabilities": ["supports3DS"],
                 "supportedNetworks": ["visa", "masterCard"],
                 "total": {
-                  "label": "<?= $escaper->escapeHtml($block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name']); ?>",
+                  "label": "<?= $escaper->escapeJs($block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name']); ?>",
                   "type": "final",
-                  "amount": '<?= $escaper->escapeHtml($magewire->getShipping()->getData("grand_total")); ?>'
+                  "amount": '<?= $escaper->escapeJs($magewire->getShipping()->getData("grand_total")); ?>'
                 },
                 'applicationData': btoa(JSON.stringify({
-                  'apple_pay_domain': "<?= $block->getConfig()['payment']['payplug_payments_apple_pay']['domain'] ?>"
+                  'apple_pay_domain': "<?= $escaper->escapeHtml($block->getConfig()['payment']['payplug_payments_apple_pay']['domain']); ?>"
                 }))
               };
               let session = new ApplePaySession(3, request);
-
               hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', () => {
                 magewire.plugins.loader.start();
                 return new Promise((resolve) => {
@@ -51,13 +51,11 @@ use Hyva\CheckoutPayplug\Block\ApplePay as BlockApplePay;
                     fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/applepay/getTransactionData")) ;?>').then( async response => {
                       let res = await response.json();
                       if (res.error === true) {
-                        window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/cancel');
+                        window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
                         reject();
-
-                      }else{
+                      } else {
                         session.completeMerchantValidation(res.merchand_data);
                       }
-
                     });
                   };
                   session.onpaymentauthorized = event => {
@@ -78,19 +76,17 @@ use Hyva\CheckoutPayplug\Block\ApplePay as BlockApplePay;
                       session.completePayment({
                         "status": applePaySessionStatus
                       });
-
                         if (res.error === true) {
-                          window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/cancel');
+                          window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
                           reject();
-
-                        }else{
-                          window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/paymentReturn');
+                        } else {
+                          window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
                           resolve();
                         }
                     });
                   };
                   session.oncancel = event => {
-                    window.location.replace('<?= $escaper->escapeUrl($block->getBaseUrl()); ?>payplug_payments/payment/cancel');
+                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
                   };
                   session.begin();
                 });
@@ -104,7 +100,6 @@ use Hyva\CheckoutPayplug\Block\ApplePay as BlockApplePay;
                   script.setAttribute('id', 'apple_pay_cdn');
                   document.head.append(script);
                 }
-
                 //if it's not loaded yet let's wait 100ms to load it
                 let count = 0;
                 const interval = setInterval(() => {
@@ -114,7 +109,6 @@ use Hyva\CheckoutPayplug\Block\ApplePay as BlockApplePay;
                     resolve();
                     return;
                   }
-
                   if (count > 100) {
                     reject();
                     clearInterval(interval);

@@ -42,7 +42,6 @@ $icons = $viewModels->require(PayplugIcons::class);
         .oneyLogo-3x {
             background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/3x')); ?>');
         }
-
         .oneyLogo-4x {
             background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/4x')); ?>');
         }
@@ -50,7 +49,6 @@ $icons = $viewModels->require(PayplugIcons::class);
         .oneyLogo-3x {
             background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('3x')); ?>');
         }
-
         .oneyLogo-4x {
             background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('4x')); ?>');
         }
@@ -61,14 +59,12 @@ $icons = $viewModels->require(PayplugIcons::class);
     var getOneyContainer = function() {
         return document.querySelector('[data-oney-container="payplug_payments_oney"]');
     }
-
     var getScheduleLabel = function (days) {
         var scheduleLabels = [
-            {days: 30, label: "<?= $block->escapeHtml(__('In 30 days')); ?>" },
-            {days: 60, label: "<?= $block->escapeHtml(__('In 60 days')); ?>" },
-            {days: 90, label: "<?= $block->escapeHtml(__('In 90 days')); ?>" },
+            {days: 30, label: "<?= $escaper->escapeJs(__('In 30 days')); ?>" },
+            {days: 60, label: "<?= $escaper->escapeJs(__('In 60 days')); ?>" },
+            {days: 90, label: "<?= $escaper->escapeJs(__('In 90 days')); ?>" },
         ];
-
         let label = null;
         scheduleLabels.forEach(function(item) {
             if (item.days === days) {
@@ -99,7 +95,7 @@ $icons = $viewModels->require(PayplugIcons::class);
         var label;
 
         if (type === null) {
-            label = "<?= __('Place Order'); ?>";
+            label = "<?= $escaper->escapeJs(__('Place Order')); ?>";
             hyva.replaceDomElement('.btn-primary[x-bind="buttonPlaceOrder()"]', '<button type="button" class="btn btn-primary\
             disabled:opacity-10\
             disabled:cursor-not-allowed\
@@ -117,10 +113,9 @@ $icons = $viewModels->require(PayplugIcons::class);
 
     var getPaymentTypeLabel = function() {
       <?php if ($isOneyWithoutFees) : ?>
-        return "<?= $escaper->escapeHtml(__('Payment in %1 without fees')); ?>";
-
+        return "<?= $escaper->escapeJs(__('Payment in %1 without fees')); ?>";
       <?php else : ?>
-        return "<?= $escaper->escapeHtml(__('Payment in %1')); ?>";
+        return "<?= $escaper->escapeJs(__('Payment in %1')); ?>";
       <?php endif; ?>
     }
 
@@ -137,12 +132,12 @@ $icons = $viewModels->require(PayplugIcons::class);
             if (typeof(error_is_displayed) === 'undefined' || error_is_displayed === null ){
                 var error_message = document.createElement('p');
                 error_message.classList.add('oneyPopin_error');
-                error_message.innerHTML = "<?= /* @noEscape */ $message; ?>";
+                error_message.innerHTML = "<?= /* @noEscape */ $escaper->escapeJs($message); ?>";
                 tmpDiv.appendChild(error_message);
             }
         <?php else : ?>
             <?php foreach ($oneySimulation->getOptions() as $option) : ?>
-                var type = "<?= $option->getType(); ?>";
+                var type = "<?= $escaper->escapeJs($option->getType()); ?>";
                 var option = document.createElement('label');
 
                 option.setAttribute('data-type', type);
@@ -170,20 +165,20 @@ $icons = $viewModels->require(PayplugIcons::class);
                     var firstDeposit = document.createElement('li');
                     var totalAmoutSpan = document.createElement('span');
 
-                    totalAmoutSpan.innerHTML += "<?= __('Total order amount'); ?>";
+                    totalAmoutSpan.innerHTML += "<?= $escaper->escapeJs(__('Total order amount')); ?>";
                     firstDeposit.append(totalAmoutSpan);
 
                     var oneyOptionSpan = document.createElement('span');
 
                     oneyOptionSpan.classList.add('oneyOption_price');
-                    oneyOptionSpan.innerHTML += "<?= /* @noEscape */ $pricingHelper->currency($option->getFirstDeposit(), true, false); ?>";
+                    oneyOptionSpan.innerHTML += "<?= /* @noEscape */ $escaper->escapeJs($pricingHelper->currency($option->getFirstDeposit(), true, false)); ?>";
                     firstDeposit.append(oneyOptionSpan);
                     list.append(firstDeposit);
 
                     var daysForPayment = 30;
 
                     <?php foreach ($option->getSchedules() as $i => $schedule): ?>
-                        var scheduleData = "<?= $block->escapeHtml(__(sprintf('Installment %d:', $i + 1))); ?>";
+                        var scheduleData = "<?= $escaper->escapeJs(__(sprintf('Installment %d:', $i + 1))); ?>";
                         var schedule = document.createElement('li');
                         var daysSpan = document.createElement('span');
 
@@ -193,7 +188,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                         var oneyOptionSpan2 = document.createElement('span');
 
                         oneyOptionSpan2.classList.add('oneyOption_price');
-                        oneyOptionSpan2.innerHTML += "<?= /* @noEscape */ $pricingHelper->currency($schedule->getAmount(), true, false); ?>";
+                        oneyOptionSpan2.innerHTML += "<?= /* @noEscape */ $escaper->escapeJs($pricingHelper->currency($schedule->getAmount(), true, false)); ?>";
                         schedule.append(oneyOptionSpan2);
                         list.append(schedule);
                         daysForPayment += 30;
@@ -201,11 +196,11 @@ $icons = $viewModels->require(PayplugIcons::class);
 
                     var totalAmout = document.createElement('li');
                     var totalCostSpanLabel = document.createElement('span');
-                    totalCostSpanLabel.innerHTML += "<?= __('Total cost') ?>";
+                    totalCostSpanLabel.innerHTML += "<?= $escaper->escapeJs(__('Total cost')); ?>";
 
                     var totalCostSpan = document.createElement('span');
                     totalCostSpan.classList.add('oneyOption_price');
-                    totalCostSpan.innerHTML += "<?= /* @noEscape */ $pricingHelper->currency($option->getTotalAmount(), true, false); ?>";
+                    totalCostSpan.innerHTML += "<?= /* @noEscape */ $escaper->escapeJs($pricingHelper->currency($option->getTotalAmount(), true, false)); ?>";
 
                     totalAmout.append(totalCostSpanLabel);
                     totalAmout.append(totalCostSpan);
@@ -260,7 +255,6 @@ $icons = $viewModels->require(PayplugIcons::class);
                 return new Promise(async (resolve, reject) => {
                         var selected = document.querySelector('input[name="oney_type"]:checked');
                         var option = await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
-                        var option = await Magewire.find('checkout.payment.method.'+oney_type).call('setOneyType', selected.value);
                         resolve();
                     });
                 }
