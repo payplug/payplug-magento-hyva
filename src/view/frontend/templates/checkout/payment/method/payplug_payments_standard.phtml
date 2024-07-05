@@ -14,69 +14,59 @@ use Magento\Framework\Escaper;
 /** @var BlockStandard $block */
 
 $icons = $viewModels->require(PayplugIcons::class);
-
 $config = $block->getConfig();
 $paymentConfig = $config['payment'];
-
-$t = function (string $text) use ($escaper) {
-    return $escaper->escapeHtml(__($text));
-};
-
-$tJs = function (string $text) use ($escaper) {
-    return $escaper->escapeJs(__($text));
-};
 $payplugCards = $block->getPayplugCards();
-
 $integrated = false;
-$is_one_click = false;
+$isOneClick = false;
 if (isset($paymentConfig["payplug_payments_standard"])) {
     $integrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
-    $is_one_click = $paymentConfig["payplug_payments_standard"]["is_one_click"];
+    $isOneClick = $paymentConfig["payplug_payments_standard"]["is_one_click"];
 }
 ?>
 
 <div wire:id="checkout.payment.method.payplug_payments_standard" xmlns:wire="http://www.w3.org/1999/xhtml">
 
-    <?php if (!empty($payplugCards) && $is_one_click) : ?>
+    <?php if (!empty($payplugCards) && $isOneClick) : ?>
         <ul class="payplug-payments-cards">
             <?php foreach ($payplugCards as $payplugCard) : ?>
                 <?php
                 $customerCardId = $payplugCard->getCustomerCardId();
-                $card_brand = $payplugCard->getBrand();
-                $card_four_digits = $payplugCard->getLastFour();
+                $cardBrand = $payplugCard->getBrand();
+                $cardFourDigits = $payplugCard->getLastFour();
                 $date = $payplugCard->getExpDate();
-                $card_expiration_date = $block->getFormattedExpDate($date);
+                $cardExpirationDate = $block->getFormattedExpDate($date);
                 ?>
 
                 <li>
-                    <input type="radio" name="payment[payplug_payments_standard][customer_card_id]" id="payplug_payments_card_<?= $escaper->escapeHtml($customerCardId); ?>" class="payplug-payments-customer-card"
-                           data-card-id="<?= $escaper->escapeHtml($customerCardId); ?>" value="<?= $escaper->escapeHtml($customerCardId); ?>" />
-                    <label for="payplug_payments_card_<?= $escaper->escapeHtml($customerCardId); ?>">
+                    <input type="radio" name="payment[payplug_payments_standard][customer_card_id]" id="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" class="payplug-payments-customer-card"
+                           data-card-id="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" value="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" />
+                    <label for="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>">
                         <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('other')); ?>" alt="">
-                        <span class="card-last4"> <b>**** **** **** <?= $escaper->escapeHtml($card_four_digits); ?></b></span>
-                        <span>(<?= $escaper->escapeHtml($card_expiration_date); ?>)</span>
+                        <span class="card-last4"> <b>**** **** **** <?= $escaper->escapeHtml($cardFourDigits); ?></b></span>
+                        <span>(<?= $escaper->escapeHtml($cardExpirationDate); ?>)</span>
                     </label>
                 </li>
             <?php endforeach; ?>
             <li>
                 <input type="radio" name="payment[payplug_payments_standard][customer_card_id]" id="payplug_payments_card_" class="payplug-payments-customer-card" value="" />
                 <label for="payplug_payments_card_">
-                    <?= $t('Pay with another card'); ?>
+                    <?= $escaper->escapeHtml(__('Pay with another card')); ?>
                 </label>
             </li>
         </ul>
     <?php endif; ?>
 
     <?php if ($integrated) : ?>
-        <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $is_one_click ? '-hide' : '' ?>">
+        <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? '-hide' : '' ?>">
             <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
             </div>
             <div class="error-container cardholder-input-container">
-                <div class="invalid-field"><span><?= $t('Invalid Name and/or Last Name.' ); ?></span></div>
-                <div class="empty-field"><span><?= $t('Mandatory field.' ); ?></span></div>
+                <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid Name and/or Last Name.')); ?></span></div>
+                <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
             </div>
             <div class="payplug IntegratedPayment_container -scheme">
-                <div class="card-title"> <?= $t('Your card' ); ?> </div>
+                <div class="card-title"> <?= $escaper->escapeHtml(__('Your card')); ?> </div>
                 <div class="payplug IntegratedPayment_schemes">
                     <label class="payplug IntegratedPayment_scheme -visa"><input type="radio" name="schemeOptions" value="visa"/><span></span></label>
                     <label class="payplug IntegratedPayment_scheme -mastercard"><input type="radio" name="schemeOptions" value="mastercard" /><span></span></label>
@@ -85,23 +75,23 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
             </div>
             <div id="pan-input-container" class="payplug IntegratedPayment_container -pan pan-input-container" data-e2e-name="pan"></div>
             <div class="error-container pan-input-container">
-                <div class="invalid-field"><span><?= $t('Invalid card number.' ); ?></span></div>
-                <div class="empty-field"><span><?= $t('Mandatory field.' ); ?></span></div>
+                <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid card number.')); ?></span></div>
+                <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
             </div>
             <div class="exp-cvv-container">
                 <div>
                     <div id="exp-input-container" class="payplug IntegratedPayment_container -exp exp-input-container" data-e2e-name="expiration"></div>
                     <div class="error-container exp-input-container">
-                        <div class="invalid-field"><span><?= $t('Invalid expiration date.' ); ?></span></div>
-                        <div class="empty-field"><span><?= $t('Mandatory field.' ); ?></span></div>
+                        <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid expiration date.')); ?></span></div>
+                        <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
                     </div>
                 </div>
 
                 <div>
                     <div id="cvv-input-container" class="payplug IntegratedPayment_container -cvv cvv-input-container" data-e2e-name="cvv"></div>
                     <div class="error-container cvv-input-container">
-                        <div class="invalid-field"><span><?= $t('Invalid CVV.' ); ?></span></div>
-                        <div class="empty-field"><span><?= $t('Mandatory field.' ); ?></span></div>
+                        <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid CVV.')); ?></span></div>
+                        <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
                     </div>
                 </div>
 
@@ -110,14 +100,14 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
             <?php if ($paymentConfig["payplug_payments_standard"]['is_one_click']) : ?>
                 <div class="save-card-container">
                     <input type="checkbox" name="save_card" id="payplug_save_card">
-                    <label for="payplug_save_card"><?= $t('Save my credit card' ); ?></label>
+                    <label for="payplug_save_card"><?= $escaper->escapeHtml(__('Save my credit card')); ?></label>
                 </div>
             <?php endif; ?>
 
             <div class="transaction-secured">
-                <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>"" alt="">
-                <span><?= $t('Transaction secured by' ); ?></span>
-                <img class="payplug-logo" src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('payplug')); ?>"" alt="">
+                <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>" alt="">
+                <span><?= $escaper->escapeHtml(__('Transaction secured by')); ?></span>
+                <img class="payplug-logo" src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('payplug')); ?>" alt="">
             </div>
         </div>
   <style>
@@ -176,7 +166,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
     <script>
         (() => {
             window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
-            var oneclick = <?= !empty($payplugCards) && $is_one_click ? 1 : 0; ?>;
+            var oneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
             var integrated = <?= $integrated ? 1 : 0; ?>;
 
             if (integrated) {
@@ -277,7 +267,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                             IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
                                                 magewire.plugins.loader.start();
                                                 if (isFormValid) {
-                                                    fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard")); ?>?should_redirect=0&integrated=1').then(response => {
+                                                    fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
                                                         let res = response.clone().json();
                                                         res.then(result => {
                                                             if (typeof result.error !== 'undefined' && result.error) {

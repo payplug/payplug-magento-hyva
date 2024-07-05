@@ -132,7 +132,7 @@ $icons = $viewModels->require(PayplugIcons::class);
             if (typeof(error_is_displayed) === 'undefined' || error_is_displayed === null ){
                 var error_message = document.createElement('p');
                 error_message.classList.add('oneyPopin_error');
-                error_message.innerHTML = "<?= /* @noEscape */ $escaper->escapeJs($message); ?>";
+                error_message.innerHTML = "<?= $escaper->escapeJs($message); ?>";
                 tmpDiv.appendChild(error_message);
             }
         <?php else : ?>
@@ -171,7 +171,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                     var oneyOptionSpan = document.createElement('span');
 
                     oneyOptionSpan.classList.add('oneyOption_price');
-                    oneyOptionSpan.innerHTML += "<?= /* @noEscape */ $escaper->escapeJs($pricingHelper->currency($option->getFirstDeposit(), true, false)); ?>";
+                    oneyOptionSpan.innerHTML += "<?= $escaper->escapeJs($pricingHelper->currency($option->getFirstDeposit(), true, false)); ?>";
                     firstDeposit.append(oneyOptionSpan);
                     list.append(firstDeposit);
 
@@ -188,7 +188,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                         var oneyOptionSpan2 = document.createElement('span');
 
                         oneyOptionSpan2.classList.add('oneyOption_price');
-                        oneyOptionSpan2.innerHTML += "<?= /* @noEscape */ $escaper->escapeJs($pricingHelper->currency($schedule->getAmount(), true, false)); ?>";
+                        oneyOptionSpan2.innerHTML += "<?= $escaper->escapeJs($pricingHelper->currency($schedule->getAmount(), true, false)); ?>";
                         schedule.append(oneyOptionSpan2);
                         list.append(schedule);
                         daysForPayment += 30;
@@ -200,7 +200,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 
                     var totalCostSpan = document.createElement('span');
                     totalCostSpan.classList.add('oneyOption_price');
-                    totalCostSpan.innerHTML += "<?= /* @noEscape */ $escaper->escapeJs($pricingHelper->currency($option->getTotalAmount(), true, false)); ?>";
+                    totalCostSpan.innerHTML += "<?= $escaper->escapeJs($pricingHelper->currency($option->getTotalAmount(), true, false)); ?>";
 
                     totalAmout.append(totalCostSpanLabel);
                     totalAmout.append(totalCostSpan);

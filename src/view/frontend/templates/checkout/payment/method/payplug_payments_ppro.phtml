@@ -14,13 +14,6 @@ use Magento\Framework\Escaper;
 /** @var Standard $block */
 
 $icons = $viewModels->require(PayplugIcons::class);
-
-$t = function (string $text) use ($escaper) {
-    return $escaper->escapeHtml(__($text));
-};
-$tJs = function (string $text) use ($escaper) {
-    return $escaper->escapeJs(__($text));
-};
 ?>
 
 <span id="message" class="text-gray-500 font-medium text-sm"></span>
