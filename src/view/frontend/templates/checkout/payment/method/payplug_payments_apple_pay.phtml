@@ -11,6 +11,7 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 
 ?>
+
 <div wire:id="checkout.payment.method.payplug_payments_apple_pay" xmlns:wire="http://www.w3.org/1999/xhtml">
   <apple-pay-button buttonstyle="black" type="pay" locale="en"></apple-pay-button>
 
@@ -40,7 +41,7 @@ use Magento\Framework\Escaper;
                   "amount": '<?= $escaper->escapeJs($magewire->getShipping()->getData("grand_total")); ?>'
                 },
                 'applicationData': btoa(JSON.stringify({
-                  'apple_pay_domain': "<?= $escaper->escapeHtml($block->getConfig()['payment']['payplug_payments_apple_pay']['domain']); ?>"
+                  'apple_pay_domain': "<?= $escaper->escapeJs($block->getConfig()['payment']['payplug_payments_apple_pay']['domain']); ?>"
                 }))
               };
               let session = new ApplePaySession(3, request);
