@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add Oney styles nesting [#33](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/33)
-- Add `CHANGELOG.md`
+- Add `CHANGELOG.md` [#37](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/37)
 - Add `escapeJS` when possible and normalize `getUrl()` instead of `getBaseUrl` [#31](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/31)
 - Add missing Hyva config generation in readme [#33](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/33)
 - Add payment options tabs behavior on desktop onestep layout [#33](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/33)
