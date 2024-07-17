@@ -258,6 +258,9 @@ $icons = $viewModels->require(PayplugIcons::class);
     let oney_type = '';
 
     window.addEventListener('checkout:payment:method-activate', (event) => {
+        <?php // Reset place order button to default value ?>
+        document.querySelector('.btn-place-order').innerText = '<?= $escaper->escapeJs(__('Place Order')); ?>';
+
         if (event.detail.method == 'payplug_payments_oney' || event.detail.method == 'payplug_payments_oney_without_fees') {
             switch (event.detail.method){
                 case 'payplug_payments_oney':
