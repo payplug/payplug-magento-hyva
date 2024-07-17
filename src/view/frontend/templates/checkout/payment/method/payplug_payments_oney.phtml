@@ -88,31 +88,10 @@ $icons = $viewModels->require(PayplugIcons::class);
     }
 
     const updatePlaceOrderButtonLabel = (type) => {
-        let label;
-
-        if (type === null) {
-            label = '<?= $escaper->escapeJs(__('Place Order')); ?>';
-            hyva.replaceDomElement('.btn-primary[x-bind="buttonPlaceOrder()"]', `
-                <button type="button"
-                        class="btn btn-primary disabled:opacity-10 disabled:cursor-not-allowed bg-green-600 hover:bg-green-500"
-                        x-spread="buttonPlaceOrder()"
-                        x-bind="buttonPlaceOrder()"
-                        data-step="{'place':true}">
-                    Valider la commande
-                </button>
-            `);
-        } else {
-            label = getPaymentTypeLabel().replace('%1', type);
-            hyva.replaceDomElement('.btn-primary[x-bind="buttonPlaceOrder()"]', `
-                <button type="button"
-                        class="btn btn-primary disabled:opacity-10 disabled:cursor-not-allowed bg-green-600 hover:bg-green-500"
-                        x-spread="buttonPlaceOrder()"
-                        x-bind="buttonPlaceOrder()"
-                        data-step="{'place':true}">
-                    ${label}
-                </button>
-            `);
-        }
+        const buttonLabel = type === null 
+            ? '<?= $escaper->escapeJs(__('Place Order')); ?>' 
+            : getPaymentTypeLabel().replace('%1', type);
+        document.querySelector('.btn-place-order').innerText = buttonLabel;
     }
 
     const getPaymentTypeLabel = () => {
