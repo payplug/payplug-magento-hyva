@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.1) - 2024-07-17
+## [1.0.2](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.2) - 2024-07-19
 
 ### Features
 
@@ -13,14 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Oney payment optimizations, improvements
 * Security improvements
 
-**[view diff]**
+**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.1...1.0.2)**
 
 ### Added
 
-- Add Oney styles nesting [#33](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/33)
 - Add `CHANGELOG.md` [#37](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/37)
 - Add `escapeJS` when possible and normalize `getUrl()` instead of `getBaseUrl` [#31](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/31)
 - Add missing Hyva config generation in readme [#33](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/33)
+- Add Oney styles nesting [#33](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/33)
 - Add payment options tabs behavior on desktop onestep layout [#33](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/33)
 - Add secure-magenta.dalenys.com in CSP whitelist [#36](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/36)
 - Add standard payment styles nesting [#35](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/35)
@@ -52,6 +52,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove residual console log [#29](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/29)
 - Remove standard payment styles vendor prefixes [#35](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/35)
 - Remove useless Oney popin CSS rules [#32](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/32)
+
+## [1.0.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.1) - 2024-06-20
+
+### Features
+
+* Update readme
 
 ## [1.0.0](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.0) - 2024-05-14
 
