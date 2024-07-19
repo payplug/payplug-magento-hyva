@@ -15,9 +15,10 @@ Hyvä Compatibility modules that are tagged as stable can be installed using com
 2. Enable module
     ```
     bin/magento setup:upgrade
+    bin/magento hyva:config:generate
 
     #you need to run following command only in production mode 
-   ./bin/magento setup:di:compile 
+   ./bin/magento setup:di:compile
    ./bin/magento setup:static-content:deploy --force fr_FR it_IT en_US
    ./bin/magento cache:clean
     ```
@@ -48,6 +49,7 @@ This installation method is not suited for deployments, because gitlab requires 
 3. Enable module
     ```
     ./bin/magento setup:upgrade
+    ./bin/magento hyva:config:generate
    ./bin/magento setup:di:compile
    ./bin/magento setup:static-content:deploy --force fr_FR it_IT en_US
    ./bin/magento cache:clean
