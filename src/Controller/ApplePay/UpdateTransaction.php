@@ -1,29 +1,55 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hyva\CheckoutPayplug\Controller\ApplePay;
 
+use Magento\Checkout\Model\Session;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Exception\PaymentException;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\OrderFactory;
 use Payplug\Exception\PayplugException;
 use Payplug\Payments\Controller\Payment\AbstractPayment;
+use Payplug\Payments\Helper\Data;
+use Payplug\Payments\Logger\Logger;
 
 class UpdateTransaction extends AbstractPayment
 {
+    public function __construct(
+        protected RequestInterface $request,
+        protected Validator $formKeyValidator,
+        Context $context,
+        Session $checkoutSession,
+        OrderFactory $salesOrderFactory,
+        Logger $logger,
+        Data $payplugHelper
+    ) {
+        parent::__construct($context, $checkoutSession, $salesOrderFactory, $logger, $payplugHelper);
+    }
+
     /**
      * Update PayPlug Apple Pay transaction data
      *
      * @return Json
      */
-    public function execute()
+    public function execute(): Json
     {
         /** @var Json $response */
         $response = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         $response->setData([
             'error' => true,
-            'message' => __('An error occurred while processing the order.'),
+            'message' => (string)__('An error occurred while processing the order.'),
         ]);
+
+        $formKeyValidation = $this->formKeyValidator->validate($this->request);
+        if (!$formKeyValidation) {
+            return $response;
+        }
 
         try {
             $order = $this->getLastOrder();
@@ -70,7 +96,7 @@ class UpdateTransaction extends AbstractPayment
      *
      * @throws \Exception
      */
-    private function getLastOrder()
+    private function getLastOrder(): Order
     {
         $lastIncrementId = $this->getCheckout()->getLastRealOrderId();
 
