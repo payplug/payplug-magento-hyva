@@ -10,8 +10,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Data\Form\FormKey\Validator;
-use Magento\Framework\Exception\PaymentException;
-use Magento\Sales\Model\Order;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\OrderFactory;
 use Payplug\Exception\PayplugException;
 use Payplug\Payments\Controller\Payment\AbstractPayment;
@@ -92,11 +91,11 @@ class UpdateTransaction extends AbstractPayment
     /**
      * Get last order
      *
-     * @return Order
+     * @return OrderInterface
      *
      * @throws \Exception
      */
-    private function getLastOrder(): Order
+    private function getLastOrder(): OrderInterface
     {
         $lastIncrementId = $this->getCheckout()->getLastRealOrderId();
 
