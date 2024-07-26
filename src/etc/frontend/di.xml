@@ -45,4 +45,8 @@
       </arguments>
   </type>
 
+    <type name="Payplug\Payments\Helper\Http\AbstractClient">
+        <plugin name="hyva_checkout_payplug_track_hyva_version" type="Hyva\CheckoutPayplug\Plugin\TrackHyvaVersion"/>
+    </type>
+
 </config>

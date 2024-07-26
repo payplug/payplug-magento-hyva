@@ -12,20 +12,24 @@ use Magento\Framework\Module\ResourceInterface;
 
 class Config
 {
-    /**
-     * Module Name
-     */
-    public const HYVA_MODULE_NAME = 'Hyva_CheckoutPayplug';
+    private const HYVA_MODULE_NAME = 'Hyva_CheckoutPayplug';
+    public const HYVA_VERSION_XML_PATH = 'hyva/checkout_payplug/version';
 
     public function __construct(
         protected ScopeConfigInterface $config,
         protected ResourceInterface $moduleResource,
         protected ComponentRegistrarInterface $componentRegistrar,
-        protected ReadFactory $readFactory
+        protected ReadFactory $readFactory,
+        protected ScopeConfigInterface $scopeConfig
     ) {
     }
 
-    public function getHyvaVersion(): string
+    public function getCachedHyvaModuleVersion(): string
+    {
+        return $this->scopeConfig->getValue(self::HYVA_VERSION_XML_PATH);
+    }
+
+    public function getHyvaModuleVersionFromComposer(): string
     {
         $srcPath = $this->componentRegistrar->getPath(
             ComponentRegistrar::MODULE,
