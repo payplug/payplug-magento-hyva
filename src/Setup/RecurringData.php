@@ -34,7 +34,7 @@ class RecurringData implements InstallDataInterface
         $setup->getConnection()->insertOnDuplicate($setup->getTable('core_config_data'), $data, ['value']);
     }
 
-    public function getHyvaModuleVersionFromComposer(): string
+    private function getHyvaModuleVersionFromComposer(): string
     {
         $srcPath = $this->componentRegistrar->getPath(
             ComponentRegistrar::MODULE,
