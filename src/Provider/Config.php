@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Hyva\CheckoutPayplug\Provider;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Component\ComponentRegistrar;
-use Magento\Framework\Component\ComponentRegistrarInterface;
-use Magento\Framework\Filesystem\Directory\ReadFactory;
 use Magento\Framework\Module\ResourceInterface;
 
 class Config
@@ -18,38 +15,13 @@ class Config
     public function __construct(
         protected ScopeConfigInterface $config,
         protected ResourceInterface $moduleResource,
-        protected ComponentRegistrarInterface $componentRegistrar,
-        protected ReadFactory $readFactory,
         protected ScopeConfigInterface $scopeConfig
     ) {
     }
 
-    public function getCachedHyvaModuleVersion(): string
+    public function getHyvaModuleVersion(): string
     {
-        return $this->scopeConfig->getValue(self::HYVA_VERSION_XML_PATH);
-    }
-
-    public function getHyvaModuleVersionFromComposer(): string
-    {
-        $srcPath = $this->componentRegistrar->getPath(
-            ComponentRegistrar::MODULE,
-            Config::HYVA_MODULE_NAME
-        );
-
-        //Hyva modules are into src folder, and the composer.json is outside of the src
-        $paths = explode('/', $srcPath);
-        //Poping the src folder
-        array_pop($paths);
-        $path = implode('/', $paths);
-        $directoryRead = $this->readFactory->create($path);
-
-        $composerJsonData = '';
-        if ($directoryRead->isFile('composer.json')) {
-            $composerJsonData = $directoryRead->readFile('composer.json');
-        }
-        $data = json_decode($composerJsonData);
-
-        return !empty($data->version) ? $data->version : '';
+        return (string)$this->scopeConfig->getValue(self::HYVA_VERSION_XML_PATH);
     }
 
     public function getHyvaModuleName(): string

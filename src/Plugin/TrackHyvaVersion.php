@@ -27,7 +27,7 @@ class TrackHyvaVersion
             sprintf('Magento %s) %s (%s',
                 $this->payplugMagentoConfig->getMagentoVersion(),
                 $this->payplugHyvaConfig->getHyvaModuleName(),
-                $this->payplugHyvaConfig->getCachedHyvaModuleVersion()
+                $this->payplugHyvaConfig->getHyvaModuleVersion()
             )
         );
 

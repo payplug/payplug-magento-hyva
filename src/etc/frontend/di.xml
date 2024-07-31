@@ -2,48 +2,74 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-  <type name="Hyva\CompatModuleFallback\Model\CompatModuleRegistry">
-      <arguments>
-          <argument name="compatModules" xsi:type="array">
-              <item name="hyva-magento2-checkout-payplug" xsi:type="array">
-                  <item name="original_module" xsi:type="string">Payplug_Payments</item>
-                  <item name="compat_module" xsi:type="string">Hyva_CheckoutPayplug</item>
-              </item>
-          </argument>
-      </arguments>
-  </type>
+    <type name="Hyva\CompatModuleFallback\Model\CompatModuleRegistry">
+        <arguments>
+            <argument name="compatModules" xsi:type="array">
+                <item name="hyva-magento2-checkout-payplug" xsi:type="array">
+                    <item name="original_module" xsi:type="string">Payplug_Payments</item>
+                    <item name="compat_module" xsi:type="string">Hyva_CheckoutPayplug</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 
-  <type name="Hyva\Checkout\Model\Magewire\Payment\PlaceOrderServiceProvider">
-      <arguments>
-          <argument name="placeOrderServiceList" xsi:type="array">
-              <item name="payplug_payments_standard" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\DeferPlaceOrderService</item>
-              <item name="payplug_payments_oney" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_oney_without_fees" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_bancontact" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_sofort" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_satispay" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_amex" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_apple_pay" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\ApplepayPlaceOrderService</item>
-              <item name="payplug_payments_giropay" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_ideal" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_installment_plan" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_mybank" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-              <item name="payplug_payments_ondemand" xsi:type="object">Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService</item>
-          </argument>
-      </arguments>
-  </type>
+    <type name="Hyva\Checkout\Model\Magewire\Payment\PlaceOrderServiceProvider">
+        <arguments>
+            <argument name="placeOrderServiceList" xsi:type="array">
+                <item name="payplug_payments_standard" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\DeferPlaceOrderService
+                </item>
+                <item name="payplug_payments_oney" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_oney_without_fees" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_bancontact" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_sofort" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_satispay" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_amex" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_apple_pay" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\ApplepayPlaceOrderService
+                </item>
+                <item name="payplug_payments_giropay" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_ideal" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_installment_plan" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_mybank" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+                <item name="payplug_payments_ondemand" xsi:type="object">
+                    Hyva\CheckoutPayplug\Model\Magewire\Payment\PlaceOrderService
+                </item>
+            </argument>
+        </arguments>
+    </type>
 
-  <type name="Hyva\Theme\ViewModel\SvgIcons">
-      <arguments>
-          <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
-      </arguments>
-  </type>
+    <type name="Hyva\Theme\ViewModel\SvgIcons">
+        <arguments>
+            <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
+        </arguments>
+    </type>
 
-  <type name="Hyva\CheckoutPayplug\ViewModel\PayplugIcons">
-      <arguments>
-          <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
-      </arguments>
-  </type>
+    <type name="Hyva\CheckoutPayplug\ViewModel\PayplugIcons">
+        <arguments>
+            <argument name="iconPathPrefix" xsi:type="string">Hyva_CheckoutPayplug::svg/payplugIcons</argument>
+        </arguments>
+    </type>
 
     <type name="Payplug\Payments\Helper\Http\AbstractClient">
         <plugin name="hyva_checkout_payplug_track_hyva_version" type="Hyva\CheckoutPayplug\Plugin\TrackHyvaVersion"/>
