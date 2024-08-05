@@ -17,10 +17,12 @@ $icons = $viewModels->require(PayplugIcons::class);
 $config = $block->getConfig();
 $paymentConfig = $config['payment'];
 $payplugCards = $block->getPayplugCards();
-$integrated = false;
+
+$isIntegrated = false;
 $isOneClick = false;
+
 if (isset($paymentConfig["payplug_payments_standard"])) {
-    $integrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
+    $isIntegrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
     $isOneClick = $paymentConfig["payplug_payments_standard"]["is_one_click"];
 }
 ?>
@@ -57,7 +59,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
         </ul>
     <?php endif; ?>
 
-    <?php if ($integrated) : ?>
+    <?php if ($isIntegrated) : ?>
         <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? '-hide' : '' ?>">
             <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
             </div>
@@ -166,10 +168,10 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
     <script>
         (() => {
             window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
-            var oneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
-            var integrated = <?= $integrated ? 1 : 0; ?>;
+            var isOneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
+            var isIntegrated = <?= $isIntegrated ? 1 : 0; ?>;
 
-            if (integrated) {
+            if (isIntegrated) {
                 var IntegratedPayment = {
                     props: {
                         cartId: null,
@@ -235,7 +237,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 if (event.detail.method == "payplug_payments_standard") {
                     hyvaCheckout.payment.activate('payplug_payments_standard', {
                         initialize() {
-                            if (integrated) {
+                            if (isIntegrated) {
                                 this.loadHostedLib().then(() => {
                                     if (!this.checkLoaded()) {
                                         IntegratedPayment.init();
@@ -244,13 +246,15 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             }
                         },
                         async validate() {
-                            var card_selected = false;
+                            var cardIsSelected = false;
+
                             if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
                                 if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value) {
-                                    card_selected = true;
+                                    cardIsSelected = true;
                                 }
                             }
-                            if (oneclick && card_selected) {
+                            
+                            if (isOneclick && cardIsSelected) {
                                 var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                                 await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
                                 hyvaCheckout.main.getWireComponent().placeOrder();
@@ -258,7 +262,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
                                 return true;
                             } else {
-                                if (integrated) {
+                                if (isIntegrated) {
                                     hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                         // Just simulating a 5 seconds API request.
                                         return new Promise((resolve) => {
@@ -344,13 +348,13 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                         document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
                             var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                             if (card.value === '') {
-                                oneclick = false;
-                                if (integrated) {
+                                isOneclick = false;
+                                if (isIntegrated) {
                                     document.querySelector("#payplug-payment-form").classList.remove("-hide");
                                 }
                             } else {
-                                oneclick = true;
-                                if (integrated) {
+                                isOneclick = true;
+                                if (isIntegrated) {
                                     document.querySelector("#payplug-payment-form").classList.add("-hide");
                                 }
                             }
@@ -366,7 +370,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 }
             }, {once: true});
 
-            if (integrated) {
+            if (isIntegrated) {
                 const cardholder = document.querySelector('#cardholder-input-container');
                 const pan = document.querySelector('#pan-input-container');
                 const exp = document.querySelector('#exp-input-container');
