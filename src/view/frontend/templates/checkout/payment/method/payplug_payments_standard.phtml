@@ -170,9 +170,8 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
         (() => {
             window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
             let isOneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
-            const isIntegrated = <?= $isIntegrated ? 1 : 0; ?>;
 
-            if (isIntegrated) {
+            <?php if ($isIntegrated) : ?>
                 const IntegratedPayment = {
                     props: {
                         cartId: null,
@@ -231,20 +230,20 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                         IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
                     },
                 };
-            }
+            <?php endif; ?>
 
             window.addEventListener('checkout:payment:method-activate', (event) => {
 
                 if (event.detail.method == "payplug_payments_standard") {
                     hyvaCheckout.payment.activate('payplug_payments_standard', {
                         initialize() {
-                            if (isIntegrated) {
+                            <?php if ($isIntegrated) : ?>
                                 this.loadHostedLib().then(() => {
                                     if (!this.checkLoaded()) {
                                         IntegratedPayment.init();
                                     }
                                 });
-                            }
+                            <?php endif; ?>
                         },
                         async validate() {
                             let cardIsSelected = false;
@@ -263,12 +262,12 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
                                 return true;
                             } else {
-                                if (isIntegrated) {
+                                <?php if ($isIntegrated) : ?>
                                     hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                         // Just simulating a 5 seconds API request.
                                         return new Promise((resolve) => {
                                             IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                                            IntegratedPayment.props.api.validateForm()
+                                            IntegratedPayment.props.api.validateForm();
                                             IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
                                                 magewire.plugins.loader.start();
                                                 if (isFormValid) {
@@ -297,7 +296,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                                                 } else {
                                                                     window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
                                                                     reject();
-
                                                                 }
                                                             }
                                                         });
@@ -311,7 +309,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                             });
                                         });
                                     });
-                                }
+                                <?php endif; ?>
                             }
                         },
                         loadHostedLib() {
@@ -350,14 +348,14 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                             if (card.value === '') {
                                 isOneclick = false;
-                                if (isIntegrated) {
+                                <?php if ($isIntegrated) : ?>
                                     document.querySelector("#payplug-payment-form").classList.remove("-hide");
-                                }
+                                <?php endif; ?>
                             } else {
                                 isOneclick = true;
-                                if (isIntegrated) {
+                                <?php if ($isIntegrated) : ?>
                                     document.querySelector("#payplug-payment-form").classList.add("-hide");
-                                }
+                                <?php endif; ?>
                             }
                         });
                     }
@@ -371,33 +369,35 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 }
             }, {once: true});
 
-            if (isIntegrated) {
+            <?php if ($isIntegrated) : ?>
                 const cardholder = document.querySelector('#cardholder-input-container');
                 const pan = document.querySelector('#pan-input-container');
                 const exp = document.querySelector('#exp-input-container');
                 const cvv = document.querySelector('#cvv-input-container');
-                const options = { attributes: true }
+                const options = { attributes: true };
+
                 function callback(mutationList, observer) {
                     mutationList.forEach(function(mutation) {
                         if ( mutation.attributeName === 'class' ) {
                             if (mutation.target.classList.contains("integrated_payment_error")) {
                                 mutation.target.style.border = "1px solid #FF0000";
                                 let id = mutation.target.id
-                                document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "block";
+                                document.querySelector('.error-container.'+ id + ' .invalid-field').style.display = "block";
                             } else {
                                 let id = mutation.target.id
                                 mutation.target.style.border = "1px solid #d5d6d8";
-                                document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "none";
+                                document.querySelector('.error-container.'+ id + ' .invalid-field').style.display = "none";
                             }
                         }
                     })
                 }
-                const observer = new MutationObserver(callback)
-                observer.observe(cardholder, options)
-                observer.observe(pan, options)
-                observer.observe(exp, options)
-                observer.observe(cvv, options)
-            }
+
+                const observer = new MutationObserver(callback);
+                observer.observe(cardholder, options);
+                observer.observe(pan, options);
+                observer.observe(exp, options);
+                observer.observe(cvv, options);
+            <?php endif; ?>
         })();
     </script>
 </div>
