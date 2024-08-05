@@ -168,11 +168,11 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
     <script>
         (() => {
             window.PAYPLUG_DOMAIN = "https://secure-qa.payplug.com";
-            var isOneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
-            var isIntegrated = <?= $isIntegrated ? 1 : 0; ?>;
+            let isOneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
+            const isIntegrated = <?= $isIntegrated ? 1 : 0; ?>;
 
             if (isIntegrated) {
-                var IntegratedPayment = {
+                const IntegratedPayment = {
                     props: {
                         cartId: null,
                         paymentId: null,
@@ -246,16 +246,16 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             }
                         },
                         async validate() {
-                            var cardIsSelected = false;
+                            let cardIsSelected = false;
 
                             if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
                                 if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value) {
                                     cardIsSelected = true;
                                 }
                             }
-                            
+
                             if (isOneclick && cardIsSelected) {
-                                var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                                const selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                                 await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
                                 hyvaCheckout.main.getWireComponent().placeOrder();
                                 resolve();
