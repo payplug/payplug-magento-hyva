@@ -206,15 +206,6 @@
                 background-size: 100% auto;
             }
         }
-
-        input,
-        span {
-            @apply hidden;
-
-            &:checked {
-                @apply opacity-100;
-            }
-        }
     }
 
     &_schemes {

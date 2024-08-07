@@ -66,11 +66,53 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
             </div>
             <div class="payplug IntegratedPayment_container -scheme">
-                <div class="card-title"> <?= $escaper->escapeHtml(__('Your card')); ?> </div>
-                <div class="payplug IntegratedPayment_schemes">
-                    <label class="payplug IntegratedPayment_scheme -visa"><input type="radio" name="schemeOptions" value="visa"/><span></span></label>
-                    <label class="payplug IntegratedPayment_scheme -mastercard"><input type="radio" name="schemeOptions" value="mastercard" /><span></span></label>
-                    <label class="payplug IntegratedPayment_scheme -cb"><input type="radio" name="schemeOptions" value="cb" /><span></span></label>
+                <div>
+                    <?= $escaper->escapeHtml(__('Your card')); ?>
+                </div>
+                <div x-data="{ currentCard: '' }"
+                     class="flex justify-between items-center flex-wrap w-[115px]">
+                    <label class="hover:cursor-pointer">
+                        <span class="sr-only">Visa</span>
+                        <span :class="currentCard === 'visa' ? 'inline' : 'hidden'" x-cloak>
+                            <?= $icons->renderHtml('visa', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                        </span>
+                        <span :class="currentCard === 'visa' ? 'hidden' : 'inline'">
+                            <?= $icons->renderHtml('visa-dark', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                        </span>
+                        <input type="radio"
+                               class="sr-only"
+                               name="schemeOptions"
+                               value="visa"
+                               x-model="currentCard" />
+                    </label>
+                    <label class="hover:cursor-pointer">
+                        <span class="sr-only">Mastercard</span>
+                        <span :class="currentCard === 'mastercard' ? 'inline' : 'hidden'" x-cloak>
+                            <?= $icons->renderHtml('mastercard', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                        </span>
+                        <span :class="currentCard === 'mastercard' ? 'hidden' : 'inline'">
+                            <?= $icons->renderHtml('mastercard-dark', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                        </span>
+                        <input type="radio"
+                               class="sr-only"
+                               name="schemeOptions"
+                               value="mastercard"
+                               x-model="currentCard" />
+                    </label>
+                    <label class="hover:cursor-pointer">
+                        <span class="sr-only">CB</span>
+                        <span :class="currentCard === 'cb' ? 'inline' : 'hidden'" x-cloak>
+                            <?= $icons->renderHtml('cb', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                        </span>
+                        <span :class="currentCard === 'cb' ? 'hidden' : 'inline'">
+                        <?= $icons->renderHtml('cb-dark', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                        </span>
+                        <input type="radio"
+                               class="sr-only"
+                               name="schemeOptions"
+                               value="cb"
+                               x-model="currentCard" />
+                    </label>
                 </div>
             </div>
             <div id="pan-input-container" class="payplug IntegratedPayment_container -pan pan-input-container" data-e2e-name="pan"></div>
