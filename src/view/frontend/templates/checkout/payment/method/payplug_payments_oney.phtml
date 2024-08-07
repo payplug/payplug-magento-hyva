@@ -88,9 +88,9 @@ $icons = $viewModels->require(PayplugIcons::class);
     }
 
     const updatePlaceOrderButtonLabel = (type) => {
-        const buttonLabel = type === null 
-            ? '<?= $escaper->escapeJs(__('Place Order')); ?>' 
-            : getPaymentTypeLabel().replace('%1', type);
+        const buttonLabel = type
+            ? getPaymentTypeLabel().replace('%1', type) 
+            : '<?= $escaper->escapeJs(__('Place Order')); ?>';
         document.querySelector('.btn-place-order').innerText = buttonLabel;
     }
 
