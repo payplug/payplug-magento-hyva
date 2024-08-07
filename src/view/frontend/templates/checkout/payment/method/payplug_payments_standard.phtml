@@ -261,6 +261,9 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                 return true;
                             } else {
                                 <?php if ($isPopup) : ?>
+                                    hyva.setCookie('mage-cache-sessid', '', -1, true);
+                                    window.dispatchEvent(new CustomEvent("reload-customer-section-data"));
+
                                     fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0']])); ?>')
                                         .then(response => {
                                             if (response.error === true) {
