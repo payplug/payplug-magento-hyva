@@ -89,6 +89,9 @@ $productType = $product->getTypeId();
         </div>
     <?php endif; ?>
 
+    <?php // Payplug Oney simulation ?>
+    <?= $block->getChildHtml("payplug-payments-product-oney-wrapper") ?>
+
     <div class="flex mt-4 justify-end">
         <?= $block->getChildHtml('product.info.addtowishlist'); ?>
         <?= $block->getChildHtml('product.info.addtocompare'); ?>
