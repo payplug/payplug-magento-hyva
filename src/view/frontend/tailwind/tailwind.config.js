@@ -1,13 +1,13 @@
-/**
- * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
- */
-
 module.exports = {
-    content: [
-        '../templates/**/*.phtml',
-    ]
-}
-
+    theme: {
+        extend: {
+            colors: {
+                oney: {
+                    'DEFAULT': '#81BC00',
+                    disable: '#B2B2B2'
+                }
+            }
+        }
+    },
+    content: ['../templates/**/*.phtml']
+};

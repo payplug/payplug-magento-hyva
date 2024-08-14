@@ -1,27 +1,71 @@
 <?php
-/** @var \Payplug\Payments\Block\Oney\Simulation $block */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Payplug\Payments\Block\Oney;
+use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+
+/** @var Simulation $block */
+/** @var Escaper $escaper */
+
 $oneySimulation = $block->getOneySimulation(true);
 $isOneyWithoutFees = $oneySimulation->getMethod() === \Payplug\Payments\Gateway\Config\OneyWithoutFees::METHOD_CODE;
 $isItalianStore = $block->isItalianStore();
 $hasError = false;
+
 if (!$oneySimulation->getSuccess()) {
     $hasError = true;
 }
-?>
-<div class="oneyCta<?= $isOneyWithoutFees ? ' oney-without-fees' : ''; ?><?= $isItalianStore ? ' oney-it' : ''; ?>">
-    <button type="button"
-            class="oneyCta_button<?php if ($hasError): ?> oneyCta_button-disabled<?php endif; ?>">
-        <span><?= $block->escapeHtml(__('Or pay in')); ?></span>
-        <span class="oneyCta_logo oneyLogo oneyLogo-x3x4"></span>
-        <span class="oneyCta_tooltip oneyLogo oneyLogo-tooltip"></span>
-    </button>
-    <span class="oneyPopin<?php if ($hasError): ?> oneyPopin-error<?php endif; ?>"></span>
-</div>
 
-<script type="text/x-magento-init">
-    {
-        ".oneyCta": {
-            "oneyPopin": {}
-        }
+/** @var PayplugIcons $viewModels */
+$icons = $viewModels->require(PayplugIcons::class);
+?>
+
+<script>
+    'use strict';
+
+    const isItalianStore = <?= $isItalianStore ? 1: 0 ?>;
+    const isOneyWithoutFees = <?= $isOneyWithoutFees ? 1: 0 ?>;
+    const hasError = <?= $hasError ? 1: 0 ?>;
+
+    function oneySimulation() {
+        return {
+            isItalianStore: isItalianStore ? true : false,
+            isOneyWithoutFees: isOneyWithoutFees ? true : false,
+            isEnabled: false,
+            hasError: hasError ? true : false,
+            handleClick() {
+                this.isEnabled = !this.isEnabled;
+            }
+        };
     }
 </script>
+
+<div x-data="oneySimulation()">
+    <button type="button"
+            @click="handleClick()"
+            class="inline-flex items-center text-left">
+        <span class="text-secondary-lighter uppercase">
+            <?= $block->escapeHtml(__('Or pay in')); ?>
+        </span>
+        <span class="inline-flex items-center"
+              :class="isEnabled ? 'text-oney' : 'text-oney-disable'">
+            <?php if ($isOneyWithoutFees): ?> 
+                <span class="sr-only">
+                    <?= $block->escapeHtml(__('3x 4x Oney without fees')); ?>
+                </span>
+                <?= $icons->renderHtml('3x4x-without-fees', 'ml-2', 170, 23, ['aria-hidden' => 'true']); ?>
+            <?php else: ?>
+                <span class="sr-only">
+                    <?= $block->escapeHtml(__('3x 4x Oney')); ?>
+                </span>
+                <?= $icons->renderHtml('3x4x', 'ml-2', 110, 23, ['aria-hidden' => 'true']); ?>
+            <?php endif; ?>
+            <span class="sr-only">
+                <?= $block->escapeHtml(__('?')); ?>
+            </span>
+            <?= $icons->renderHtml('tooltip', 'ml-1', 14, 14, ['aria-hidden' => 'true']); ?>
+        </span>
+    </button>
+</div>
