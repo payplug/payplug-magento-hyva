@@ -4,7 +4,7 @@ module.exports = {
             colors: {
                 oney: {
                     'DEFAULT': '#81BC00',
-                    disable: '#B2B2B2'
+                    lighter: '#ECF5D9'
                 }
             }
         }

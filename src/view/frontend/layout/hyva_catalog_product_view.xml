@@ -8,8 +8,10 @@
 		<referenceBlock name="product.info" 
                         template="Hyva_CheckoutPayplug::product/view/product-info.phtml" />
 
-        <referenceBlock name="payplug-payments-product-oney-simulation" 
-                        template="Hyva_CheckoutPayplug::oney/simulation.phtml" />
+        <referenceBlock name="payplug-payments-product-oney-simulation"
+                        template="Hyva_CheckoutPayplug::oney/simulation.phtml">
+			<block name="loading" template="Hyva_Theme::ui/loading.phtml"/>
+		</referenceBlock>
 
         <move element="payplug-payments-product-oney-wrapper" destination="product.info" />
 	</body>
