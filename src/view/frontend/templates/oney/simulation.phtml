@@ -134,7 +134,10 @@ $icons = $viewModels->require(PayplugIcons::class);
                 <span class="sr-only">
                     <?= $block->escapeHtml(__('3x 4x Oney without fees')); ?>
                 </span>
-                <?= $icons->renderHtml('3x4x-without-fees', 'ml-2', 170, 23, ['aria-hidden' => 'true']); ?>
+                <?= $isItalianStore
+                    ? $icons->renderHtml('3x4x-it-without-fees', 'ml-2', 196, 23, ['aria-hidden' => 'true'])
+                    : $icons->renderHtml('3x4x-without-fees', 'ml-2', 170, 23, ['aria-hidden' => 'true']); 
+                ?>
             <?php else: ?>
                 <span class="sr-only">
                     <?= $block->escapeHtml(__('3x 4x Oney')); ?>

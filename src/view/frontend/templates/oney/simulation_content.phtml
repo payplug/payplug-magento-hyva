@@ -190,13 +190,19 @@ $icons = $viewModels->require(PayplugIcons::class);
     <p class="border-t border-t-oney pt-2 mt-2 text-gray-600 text-[10px] leading-3">
         <?= /* @noEscape */ __($legalOney, $minAmount, $maxAmount); ?>
         <?php if ($block->isMerchandItalian()): ?>
-            <span class="legal-it">
+            <span class="block">
                 <?php if (!$isOneyWithoutFees): ?>
-                <a href="<?= $block->escapeHtmlAttr($block->getMoreInfoUrl()); ?>" target="_blank" download>
+                <a href="<?= $block->escapeHtmlAttr($block->getMoreInfoUrl()); ?>" 
+                   class="text-oney font-bold underline"
+                   target="_blank" 
+                   download>
                     <?= $block->escapeHtml(__('More info')); ?>
                 </a>
                 <?php else: ?>
-                <a href="<?= $block->escapeHtmlAttr($block->getMoreInfoUrlWithoutFees()); ?>" target="_blank" download>
+                <a href="<?= $block->escapeHtmlAttr($block->getMoreInfoUrlWithoutFees()); ?>"
+                   class="text-oney font-bold underline"
+                   target="_blank"
+                   download>
                     <?= $block->escapeHtml(__('More info')); ?>
                 </a>
                 <?php endif; ?>
