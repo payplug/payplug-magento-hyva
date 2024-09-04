@@ -29,8 +29,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 <script>
     'use strict';
 
-    const isItalianStore = <?= $isItalianStore ? 1: 0 ?>;
-    const hasError = <?= $hasError ? 1: 0 ?>;
+    var hasError = <?= $hasError ? 1: 0 ?>;
 
     function getProductId() {
         const product = document.querySelector('[name="product"]');
