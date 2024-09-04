@@ -28,10 +28,10 @@ $icons = $viewModels->require(PayplugIcons::class);
 
     const isItalianStore = <?= $isItalianStore ? 1: 0 ?>;
     const hasError = <?= $hasError ? 1: 0 ?>;
-    let productId = 'XX';
-    const product = document.querySelector('[name="product"]');
-    if (product.length !== 0) {
-        productId = product.value;
+
+    function getProductId() {
+        const product = document.querySelector('[name="product"]');
+        return product.length !== 0 && product.value;
     }
 
     function oneySimulation() {
@@ -105,7 +105,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                 return formData;
             },
             eventListeners: {
-                [`@update-qty-`+productId+`.window`](event) {
+                [`@update-qty-${getProductId()}.window`](event) {
                     this.isLoading = true;
 
                     this.getPaymentSimulations()
