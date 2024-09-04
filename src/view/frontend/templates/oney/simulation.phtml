@@ -64,13 +64,11 @@ $icons = $viewModels->require(PayplugIcons::class);
             },
             getPaymentSimulations() {
                 const formData = this.getFormData();
-                return fetch(`${BASE_URL}/payplug_payments/oney/simulation`, {
+                const body = new URLSearchParams(formData);
+                return fetch(`${BASE_URL}/payplug_payments/oney/simulation`+ '?form_key=' + hyva.getFormKey(), {
                     method: 'post',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
+                    body,
+                    headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
                 });
             },
             getFormData() {
