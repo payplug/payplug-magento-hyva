@@ -14,6 +14,9 @@
         <referenceBlock name="payplug-payments-product-oney-simulation"
                         template="Hyva_CheckoutPayplug::oney/simulation.phtml">
             <block name="loading" template="Hyva_Theme::ui/loading.phtml"/>
+            <arguments>
+                <argument name="popin_position" xsi:type="string">bottom</argument>
+            </arguments>
         </referenceBlock>
 
         <move element="payplug-payments-product-oney-wrapper" destination="product.info" />

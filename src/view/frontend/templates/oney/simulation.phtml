@@ -19,8 +19,8 @@ if (!$oneySimulation->getSuccess()) {
     $hasError = true;
 }
 
-$popinCssTopPosition = $block->getPopinCssTopPosition() ?? 'translate-y-8';
-$arrowCssTopPosition = $block->getArrowCssTopPosition() ?? 'after:-translate-y-8';
+// {String} : 'top' (default) | 'bottom'
+$popinPosition = $block->getPopinPosition() ?? 'top';
 
 /** @var PayplugIcons $viewModels */
 $icons = $viewModels->require(PayplugIcons::class);
@@ -122,7 +122,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 
 <div x-data="oneySimulation()"
      x-bind="eventListeners"
-     class="relative">
+     class="relative flex flex-col gap-4 lg:gap-0">
      <?= $block->getChildHtml('loading') ?>
 
     <?php // Button ?>
@@ -156,10 +156,10 @@ $icons = $viewModels->require(PayplugIcons::class);
     </button>
 
     <?php // Popin ?>
-    <div class="absolute bottom-0 right-full transform -translate-x-8 <?= $escaper->escapeHtmlAttr($popinCssTopPosition) ?> w-[350px] p-4 bg-white border-2
-                after:content-[''] after:absolute after:w-6 after:h-6 
-                after:transform after:translate-x-2/4 <?= $escaper->escapeHtmlAttr($arrowCssTopPosition) ?> after:rotate-45 
-                after:bg-white after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5 after:bottom-0"
+    <div class="lg:absolute lg:right-full lg:transform <?= $popinPosition === 'top' ? 'lg:-translate-y-9' : 'lg:translate-y-8 lg:bottom-0' ?> lg:-translate-x-8 lg:w-[350px] p-4 bg-white border-2
+                after:hidden lg:after:block after:absolute after:w-6 after:h-6 
+                after:transform after:translate-x-2/4 <?= $popinPosition === 'top' ? 'lg:after:top-0 after:translate-y-8' : 'after:bottom-0 after:-translate-y-8' ?> after:rotate-45 
+                after:bg-white after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5"
          :class="isEnabled ? 'border-oney after:border-oney' : 'border-gray-400 after:border-gray-400'"
          x-show="popinIsVisible"
          x-html="popinContent"

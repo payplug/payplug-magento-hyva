@@ -35,7 +35,7 @@ $icons = $viewModels->require(PayplugIcons::class);
     </p>
 <?php else: ?>
     <button type="button"
-            class="absolute top-4 right-4"
+            class="hidden lg:inline-block absolute top-4 right-4"
             @click="popinIsVisible = false">
         <span class="sr-only"><?= $block->escapeHtml(__('Close')); ?></span>
         <?= $heroicons->xHtml('text-oney', 30, 30, ['aria-hidden' => 'true']); ?>

@@ -11,13 +11,6 @@
             </arguments>
         </referenceBlock>
 
-        <referenceBlock name="payplug-payments-product-oney-simulation">
-            <arguments>
-                <argument name="arrow_css_top_position" xsi:type="string">after:-translate-y-14</argument>
-                <argument name="popin_css_top_position" xsi:type="string">translate-y-14</argument>
-            </arguments>
-        </referenceBlock>
-
         <move element="payplug-payments-product-oney-wrapper" 
               destination="checkout.cart.totals.container"
               after="-" />
