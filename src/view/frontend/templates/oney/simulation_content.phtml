@@ -5,15 +5,17 @@ declare(strict_types=1);
 use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
 use Magento\Framework\Escaper;
-use Payplug\Payments\Block\Oney;
+use Magento\Framework\Pricing\Helper\Data;
+use Payplug\Payments\Block\Oney\Simulation;
+use Payplug\Payments\Gateway\Config\OneyWithoutFees;
 
 /** @var Escaper $escaper */
 /** @var Simulation $block */
 
 $oneySimulation = $block->getOneySimulation();
 $message = $oneySimulation->getMessage();
-$isOneyWithoutFees = $oneySimulation->getMethod() === \Payplug\Payments\Gateway\Config\OneyWithoutFees::METHOD_CODE;
-$pricingHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+$isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
+$pricingHelper = $this->helper(Data::class);
 $hasError = false;
 
 if (!$oneySimulation->getSuccess() || !empty($message)) {
@@ -58,7 +60,7 @@ $icons = $viewModels->require(PayplugIcons::class);
             <?= /* @noEscape */ __('Pay %1by card%2', '<span class="font-bold">', '</span>'); ?>
         <?php endif; ?>
     </div>
-    
+
     <?php // Tab navigation ?>
     <div>
         <ul role="tablist"
@@ -91,7 +93,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                 </button>
             </li>
         </ul>
-        
+
         <?php foreach ($oneySimulation->getOptions() as $option): ?>
             <div x-show="paymentType === '<?= /* @noEscape */ $option->getType(); ?>'"
                  role="tabpanel"
@@ -145,7 +147,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                                 <span class="text-black font-bold">
                                     <?= /* @noEscape */ $pricingHelper->currency(0, true, false); ?>
                                 </span>
-                                <?= $block->escapeHtml(__('TAEG:')); ?> 
+                                <?= $block->escapeHtml(__('TAEG:')); ?>
                                 <span class="text-black font-bold">0%</span>)
                             </small>
                         </li>
@@ -185,7 +187,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                 '<a href="http://www.oney.fr" class="text-oney font-bold" target="_blank">www.oney.fr</a>';
         }
     ?>
-    
+
     <?php // Legal ?>
     <p class="border-t border-t-oney pt-2 mt-2 text-gray-600 text-[10px] leading-3">
         <?= /* @noEscape */ __($legalOney, $minAmount, $maxAmount); ?>

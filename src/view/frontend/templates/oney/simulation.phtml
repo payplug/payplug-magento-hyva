@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
 use Magento\Framework\Escaper;
-use Payplug\Payments\Block\Oney;
+use Payplug\Payments\Block\Oney\Simulation;
+use Payplug\Payments\Gateway\Config\OneyWithoutFees;
 
 /** @var Escaper $escaper */
 /** @var Simulation $block */
 
 $oneySimulation = $block->getOneySimulation(true);
-$isOneyWithoutFees = $oneySimulation->getMethod() === \Payplug\Payments\Gateway\Config\OneyWithoutFees::METHOD_CODE;
+$isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
 $isItalianStore = $block->isItalianStore();
 $hasError = false;
 
@@ -27,6 +28,11 @@ $icons = $viewModels->require(PayplugIcons::class);
 
     const isItalianStore = <?= $isItalianStore ? 1: 0 ?>;
     const hasError = <?= $hasError ? 1: 0 ?>;
+    let productId = 'XX';
+    const product = document.querySelector('[name="product"]');
+    if (product.length !== 0) {
+        productId = product.value;
+    }
 
     function oneySimulation() {
         return {
@@ -43,7 +49,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 
                     this.getPaymentSimulations()
                         .then(response => response.json())
-                        .then(data => {                            
+                        .then(data => {
                             this.popinContent = data.html;
                             this.isLoading = false;
                             this.popinIsVisible = true;
@@ -69,11 +75,11 @@ $icons = $viewModels->require(PayplugIcons::class);
                 let formData = {
                     form_key: hyva.getFormKey()
                 };
-        
+
                 if (document.querySelector('.oney-product').length === 0) {
                     return formData;
                 }
-        
+
                 const product = document.querySelector('[name="product"]');
 
                 if (product.length !== 0) {
@@ -95,12 +101,11 @@ $icons = $viewModels->require(PayplugIcons::class);
 
                     formData.product_options = productOptions;
                 }
-        
+
                 return formData;
             },
             eventListeners: {
-                <?php // @todo : dynamize quantity id ?>
-                [`@update-qty-XX.window`](event) {
+                [`@update-qty-`+productId+`.window`](event) {
                     this.isLoading = true;
 
                     this.getPaymentSimulations()
@@ -130,7 +135,7 @@ $icons = $viewModels->require(PayplugIcons::class);
             <?= $block->escapeHtml(__('Or pay in')); ?>
         </span>
         <span class="inline-flex items-center">
-            <?php if ($isOneyWithoutFees): ?> 
+            <?php if ($isOneyWithoutFees): ?>
                 <span class="sr-only">
                     <?= $block->escapeHtml(__('3x 4x Oney without fees')); ?>
                 </span>
@@ -153,7 +158,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 
     <?php // Popin ?>
     <div class="absolute bottom-0 right-full transform -translate-x-8 translate-y-8 w-[350px] p-4 bg-white border-2
-                after:content-[''] after:absolute after:w-6 after:h-6 after:translate-x-2/4 after:-translate-y-8 after:rotate-45 after:bg-white 
+                after:content-[''] after:absolute after:w-6 after:h-6 after:translate-x-2/4 after:-translate-y-8 after:rotate-45 after:bg-white
                 after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5 after:bottom-0"
          :class="isEnabled ? 'border-oney after:border-oney' : 'border-gray-400 after:border-gray-400'"
          x-show="popinIsVisible"
