@@ -194,14 +194,14 @@ $icons = $viewModels->require(PayplugIcons::class);
         <?php if ($block->isMerchandItalian()): ?>
             <span class="block">
                 <?php if (!$isOneyWithoutFees): ?>
-                <a href="<?= $block->escapeHtmlAttr($block->getMoreInfoUrl()); ?>" 
+                <a href="<?= $block->escapeUrl($block->getMoreInfoUrl()); ?>" 
                    class="text-oney font-bold underline"
                    target="_blank" 
                    download>
                     <?= $block->escapeHtml(__('More info')); ?>
                 </a>
                 <?php else: ?>
-                <a href="<?= $block->escapeHtmlAttr($block->getMoreInfoUrlWithoutFees()); ?>"
+                <a href="<?= $block->escapeUrl($block->getMoreInfoUrlWithoutFees()); ?>"
                    class="text-oney font-bold underline"
                    target="_blank"
                    download>
