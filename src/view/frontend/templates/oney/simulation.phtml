@@ -19,6 +19,9 @@ if (!$oneySimulation->getSuccess()) {
     $hasError = true;
 }
 
+$popinCssTopPosition = $block->getPopinCssTopPosition() ?? 'translate-y-8';
+$arrowCssTopPosition = $block->getArrowCssTopPosition() ?? 'after:-translate-y-8';
+
 /** @var PayplugIcons $viewModels */
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
@@ -31,12 +34,11 @@ $icons = $viewModels->require(PayplugIcons::class);
 
     function getProductId() {
         const product = document.querySelector('[name="product"]');
-        return product.length !== 0 && product.value;
+        return product !== null && product.value;
     }
 
     function oneySimulation() {
         return {
-            isItalianStore: isItalianStore ? true : false,
             isEnabled: hasError ? false : true,
             isLoading: false,
             popinContent: '',
@@ -75,14 +77,14 @@ $icons = $viewModels->require(PayplugIcons::class);
                 let formData = {
                     form_key: hyva.getFormKey()
                 };
-
-                if (document.querySelector('.oney-product').length === 0) {
+        
+                if (document.querySelector('.oney-product') !== null) {
                     return formData;
                 }
 
                 const product = document.querySelector('[name="product"]');
 
-                if (product.length !== 0) {
+                if (document.querySelector('[name="product"]') !== null) {
                     formData.product = product.value;
                     formData.qty = document.querySelector('[name="qty"]').value;
                     let productOptions = [];
@@ -157,9 +159,10 @@ $icons = $viewModels->require(PayplugIcons::class);
     </button>
 
     <?php // Popin ?>
-    <div class="absolute bottom-0 right-full transform -translate-x-8 translate-y-8 w-[350px] p-4 bg-white border-2
-                after:content-[''] after:absolute after:w-6 after:h-6 after:translate-x-2/4 after:-translate-y-8 after:rotate-45 after:bg-white
-                after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5 after:bottom-0"
+    <div class="absolute bottom-0 right-full transform -translate-x-8 <?= $escaper->escapeHtmlAttr($popinCssTopPosition) ?> w-[350px] p-4 bg-white border-2
+                after:content-[''] after:absolute after:w-6 after:h-6 
+                after:transform after:translate-x-2/4 <?= $escaper->escapeHtmlAttr($arrowCssTopPosition) ?> after:rotate-45 
+                after:bg-white after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5 after:bottom-0"
          :class="isEnabled ? 'border-oney after:border-oney' : 'border-gray-400 after:border-gray-400'"
          x-show="popinIsVisible"
          x-html="popinContent"

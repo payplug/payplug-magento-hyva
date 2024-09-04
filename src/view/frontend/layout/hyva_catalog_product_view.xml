@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-	<head>
-		<remove src="Payplug_Payments::js/oney.js" />
-	</head>
-	<body>
-		<referenceBlock name="product.info" 
+    <head>
+        <remove src="Payplug_Payments::js/oney.js" />
+    </head>
+    <body>
+        <referenceBlock name="product.info" 
                         template="Hyva_CheckoutPayplug::product/view/product-info.phtml" />
+
+        <referenceBlock name="payplug-payments-product-oney-wrapper"
+                        template="Hyva_CheckoutPayplug::oney/simulation_wrapper_checkout.phtml" />
 
         <referenceBlock name="payplug-payments-product-oney-simulation"
                         template="Hyva_CheckoutPayplug::oney/simulation.phtml">
-			<block name="loading" template="Hyva_Theme::ui/loading.phtml"/>
-		</referenceBlock>
+            <block name="loading" template="Hyva_Theme::ui/loading.phtml"/>
+        </referenceBlock>
 
         <move element="payplug-payments-product-oney-wrapper" destination="product.info" />
-	</body>
+    </body>
 </page>
