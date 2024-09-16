@@ -6,8 +6,17 @@
  */
 
 module.exports = {
-    content: [
-        '../templates/**/*.phtml',
-    ]
+  theme: {
+    extend: {
+      width: {
+        'payment-card': '33px',
+      },
+      height: {
+        'payment-card': '22px',
+      }
+    }
+  },
+  content: [
+      '../templates/**/*.phtml',
+  ]
 }
-

@@ -11,7 +11,7 @@
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Standard</argument>
 					<argument name="metadata" xsi:type="array">
 						<item name="icon" xsi:type="array">
-							<item name="svg" xsi:type="string">visa</item>
+							<item name="svg" xsi:type="string">payment-cards</item>
 						</item>
 					</argument>
 				</arguments>
