@@ -13,11 +13,7 @@ use Payplug\Payments\Gateway\Config\OneyWithoutFees;
 $oneySimulation = $block->getOneySimulation(true);
 $isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
 $isItalianStore = $block->isItalianStore();
-$hasError = false;
-
-if (!$oneySimulation->getSuccess()) {
-    $hasError = true;
-}
+$hasError = (int)!$oneySimulation->getSuccess();
 
 // {String} : 'top' (default) | 'bottom'
 $popinPosition = $block->getPopinPosition() ?? 'top';
@@ -29,7 +25,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 <script>
     'use strict';
 
-    var hasError = <?= $hasError ? 1 : 0 ?>;
+    var hasError = <?= $hasError ?>;
 
     function getProductId() {
         const product = document.querySelector('[name="product"]');
@@ -38,7 +34,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 
     function oneySimulation() {
         return {
-            isEnabled: hasError ? false : true,
+            isEnabled: !hasError,
             isLoading: false,
             popinContent: '',
             quantityHasChanged: true,
@@ -74,7 +70,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                 let formData = {
                     form_key: hyva.getFormKey()
                 };
-        
+
                 if (document.querySelector('.oney-product') !== null) {
                     return formData;
                 }
@@ -140,7 +136,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                 </span>
                 <?= $isItalianStore
                     ? $icons->renderHtml('3x4x-it-without-fees', 'ml-2', 196, 23, ['aria-hidden' => 'true'])
-                    : $icons->renderHtml('3x4x-without-fees', 'ml-2', 170, 23, ['aria-hidden' => 'true']); 
+                    : $icons->renderHtml('3x4x-without-fees', 'ml-2', 170, 23, ['aria-hidden' => 'true']);
                 ?>
             <?php else: ?>
                 <span class="sr-only">
@@ -157,8 +153,8 @@ $icons = $viewModels->require(PayplugIcons::class);
 
     <?php // Popin ?>
     <div class="lg:absolute lg:right-full lg:transform <?= $popinPosition === 'top' ? 'lg:-translate-y-9' : 'lg:translate-y-8 lg:bottom-0' ?> lg:-translate-x-8 lg:w-[350px] p-4 bg-white border-2
-                after:hidden lg:after:block after:absolute after:w-6 after:h-6 
-                after:transform after:translate-x-2/4 <?= $popinPosition === 'top' ? 'lg:after:top-0 after:translate-y-8' : 'after:bottom-0 after:-translate-y-8' ?> after:rotate-45 
+                after:hidden lg:after:block after:absolute after:w-6 after:h-6
+                after:transform after:translate-x-2/4 <?= $popinPosition === 'top' ? 'lg:after:top-0 after:translate-y-8' : 'after:bottom-0 after:-translate-y-8' ?> after:rotate-45
                 after:bg-white after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5"
          :class="isEnabled ? 'border-oney after:border-oney' : 'border-gray-400 after:border-gray-400'"
          x-show="popinIsVisible"

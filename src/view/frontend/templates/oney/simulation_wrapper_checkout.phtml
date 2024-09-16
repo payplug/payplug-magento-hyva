@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Magento\Framework\Escaper;
 
-$containerCssClasses = $block->getContainerCssClasses() ?? 'my-2';
+$containerCssClasses = $block->getContainerCssClasses();
 ?>
 
 <div class="<?= $escaper->escapeHtmlAttr($containerCssClasses); ?>">

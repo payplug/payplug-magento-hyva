@@ -1,15 +1,19 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <remove src="Payplug_Payments::js/oney.js" />
     </head>
     <body>
-        <referenceBlock name="product.info" 
+        <referenceBlock name="product.info"
                         template="Hyva_CheckoutPayplug::product/view/product-info.phtml" />
 
         <referenceBlock name="payplug-payments-product-oney-wrapper"
-                        template="Hyva_CheckoutPayplug::oney/simulation_wrapper_checkout.phtml" />
+                        template="Hyva_CheckoutPayplug::oney/simulation_wrapper_checkout.phtml">
+            <arguments>
+                <argument name="container_css_classes" xsi:type="string">my-2</argument>
+            </arguments>
+        </referenceBlock>
 
         <referenceBlock name="payplug-payments-product-oney-simulation"
                         template="Hyva_CheckoutPayplug::oney/simulation.phtml">

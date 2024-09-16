@@ -4,28 +4,44 @@ declare(strict_types=1);
 
 namespace Hyva\CheckoutPayplug\Controller\Oney;
 
+use Dnd\Catalog\Model\ProductOptions;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductFactory;
+use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\ConfigurableProduct\Api\LinkManagementInterface;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\View\LayoutInterface;
 use Payplug\Payments\Block\Oney\Simulation as OneySimulationBlock;
+use Payplug\Payments\Controller\Oney\Simulation as BaseSimulation;
 use Payplug\Payments\Logger\Logger;
 
-class Simulation extends Action
+/**
+ * {@override} To use Hyva templates
+ */
+class Simulation extends BaseSimulation
 {
+    /**
+     * Constants to the Hyva templates
+     */
+    public const HYVA_CONTENT = 'Hyva_CheckoutPayplug::oney/simulation_content.phtml';
+    public const HYVA_SIMULATION = 'Hyva_CheckoutPayplug::oney/simulation.phtml';
+
     public function __construct(
         Context $context,
-        private JsonFactory $resultJsonFactory,
-        private ProductFactory $productFactory,
-        private LayoutInterface $layout,
-        private LinkManagementInterface $linkManagement,
-        private Logger $logger
+        protected JsonFactory $resultJsonFactory,
+        protected ProductFactory $productFactory,
+        protected LayoutInterface $layout,
+        protected LinkManagementInterface $linkManagement,
+        protected Logger $logger,
+        protected ProductRepositoryInterface $productRepository,
+        protected CollectionFactory $productCollectionFactory
     ) {
-        parent::__construct($context);
+        parent::__construct($context, $resultJsonFactory, $productFactory, $layout, $linkManagement);
     }
 
     /**
@@ -33,7 +49,6 @@ class Simulation extends Action
      */
     public function execute(): Json
     {
-
         $this->logger->info('----------Hyva Simulation-----------');
         $result = $this->resultJsonFactory->create();
 
@@ -50,10 +65,7 @@ class Simulation extends Action
                 $productPrice = $productPrice * $qty;
             }
 
-            $template = 'Hyva_CheckoutPayplug::oney/simulation_content.phtml';
-            if (isset($params['wrapper'])) {
-                $template = 'Hyva_CheckoutPayplug::oney/simulation.phtml';
-            }
+            $template = isset($params['wrapper']) ? self::HYVA_SIMULATION : self::HYVA_CONTENT;
 
             $block = $this->layout->createBlock(OneySimulationBlock::class)
                 ->setTemplate($template)
@@ -65,7 +77,11 @@ class Simulation extends Action
                 'html' => $block->toHtml(),
             ]);
         } catch (\Exception $e) {
-            $result->setData(['success' => false]);
+            $this->logger->error($e->getMessage());
+            $result->setData([
+                'success' => false,
+                'html' => $e->getMessage()
+            ]);
         }
 
         return $result;
@@ -76,27 +92,24 @@ class Simulation extends Action
      *
      * @throws \Exception
      */
-    private function getProduct(?array $params): ?Product
+    protected function getProduct(?array $params): ?ProductInterface
     {
         if (!isset($params['product'])) {
             return null;
         }
 
-        $product = $this->productFactory->create();
-        $product->load($params['product']);
+        $product = $this->productRepository->getById($params['product']);
         if (!$product->getId()) {
             throw new \Exception('Product not found');
         }
 
-        if (!isset($params['product_options']) ||
-            !is_array($params['product_options']) ||
-            count($params['product_options']) === 0
-        ) {
+        if (empty($params['product_options']) || !is_array($params['product_options'])) {
             return $product;
         }
 
         $productOptions = $params['product_options'];
         $attributes = [];
+
         foreach ($productOptions as $productOption) {
             $attributeName = $productOption['attribute'] ?? '';
             $attributeValue = $productOption['value'] ?? '';
@@ -109,19 +122,25 @@ class Simulation extends Action
             ];
         }
         $simpleProducts = $this->linkManagement->getChildren($product->getSku());
+        $simpleProductsIds = [];
+
         foreach ($simpleProducts as $simpleProduct) {
-            $loadedSimpleProduct = $this->productFactory->create();
-            $loadedSimpleProduct->load($simpleProduct->getId());
-            if (!$product->getId()) {
-                continue;
-            }
+            $simpleProductsIds[] = $simpleProduct->getId();
+        }
+
+        $collection = $this->productCollectionFactory->create();
+        $collection->addAttributeToSelect(['entity_id', 'name', 'value']);
+        $collection->addAttributeToFilter('entity_id', ['in' => $simpleProductsIds]);
+        $simpleProductLoadedCollection = $collection->getItems();
+
+        foreach ($simpleProductLoadedCollection as $loadedSimpleProduct) {
             foreach ($attributes as $attribute) {
                 if ($loadedSimpleProduct->getData($attribute['name']) != $attribute['value']) {
                     continue 2;
                 }
             }
 
-            return $loadedSimpleProduct;
+            return $this->productRepository->getById($loadedSimpleProduct->getId());
         }
 
         return $product;

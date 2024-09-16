@@ -16,11 +16,6 @@ $oneySimulation = $block->getOneySimulation();
 $message = $oneySimulation->getMessage();
 $isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
 $pricingHelper = $this->helper(Data::class);
-$hasError = false;
-
-if (!$oneySimulation->getSuccess() || !empty($message)) {
-    $hasError = true;
-}
 
 /** @var HeroiconsSolid $heroicons */
 $heroicons = $viewModels->require(HeroiconsSolid::class);
@@ -29,7 +24,7 @@ $heroicons = $viewModels->require(HeroiconsSolid::class);
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
 
-<?php if ($hasError): ?>
+<?php if (!$oneySimulation->getSuccess() || !empty($message)): ?>
     <p class="error text-sm text-primary">
         <?= /* @noEscape */ $message; ?>
     </p>
@@ -169,34 +164,17 @@ $icons = $viewModels->require(PayplugIcons::class);
 
         $minAmount = $pricingHelper->currency($minAmount, true, false);
         $maxAmount = $pricingHelper->currency($maxAmount, true, false);
-
-        $legalOney = 'Financing offer with mandatory deposit reserved for private individual between %1 and %2. ' .
-            'Providing Oney acceptation. You have 14 days to renounce this offer after the subscription. ' .
-            'Oney Bank - SA capital of 51 286 585€ - 34 Avenue de Flandre 59170 Croix - ' .
-            '546 380 197 RCS Lille Métropole - n° Orias 07 023 261 www.orias.fr ' .
-            'Correspondance : CS 60 006 - 59895 Lille Cedex - ' .
-            '<a href="http://www.oney.fr" class="text-oney font-bold" target="_blank">www.oney.fr</a>';
-
-        if ($isOneyWithoutFees) {
-            $legalOney = 'Offre de financement sans assurance avec apport obligatoire, réservée aux particuliers ' .
-                'et valable pour tout achat de %1 à %2. Sous réserve d\'acceptation par Oney Bank. ' .
-                'Vous disposez d\'un délai de 14 jours pour renoncer à votre crédit. Oney Bank - ' .
-                'SA au capital de 51 286 585€ - 34 Avenue de Flandre 59170 Croix - ' .
-                '546 380 197 RCS Lille Métropole - n° Orias 07 023 261 www.orias.fr ' .
-                'Correspondance : CS 60 006 - 59895 Lille Cedex - ' .
-                '<a href="http://www.oney.fr" class="text-oney font-bold" target="_blank">www.oney.fr</a>';
-        }
     ?>
 
     <?php // Legal ?>
     <p class="border-t border-t-oney pt-2 mt-2 text-gray-600 text-[10px] leading-3">
-        <?= /* @noEscape */ __($legalOney, $minAmount, $maxAmount); ?>
+        <?= /* @noEscape */ __("Financing offer with mandatory deposit reserved for private individual between %1 and %2. Providing Oney acceptation. You have 14 days to renounce this offer after the subscription. Oney Bank - SA capital of 51 286 585€ - 34 Avenue de Flandre 59170 Croix - 546 380 197 RCS Lille Métropole - n° Orias 07 023 261 www.orias.fr Correspondance : CS 60 006 - 59895 Lille Cedex - <a href=\"http://www.oney.fr\" class=\"text-oney font-bold\" target=\"_blank\">www.oney.fr</a>", $minAmount, $maxAmount); ?>
         <?php if ($block->isMerchandItalian()): ?>
             <span class="block">
                 <?php if (!$isOneyWithoutFees): ?>
-                <a href="<?= $block->escapeUrl($block->getMoreInfoUrl()); ?>" 
+                <a href="<?= $block->escapeUrl($block->getMoreInfoUrl()); ?>"
                    class="text-oney font-bold underline"
-                   target="_blank" 
+                   target="_blank"
                    download>
                     <?= $block->escapeHtml(__('More info')); ?>
                 </a>
