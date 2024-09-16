@@ -73,10 +73,10 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                     <label class="hover:cursor-pointer">
                         <span class="sr-only">Visa</span>
                         <span :class="currentCard === 'visa' ? 'inline' : 'hidden'" x-cloak>
-                            <?= $icons->renderHtml('visa', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                            <?= $icons->renderHtml('visa', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <span :class="currentCard === 'visa' ? 'hidden' : 'inline'">
-                            <?= $icons->renderHtml('visa-dark', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                            <?= $icons->renderHtml('visa-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
@@ -87,10 +87,10 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                     <label class="hover:cursor-pointer">
                         <span class="sr-only">Mastercard</span>
                         <span :class="currentCard === 'mastercard' ? 'inline' : 'hidden'" x-cloak>
-                            <?= $icons->renderHtml('mastercard', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                            <?= $icons->renderHtml('mastercard', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <span :class="currentCard === 'mastercard' ? 'hidden' : 'inline'">
-                            <?= $icons->renderHtml('mastercard-dark', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                            <?= $icons->renderHtml('mastercard-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
@@ -101,10 +101,10 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                     <label class="hover:cursor-pointer">
                         <span class="sr-only">CB</span>
                         <span :class="currentCard === 'cb' ? 'inline' : 'hidden'" x-cloak>
-                            <?= $icons->renderHtml('cb', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                            <?= $icons->renderHtml('cb', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <span :class="currentCard === 'cb' ? 'hidden' : 'inline'">
-                        <?= $icons->renderHtml('cb-dark', 'w-8 h-5', 32, 20, ['aria-hidden' => 'true']); ?>
+                        <?= $icons->renderHtml('cb-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
