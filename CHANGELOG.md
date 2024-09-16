@@ -5,6 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.2) - 2024-09-18
+
+### Main features
+
+* Oney banner support on product and cart view
+* Payplug script loading optimization
+* Optimize controllers security
+* Add security with form key to the Apple Pay controller
+* Fix Payplug secured domain url
+* Update payment cards logos
+* Tailwindification various
+* Clean various
+
+**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.2...1.0.3)**
+
+### Added
+
+- Add get product id method for the simulation component [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Add italian support for Oney payment popin [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Add Oney banner on cart and adjust Tailwind styles [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Add Oney popin position settings via layout [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Add Oney simulation button [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Add Oney simulation popin [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Add security with form key to the Apple Pay controller [#45](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/45)
+- Add the backend for the oey simulation on Hyva [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Add the tracking of the Hyva version whenever a payment is made [#46](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/46)
+
+### Changed
+
+- Change composer getter scope to private [#46](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/46)
+- Change the hyva post request [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Move Oney simulation block to product info section [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Move the caching of the hyva version to the recurring data patch [#46](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/46)
+- Optimize Oney button label set condition [#39](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/39)
+- Optimize place order button label update on Oney payment change [#39](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/39)
+- Scope the plugin to frontend, and cache the module version in the database [#46](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/46)
+- Update cb Logo [#47](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/47)
+- Update Magewire templates naming and location conventions [#48](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/38)
+- Update payment cards logos [#47](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/47)
+- Update payplug main script loading behavior [#38](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/38)
+- Use orderinterfaces instead of the model [#45](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/45)
+
+### Fixed
+
+- Fix Payplug secured domain url [#50](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/50)
+- Fix place order button text on payment method select [#39](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/39)
+- Fix redeclaration of const error [#49](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/49)
+- Fix standard payment credit card selector [#47](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/47)
+- Update standard payment indentation [#47](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/47)
+
+### Removed
+
+- Clean useless id and xmlns [#47](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/47)
+- Remove residual useless script file [#38](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/38)
+- Remove useless svg file [#47](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/47)
+
 ## [1.0.2](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.2) - 2024-07-19
 
 ### Features
