@@ -1,0 +1,164 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+use Magento\Framework\Escaper;
+use Payplug\Payments\Block\Oney\Simulation;
+use Payplug\Payments\Gateway\Config\OneyWithoutFees;
+
+/** @var Escaper $escaper */
+/** @var Simulation $block */
+
+$oneySimulation = $block->getOneySimulation(true);
+$isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
+$isItalianStore = $block->isItalianStore();
+$hasError = (int)!$oneySimulation->getSuccess();
+
+// {String} : 'top' (default) | 'bottom'
+$popinPosition = $block->getPopinPosition() ?? 'top';
+
+/** @var PayplugIcons $viewModels */
+$icons = $viewModels->require(PayplugIcons::class);
+?>
+
+<script>
+    'use strict';
+
+    var hasError = <?= $hasError ?>;
+
+    function getProductId() {
+        const product = document.querySelector('[name="product"]');
+        return product !== null && product.value;
+    }
+
+    function oneySimulation() {
+        return {
+            isEnabled: !hasError,
+            isLoading: false,
+            popinContent: '',
+            quantityHasChanged: true,
+            popinIsVisible: false,
+            paymentType: '3x',
+            handleClick() {
+                if (this.quantityHasChanged && !this.popinIsVisible) {
+                    this.isLoading = true;
+
+                    this.getPaymentSimulations()
+                        .then(response => response.json())
+                        .then(data => {
+                            this.popinContent = data.html;
+                            this.isLoading = false;
+                            this.popinIsVisible = true;
+                        });
+                } else {
+                    this.popinIsVisible = !this.popinIsVisible;
+                }
+
+                this.quantityHasChanged = false;
+            },
+            getPaymentSimulations() {
+                const formData = this.getFormData();
+                const body = new URLSearchParams(formData);
+                return fetch(`${BASE_URL}/payplug_payments/oney/simulation`+ '?form_key=' + hyva.getFormKey(), {
+                    method: 'post',
+                    body,
+                    headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
+                });
+            },
+            getFormData() {
+                let formData = {
+                    form_key: hyva.getFormKey()
+                };
+
+                if (document.querySelector('.oney-product') !== null) {
+                    return formData;
+                }
+
+                const product = document.querySelector('[name="product"]');
+
+                if (document.querySelector('[name="product"]') !== null) {
+                    formData.product = product.value;
+                    formData.qty = document.querySelector('[name="qty"]').value;
+                    let productOptions = [];
+                    let configurableAttributes = document.querySelector('.super-attribute-select');
+
+                    if (configurableAttributes) {
+                        configurableAttributes.forEach(function (value, index) {
+                            let configurableAttribute = $(value);
+
+                            productOptions.push({
+                                attribute: configurableAttribute.data('attr-name'),
+                                value: configurableAttribute.value
+                            });
+                        });
+                    }
+
+                    formData.product_options = productOptions;
+                }
+
+                return formData;
+            },
+            eventListeners: {
+                [`@update-qty-${getProductId()}.window`](event) {
+                    this.isLoading = true;
+
+                    this.getPaymentSimulations()
+                        .then(response => response.json())
+                        .then(data => {
+                            this.isEnabled = !data.html.includes('error');
+                            this.quantityHasChanged = true;
+                            this.isLoading = false;
+                        });
+                }
+            }
+        };
+    }
+</script>
+
+<div x-data="oneySimulation()"
+     x-bind="eventListeners"
+     class="relative flex flex-col gap-4 lg:gap-0">
+     <?= $block->getChildHtml('loading') ?>
+
+    <?php // Button ?>
+    <button type="button"
+            @click="handleClick()"
+            class="inline-flex items-center text-left"
+            :class="isEnabled ? 'text-oney' : 'text-gray-400'">
+        <span class="uppercase text-sm font-bold">
+            <?= $block->escapeHtml(__('Or pay in')); ?>
+        </span>
+        <span class="inline-flex items-center">
+            <?php if ($isOneyWithoutFees): ?>
+                <span class="sr-only">
+                    <?= $block->escapeHtml(__('3x 4x Oney without fees')); ?>
+                </span>
+                <?= $isItalianStore
+                    ? $icons->renderHtml('3x4x-it-without-fees', 'ml-2', 196, 23, ['aria-hidden' => 'true'])
+                    : $icons->renderHtml('3x4x-without-fees', 'ml-2', 170, 23, ['aria-hidden' => 'true']);
+                ?>
+            <?php else: ?>
+                <span class="sr-only">
+                    <?= $block->escapeHtml(__('3x 4x Oney')); ?>
+                </span>
+                <?= $icons->renderHtml('3x4x', 'ml-2', 110, 23, ['aria-hidden' => 'true']); ?>
+            <?php endif; ?>
+            <span class="sr-only">
+                <?= $block->escapeHtml(__('?')); ?>
+            </span>
+            <?= $icons->renderHtml('tooltip', 'ml-1', 14, 14, ['aria-hidden' => 'true']); ?>
+        </span>
+    </button>
+
+    <?php // Popin ?>
+    <div class="lg:absolute lg:right-full lg:transform <?= $popinPosition === 'top' ? 'lg:-translate-y-9' : 'lg:translate-y-8 lg:bottom-0' ?> lg:-translate-x-8 lg:w-[350px] p-4 bg-white border-2
+                after:hidden lg:after:block after:absolute after:w-6 after:h-6
+                after:transform after:translate-x-2/4 <?= $popinPosition === 'top' ? 'lg:after:top-0 after:translate-y-8' : 'after:bottom-0 after:-translate-y-8' ?> after:rotate-45
+                after:bg-white after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5"
+         :class="isEnabled ? 'border-oney after:border-oney' : 'border-gray-400 after:border-gray-400'"
+         x-show="popinIsVisible"
+         x-html="popinContent"
+         @click.away="popinIsVisible = false"
+         x-cloak></div>
+</div>
