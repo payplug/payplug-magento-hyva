@@ -25,7 +25,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 }
 ?>
 
-<div wire:id="checkout.payment.method.payplug_payments_standard" xmlns:wire="http://www.w3.org/1999/xhtml">
+<div>
     <?php if (!empty($payplugCards) && $isOneClick) : ?>
         <ul class="payplug-payments-cards">
             <?php foreach ($payplugCards as $payplugCard) : ?>
