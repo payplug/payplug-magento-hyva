@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
 	<body>
 		<referenceBlock name="checkout.payment.methods">
 			<block name="checkout.payment.method.payplug_payments_standard"
                    as="payplug_payments_standard"
                    class="Hyva\CheckoutPayplug\Block\Standard"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_standard.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/standard.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Standard</argument>
 					<argument name="metadata" xsi:type="array">
 						<item name="icon" xsi:type="array">
-							<item name="svg" xsi:type="string">visa</item>
+							<item name="svg" xsi:type="string">payment-cards</item>
 						</item>
 					</argument>
 				</arguments>
@@ -18,7 +19,7 @@
 			<block name="checkout.payment.method.payplug_payments_oney"
                    as="payplug_payments_oney"
                    class="Payplug\Payments\Block\Oney\Simulation"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_oney.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/oney.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
 					<argument name="metadata" xsi:type="array">
@@ -31,7 +32,7 @@
 			<block name="checkout.payment.method.payplug_payments_oney_without_fees"
                    as="payplug_payments_oney_without_fees"
                    class="Payplug\Payments\Block\Oney\Simulation"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_oney.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/oney.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
 					<argument name="metadata" xsi:type="array">
@@ -62,7 +63,7 @@
 				</arguments>
 			</block>
 			<block name="checkout.payment.method.payplug_payments_giropay" as="payplug_payments_giropay"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_ppro.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
 					<argument name="metadata" xsi:type="array">
@@ -74,7 +75,7 @@
 			</block>
 			<block name="checkout.payment.method.payplug_payments_ideal"
                    as="payplug_payments_ideal"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_ppro.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
 					<argument name="metadata" xsi:type="array">
@@ -86,7 +87,7 @@
 			</block>
 			<block name="checkout.payment.method.payplug_payments_mybank"
                    as="payplug_payments_mybank"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_ppro.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
 					<argument name="metadata" xsi:type="array">
@@ -98,7 +99,7 @@
 			</block>
 			<block name="checkout.payment.method.payplug_payments_satispay"
                    as="payplug_payments_satispay"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_ppro.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
 					<argument name="metadata" xsi:type="array">
@@ -110,7 +111,7 @@
 			</block>
 			<block name="checkout.payment.method.payplug_payments_sofort"
                    as="payplug_payments_sofort"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_ppro.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
 					<argument name="metadata" xsi:type="array">
@@ -123,7 +124,7 @@
 			<block name="checkout.payment.method.payplug_payments_apple_pay"
                    as="payplug_payments_apple_pay"
                    class="Hyva\CheckoutPayplug\Block\ApplePay"
-                   template="Hyva_CheckoutPayplug::checkout/payment/method/payplug_payments_apple_pay.phtml">
+                   template="Hyva_CheckoutPayplug::magewire/apple-pay.phtml">
 				<arguments>
 					<argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\ApplePay</argument>
 					<argument name="metadata" xsi:type="array">
