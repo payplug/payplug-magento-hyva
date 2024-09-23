@@ -1,5 +1,5 @@
-.oney-product {
-    @apply mb-[15px];
+.cart-form {
+    @apply relative z-10;
 }
 
 .oney-checkout-error {
@@ -21,10 +21,6 @@
 .oneyLogo {
     background: 50% no-repeat;
     background-size: 100%;
-}
-
-.oneyPopin_error {
-    @apply text-[#b2b2b2] text-sm italic font-normal m-0;
 }
 
 .oneyPayment {
@@ -175,12 +171,6 @@
 }
 
 @media (max-width: 767px) {
-    .oneyPopin-error {
-        @apply w-full px-2 py-0 top-0;
-        transform: none;
-        background: rgba(178, 178, 178, 0.1);
-    }
-
     .oneyPayment-open {
         @apply mb-[15px];
     }
@@ -267,13 +257,7 @@
 }
 
 @media (min-width: 1024px) {
-    .onestep-checkout {
-        .oneyPopin-error {
-            @apply w-full px-2 py-0 top-0;
-            transform: none;
-            background: rgba(178, 178, 178, 0.1);
-        }
-    
+    .onestep-checkout {    
         .oneyPayment-open {
             @apply mb-[15px];
         }
