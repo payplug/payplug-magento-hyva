@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Optimize controllers security
 * Add security with form key to the Apple Pay controller
 * Fix Payplug secured domain url
-* Update payment cards logos
+* Update and optimize payment cards logos
 * Tailwindification various
 * Clean various
 
