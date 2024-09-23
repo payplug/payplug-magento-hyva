@@ -13,6 +13,8 @@
         </arguments>
     </type>
 
+    <preference for="Payplug\Payments\Controller\Oney\Simulation" type="Hyva\CheckoutPayplug\Controller\Oney\Simulation"/>
+
     <type name="Hyva\Checkout\Model\Magewire\Payment\PlaceOrderServiceProvider">
         <arguments>
             <argument name="placeOrderServiceList" xsi:type="array">
@@ -71,7 +73,7 @@
         </arguments>
     </type>
 
-    <type name="Payplug\Payments\Helper\Http\AbstractClient">
+    <type name="Payplug\Payments\Helper\Config">
         <plugin name="hyva_checkout_payplug_track_hyva_version" type="Hyva\CheckoutPayplug\Plugin\TrackHyvaVersion"/>
     </type>
 

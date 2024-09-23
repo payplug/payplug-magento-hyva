@@ -1,13 +1,12 @@
-/**
- * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
- */
-
 module.exports = {
   theme: {
     extend: {
+      colors: {
+        oney: {
+          'DEFAULT': '#81BC00',
+          lighter: '#ECF5D9'
+        }
+      },
       width: {
         'payment-card': '33px',
       },
@@ -17,6 +16,7 @@ module.exports = {
     }
   },
   content: [
-      '../templates/**/*.phtml',
+      '../layout/**/*.xml',
+      '../templates/**/*.phtml'
   ]
 }
