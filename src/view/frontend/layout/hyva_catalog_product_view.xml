@@ -9,7 +9,7 @@
                         template="Hyva_CheckoutPayplug::product/view/product-info.phtml" />
 
         <referenceBlock name="payplug-payments-product-oney-wrapper"
-                        template="Hyva_CheckoutPayplug::oney/simulation_wrapper_checkout.phtml">
+                        template="Hyva_CheckoutPayplug::oney/simulation_wrapper.phtml">
             <arguments>
                 <argument name="container_css_classes" xsi:type="string">my-2</argument>
             </arguments>
