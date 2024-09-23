@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-/** @var Magento\Catalog\Block\Product\View $block */
+use Magento\Catalog\Block\Product\View;
 
+/** @var View $block */
 $price = $block->getProduct()->getFinalPrice(1);
+
 $containerCssClasses = $block->getContainerCssClasses();
 ?>
 <div class="oney-wrapper oney-product <?= $escaper->escapeHtmlAttr($containerCssClasses); ?>">
