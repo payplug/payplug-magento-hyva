@@ -1,5 +1,5 @@
-.oney-product {
-    @apply mb-[15px];
+.cart-form {
+    @apply relative z-10;
 }
 
 .oney-checkout-error {

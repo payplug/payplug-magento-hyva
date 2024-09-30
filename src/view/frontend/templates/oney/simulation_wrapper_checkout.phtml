@@ -7,6 +7,6 @@ use Magento\Framework\Escaper;
 $containerCssClasses = $block->getContainerCssClasses();
 ?>
 
-<div class="<?= $escaper->escapeHtmlAttr($containerCssClasses); ?>">
+<div class="oney-wrapper <?= $escaper->escapeHtmlAttr($containerCssClasses); ?>">
     <?= $block->getChildBlock('payplug-payments-product-oney-simulation')->toHtml(); ?>
 </div>

@@ -71,7 +71,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                     form_key: hyva.getFormKey()
                 };
 
-                if (document.querySelector('.oney-product') !== null) {
+                if (document.querySelector('.oney-product') === null) {
                     return formData;
                 }
 
