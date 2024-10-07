@@ -5,7 +5,6 @@
         <remove src="Payplug_Payments::js/oney.js" />
     </head>
     <body>
-
         <referenceBlock name="payplug-payments-product-oney-wrapper"
                         template="Hyva_CheckoutPayplug::oney/simulation_wrapper.phtml">
             <arguments>
@@ -21,6 +20,6 @@
             </arguments>
         </referenceBlock>
 
-        <move element="payplug-payments-product-oney-wrapper" destination="product.info" />
+        <move element="payplug-payments-product-oney-wrapper" destination="product.info.additional" before="-" />
     </body>
 </page>
