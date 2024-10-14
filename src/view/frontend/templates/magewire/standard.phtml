@@ -181,7 +181,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
     <script>
         (() => {
-            window.PAYPLUG_DOMAIN = 'https://secure.payplug.com';
             var oneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
             var integrated = <?= $integrated ? 1 : 0; ?>;
 
