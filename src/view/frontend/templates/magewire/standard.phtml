@@ -36,10 +36,13 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 $date = $payplugCard->getExpDate();
                 $cardExpirationDate = $block->getFormattedExpDate($date);
                 ?>
-
                 <li>
-                    <input type="radio" name="payment[payplug_payments_standard][customer_card_id]" id="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" class="payplug-payments-customer-card"
-                           data-card-id="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" value="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" />
+                    <input type="radio" 
+                           name="payment[payplug_payments_standard][customer_card_id]" 
+                           id="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" 
+                           class="payplug-payments-customer-card"
+                           data-card-id="<?= $escaper->escapeHtmlAttr($customerCardId); ?>"
+                           value="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" />
                     <label for="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>">
                         <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('other')); ?>" alt="">
                         <span class="card-last4"> <b>**** **** **** <?= $escaper->escapeHtml($cardFourDigits); ?></b></span>
@@ -48,7 +51,11 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 </li>
             <?php endforeach; ?>
             <li>
-                <input type="radio" name="payment[payplug_payments_standard][customer_card_id]" id="payplug_payments_card_" class="payplug-payments-customer-card" value="" />
+                <input type="radio" 
+                       name="payment[payplug_payments_standard][customer_card_id]" 
+                       id="payplug_payments_card_" 
+                       class="payplug-payments-customer-card" 
+                       value="" />
                 <label for="payplug_payments_card_">
                     <?= $escaper->escapeHtml(__('Pay with another card')); ?>
                 </label>
