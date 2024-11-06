@@ -22,6 +22,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 $storeCode = $storeConfigViewModel->getStoreConfig('general/locale/code');
 $paymentConfig = $config['payment'];
 $payplugCards = $block->getPayplugCards();
+$cbName = $storeCode === 'it_IT' ? 'postepay' : 'cb';
 
 $integrated = false;
 $isOneClick = false;
@@ -113,14 +114,14 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                x-model="currentCard" />
                     </label>
                     <label class="hover:cursor-pointer">
-                        <span class="sr-only">CB</span>
+                        <span class="sr-only">
+                            <?= $escaper->escapeHtml($storeCode === 'it_IT' ? 'PostePay' : 'CB') ?>
+                        </span>
                         <span :class="currentCard === 'cb' ? 'inline' : 'hidden'" x-cloak>
-                            <?php $cbName = $storeCode === 'it_IT' ? 'cb-it' : 'cb' ?>
                             <?= $icons->renderHtml($cbName, 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <span :class="currentCard === 'cb' ? 'hidden' : 'inline'">
-                        <?php $cbDarkName = $storeCode === 'it_IT' ? 'cb-dark-it' : 'cb-dark' ?>
-                        <?= $icons->renderHtml($cbDarkName, 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
+                        <?= $icons->renderHtml($cbName . '-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
