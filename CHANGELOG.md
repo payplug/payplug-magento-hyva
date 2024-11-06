@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.4) - 2024-11-06
 
+### Main features
+
+* Update and optimize (SVG) payment methods logos
+* Update Oney banner behavior on PDP to avoid template override
+
 **[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.3...1.0.4)**
 
 ### Added
