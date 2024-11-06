@@ -73,12 +73,6 @@
         </arguments>
     </type>
 
-    <type name="Hyva\CheckoutPayplug\ViewModel\OneyDisplayer">
-        <arguments>
-            <argument name="hyva_checkout_payplug_oney_displayer_view_model" xsi:type="object">Hyva\CheckoutPayplug\ViewModel\OneyDisplayer</argument>
-        </arguments>
-    </type>
-
     <type name="Payplug\Payments\Helper\Config">
         <plugin name="hyva_checkout_payplug_track_hyva_version" type="Hyva\CheckoutPayplug\Plugin\TrackHyvaVersion"/>
     </type>

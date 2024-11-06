@@ -7,9 +7,9 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Magento\Catalog\Block\Product\View;
 
 /** @var View $block */
+$price = $block->getProduct()->getFinalPrice(1);
 /** @var ViewModelRegistry $viewModels */
 /** @var OneyDisplayer $oneyDisplayer */
-$price = $block->getProduct()->getFinalPrice(1);
 $oneyDisplayer = $viewModels->require(OneyDisplayer::class);
 $containerCssClasses = $block->getContainerCssClasses();
 ?>
