@@ -5,12 +5,17 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
+use Payplug\Payments\Block\Formjs;
 
-/** @var Template $block */
 /** @var Escaper $escaper */
+/** @var Formjs $block */
+/** @var Template $block */
 /** @var ViewModelRegistry $viewModels */
 ?>
+
 <script>
+    window.PAYPLUG_DOMAIN = '<?= $block->getPayplugSecureUrl(); ?>';
+
     (() => {
         window.addEventListener('checkout:step:loaded', (event) => {
             if (

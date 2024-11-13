@@ -137,7 +137,8 @@
 		</referenceBlock>
 
 		<referenceContainer name="before.body.end">
-            <block name="payplug-payments-script"
+            <block class="Payplug\Payments\Block\Formjs"
+				   name="payplug-payments-script"
                    template="Hyva_CheckoutPayplug::checkout/payment/method/js/payplug.phtml"
             />
         </referenceContainer>
