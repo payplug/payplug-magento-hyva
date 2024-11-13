@@ -14,7 +14,7 @@ use Payplug\Payments\Block\Formjs;
 ?>
 
 <script>
-    window.PAYPLUG_DOMAIN = '<?= $escaper->escapeJs($escaper->escapeUrl($block->getPayplugSecureUrl())) ?>';
+    window.PAYPLUG_DOMAIN = '<?= $escaper->escapeJs($block->getPayplugSecureUrl()) ?>';
 
     (() => {
         window.addEventListener('checkout:step:loaded', (event) => {
