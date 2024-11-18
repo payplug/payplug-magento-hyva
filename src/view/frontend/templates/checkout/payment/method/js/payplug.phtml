@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Payplug\Payments\Block\Formjs;
+
+/** @var Escaper $escaper */
+/** @var Formjs $block */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+?>
+
+<script>
+    window.PAYPLUG_DOMAIN = '<?= $escaper->escapeJs($block->getPayplugSecureUrl()) ?>';
+
+    (() => {
+        window.addEventListener('checkout:step:loaded', (event) => {
+            if (
+                typeof window.ApplePaySession != 'undefined' &&
+                window.ApplePaySession &&
+                ApplePaySession.canMakePayments()
+            ) {
+            } else {
+                if (
+                    typeof document.querySelector('#payment-method-option-payplug_payments_apple_pay') != 'undefined' &&
+                    document.querySelector('#payment-method-option-payplug_payments_apple_pay') != null
+                ) {
+                    document.querySelector('#payment-method-option-payplug_payments_apple_pay').remove();
+                }
+            }
+        });
+
+        window.addEventListener('checkout:payment:method-activate', (event) => {
+            if (
+                typeof window.ApplePaySession != 'undefined' &&
+                window.ApplePaySession &&
+                ApplePaySession.canMakePayments()
+            ) {
+            } else {
+                if (
+                    typeof document.querySelector('#payment-method-option-payplug_payments_apple_pay') != 'undefined' &&
+                    document.querySelector('#payment-method-option-payplug_payments_apple_pay') != null
+                ) {
+                    document.querySelector('#payment-method-option-payplug_payments_apple_pay').remove();
+                }
+            }
+        });
+    })();
+</script>

@@ -29,6 +29,10 @@
             @apply flex gap-3 justify-between mt-3;
         }
 
+        .save-card-container {
+            @apply mt-4;
+        }
+
         .transaction-secured {
             @apply flex justify-center items-center gap-3 w-full mt-3 text-[#212225];
 
@@ -206,15 +210,6 @@
                 background-size: 100% auto;
             }
         }
-
-        input,
-        span {
-            @apply hidden;
-
-            &:checked {
-                @apply opacity-100;
-            }
-        }
     }
 
     &_schemes {
@@ -256,5 +251,19 @@
 
     .IntegratedPayment .ipOverlay 100% {
         @apply rotate-[360deg];
+    }
+}
+
+#payment-method-option-payplug_payments_standard {
+    label {
+        @apply justify-end flex-row-reverse gap-3;
+
+        > div {
+            @apply m-0 justify-center;
+        }
+
+        #payment-cards {
+            @apply w-[6.6875rem];
+        }
     }
 }
