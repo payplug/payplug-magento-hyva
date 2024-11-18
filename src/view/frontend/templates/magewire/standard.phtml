@@ -24,7 +24,7 @@ $paymentConfig = $config['payment'];
 $payplugCards = $block->getPayplugCards();
 $cbName = $storeCode === 'it_IT' ? 'postepay' : 'cb';
 
-$integrated = false;
+$isIntegrated = false;
 $isPopup = false;
 $isOneClick = false;
 
@@ -33,6 +33,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
     $isRedirected = !$paymentConfig["payplug_payments_standard"]["is_embedded"] && !$paymentConfig["payplug_payments_standard"]["is_integrated"];
     $isPopup = $paymentConfig["payplug_payments_standard"]["is_embedded"] && !$paymentConfig["payplug_payments_standard"]["is_integrated"];
     $isOneClick = $paymentConfig["payplug_payments_standard"]["is_one_click"];
+}
 ?>
 
 <div>
@@ -73,7 +74,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
         </ul>
     <?php endif; ?>
 
-    <?php if ($integrated) : ?>
+    <?php if ($isIntegrated) : ?>
         <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? '-hide' : '' ?>">
             <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
             </div>
@@ -262,7 +263,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
             };
 
             window.addEventListener('checkout:payment:method-activate', (event) => {
-
                 if (event.detail.method == "payplug_payments_standard") {
                     hyvaCheckout.payment.activate('payplug_payments_standard', {
                         initialize() {
@@ -308,7 +308,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                     
                                 <?php endif; ?>
 
-                                if (integrated) {
+                                <?php if ($isIntegrated) : ?>
                                     hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                         // Just simulating a 5 seconds API request.
                                         return new Promise((resolve) => {
@@ -355,7 +355,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                             });
                                         });
                                     });
-                                }
+                                <?php endif; ?>
                             }
                         },
                         loadHostedLib() {
@@ -394,14 +394,16 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                             if (card.value === '') {
                                 isOneClick = false;
-                                if (integrated) {
+
+                                <?php if ($isIntegrated) : ?>
                                     document.querySelector("#payplug-payment-form").classList.remove("-hide");
-                                }
+                                <?php endif; ?>
                             } else {
                                 isOneClick = true;
-                                if (integrated) {
+
+                                <?php if ($isIntegrated) : ?>
                                     document.querySelector("#payplug-payment-form").classList.add("-hide");
-                                }
+                                <?php endif; ?>
                             }
                         });
                     }
@@ -415,7 +417,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 }
             }, {once: true});
 
-            if (integrated) {
+            <?php if ($isIntegrated) : ?>
                 const cardholder = document.querySelector('#cardholder-input-container');
                 const pan = document.querySelector('#pan-input-container');
                 const exp = document.querySelector('#exp-input-container');
@@ -441,7 +443,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 observer.observe(pan, options)
                 observer.observe(exp, options)
                 observer.observe(cvv, options)
-            }
+            <?php endif; ?>
         })();
     </script>
 </div>
