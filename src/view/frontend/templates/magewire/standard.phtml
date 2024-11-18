@@ -263,23 +263,31 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
             };
 
             window.addEventListener('checkout:payment:method-activate', (event) => {
+                const MAGEWIRE_STANDARD_ID = '<?= /* @NoEscape */ $magewire->getId() ?>';
+                const MAGEWIRE_STANDARD_SELECTOR = document.querySelector(`[wire\\:id="${ MAGEWIRE_STANDARD_ID }"]`);
+
                 if (event.detail.method == "payplug_payments_standard") {
                     hyvaCheckout.payment.activate('payplug_payments_standard', {
                         initialize() {
                             this.loadHostedLib().then(() => {
-                                if (!this.checkLoaded()) {
+                                if (!this.hasCartHolder()) {
                                     IntegratedPayment.init();
                                 }
                             });
                         },
+                        hasCartHolder() {
+                            return document.body.contains(document.getElementById('cardholder'));
+                        },
                         async validate() {
-                            var card_selected = false;
+                            let cardIsSelected = false;
+
                             if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
                                 if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value) {
-                                    card_selected = true;
+                                    cardIsSelected = true;
                                 }
                             }
-                            if (isOneClick && card_selected) {
+
+                            if (isOneClick && cardIsSelected) {
                                 var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                                 await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
                                 hyvaCheckout.main.getWireComponent().placeOrder();
@@ -287,27 +295,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
                                 return true;
                             } else {
-                                <?php if ($isPopup) : ?>
-                                    fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0']])); ?>')
-                                        .then(response => {
-                                            if (response.error === true) {
-                                                alert(response.message);
-                                                window.location.replace(response.url);
-                                            } else {
-                                                if (typeof response.is_paid !== 'undefined' && response.is_paid === true) {
-                                                    window.location.replace(url.build(_this.returnUrl));
-                                                } else {
-                                                    if (typeof response.url !== 'undefined' && response.url !== false) {
-                                                        Payplug.Form.showPayment(response.url, isOneClick);
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                    return false;
-                                    
-                                <?php endif; ?>
-
                                 <?php if ($isIntegrated) : ?>
                                     hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                         // Just simulating a 5 seconds API request.
@@ -358,6 +345,42 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                 <?php endif; ?>
                             }
                         },
+                        <?php if ($isPopup) : ?>
+                            async placeOrder() {
+                                const cancelUrl = 'payplug_payments/payment/cancel';
+                                const redirectUrl = 'payplug_payments/payment/standard';
+                                const returnUrl = 'payplug_payments/payment/paymentReturn';
+
+                                fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    }
+                                })
+                                    .then((response) => response.json())
+                                    .then(data => {
+                                        if (data.is_paid) {
+                                            window.location.replace(`${BASE_URL}${returnUrl}`);
+                                            return;
+                                        }
+
+                                        if (data.url) {
+                                            Payplug.Form.showPayment(data.url, isOneClick);
+                                        } else {
+                                            this.redirectToCancelUrl();
+                                        }
+                                    })
+                                    .catch((error) => console.error(error));
+                            },
+                            redirectToCancelUrl() {
+                                window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
+                            },
+                            placeOrderViaJs() {
+                                <?php // Disable place order ?>
+                                return true;
+                            },
+                        <?php endif; ?>
                         loadHostedLib() {
                             return new Promise((resolve, reject) => {
                                 if (!document.getElementById('payplug_hosted_lib')) {
@@ -383,10 +406,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                 }, 100);
                             });
                         },
-                        checkLoaded: function () {
-                            return document.body.contains(document.getElementById('cardholder'));
-                        },
-                    }, document.getElementById('payplug-payment-form'), 'payment');
+                    }, MAGEWIRE_STANDARD_SELECTOR, 'payment');
 
                     if (document.querySelector('ul.payplug-payments-cards li') != null) {
                         document.querySelector('ul.payplug-payments-cards li input').click()
