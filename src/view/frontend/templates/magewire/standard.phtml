@@ -269,15 +269,20 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 if (event.detail.method == "payplug_payments_standard") {
                     hyvaCheckout.payment.activate('payplug_payments_standard', {
                         initialize() {
-                            this.loadHostedLib().then(() => {
-                                if (!this.hasCartHolder()) {
-                                    IntegratedPayment.init();
-                                }
-                            });
+                            this.loadHostedLib()
+                                <?php if ($isIntegrated) : ?>
+                                    .then(() => {
+                                        if (!this.hasCartHolder()) {
+                                            IntegratedPayment.init();
+                                        }
+                                    });
+                                <?php endif; ?>
                         },
-                        hasCartHolder() {
-                            return document.body.contains(document.getElementById('cardholder'));
-                        },
+                        <?php if ($isIntegrated) : ?>
+                            hasCartHolder() {
+                                return document.body.contains(document.getElementById('cardholder'));
+                            },
+                        <?php endif; ?>
                         async validate() {
                             let cardIsSelected = false;
 
