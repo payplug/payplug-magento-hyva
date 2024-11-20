@@ -201,7 +201,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
     <script>
         (() => {
-            let isOneClick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
+            let isOneClick = <?= !empty($payplugCards) && $isOneClick ? 'true' : 'false'; ?>;
 
             const IntegratedPayment = {
                 props: {
