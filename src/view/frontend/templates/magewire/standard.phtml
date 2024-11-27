@@ -351,33 +351,31 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                         },
                         <?php if ($isPopup) : ?>
                             async placeOrder() {
-                                const cancelUrl = 'payplug_payments/payment/cancel';
                                 const redirectUrl = 'payplug_payments/payment/standard';
                                 const returnUrl = 'payplug_payments/payment/paymentReturn';
 
-                                fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`, {
-                                    method: 'GET',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-Requested-With': 'XMLHttpRequest'
-                                    }
-                                })
-                                    .then((response) => response.json())
-                                    .then(data => {
-                                        if (data.is_paid) {
-                                            window.location.replace(`${BASE_URL}${returnUrl}`);
-                                            return;
-                                        }
+                                const isValid = await hyvaCheckout.validation.validate();
+                                if (!isValid) return;
 
-                                        if (data.url) {
-                                            Payplug.Form.showPayment(data.url, isOneClick);
+                                magewire.plugins.loader.start();
+
+                                await hyvaCheckout.main.getWireComponent().placeOrder();
+
+                                fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`)
+                                    .then(response => response.json())
+                                    .then(({ is_paid, url }) => {
+                                        if (is_paid) {
+                                            window.location.replace(`${BASE_URL}${returnUrl}`);
+                                        } else if (url) {
+                                            Payplug.Form.showPayment(url, isOneClick);
                                         } else {
                                             this.redirectToCancelUrl();
                                         }
                                     })
-                                    .catch((error) => console.error(error));
+                                    .catch(console.error);
                             },
                             redirectToCancelUrl() {
+                                const cancelUrl = 'payplug_payments/payment/cancel';
                                 window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
                             },
                             placeOrderViaJs() {
