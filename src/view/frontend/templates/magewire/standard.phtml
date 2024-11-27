@@ -273,14 +273,14 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             this.loadHostedLib()
                                 <?php if ($isIntegrated) : ?>
                                     .then(() => {
-                                        if (!this.hasCartHolder()) {
+                                        if (!this.isInitialized()) {
                                             IntegratedPayment.init();
                                         }
                                     });
                                 <?php endif; ?>
                         },
                         <?php if ($isIntegrated) : ?>
-                            hasCartHolder() {
+                            isInitialized() {
                                 return document.body.contains(document.getElementById('cardholder'));
                             },
                         <?php endif; ?>
