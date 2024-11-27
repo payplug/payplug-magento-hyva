@@ -303,7 +303,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             } else {
                                 <?php if ($isIntegrated) : ?>
                                     hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
-                                        // Just simulating a 5 seconds API request.
+                                        <?php // Just simulating a 5 seconds API request ?>
                                         return new Promise((resolve) => {
                                             IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
                                             IntegratedPayment.props.api.validateForm()
