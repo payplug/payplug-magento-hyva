@@ -202,64 +202,66 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
         (() => {
             let isOneClick = <?= !empty($payplugCards) && $isOneClick ? 'true' : 'false'; ?>;
 
-            const IntegratedPayment = {
-                props: {
-                    cartId: null,
-                    paymentId: null,
-                    paymentOptionId: null,
-                    form: {},
-                    checkoutForm: null,
-                    api: null,
-                    integratedPayment: null,
-                    token: null,
-                    notValid: true,
-                    fieldsValid: {
-                        cardHolder: false,
-                        pan: false,
-                        cvv: false,
-                        exp: false,
-                    },
-                    fieldsEmpty: {
-                        cardHolder: true,
-                        pan: true,
-                        cvv: true,
-                        exp: true,
-                    },
-                    inputStyle: {
-                        default: {
-                            color: '#2B343D',
-                            fontFamily: 'Poppins, sans-serif',
-                            fontSize: '14px',
-                            textAlign: 'left',
-                            '::placeholder': {
-                                color: '#969a9f',
-                            },
-                            ':focus': {
+            <?php if ($isIntegrated) : ?>
+                const IntegratedPayment = {
+                    props: {
+                        cartId: null,
+                        paymentId: null,
+                        paymentOptionId: null,
+                        form: {},
+                        checkoutForm: null,
+                        api: null,
+                        integratedPayment: null,
+                        token: null,
+                        notValid: true,
+                        fieldsValid: {
+                            cardHolder: false,
+                            pan: false,
+                            cvv: false,
+                            exp: false,
+                        },
+                        fieldsEmpty: {
+                            cardHolder: true,
+                            pan: true,
+                            cvv: true,
+                            exp: true,
+                        },
+                        inputStyle: {
+                            default: {
                                 color: '#2B343D',
+                                fontFamily: 'Poppins, sans-serif',
+                                fontSize: '14px',
+                                textAlign: 'left',
+                                '::placeholder': {
+                                    color: '#969a9f',
+                                },
+                                ':focus': {
+                                    color: '#2B343D',
+                                }
+                            },
+                            invalid: {
+                                color: '#E91932'
                             }
                         },
-                        invalid: {
-                            color: '#E91932'
-                        }
+                        save_card: false,
+                        scheme: null,
+                        query: null,
+                        submit: null,
+                        order_review: false,
+                        return_url: null
                     },
-                    save_card: false,
-                    scheme: null,
-                    query: null,
-                    submit: null,
-                    order_review: false,
-                    return_url: null
-                },
-                init: function () {
-                    IntegratedPayment.props.api = new Payplug.IntegratedPayment(<?= $escaper->escapeJs($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>);
-                    IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                    IntegratedPayment.props.form = {};
-                    IntegratedPayment.props.form.cardHolder = {element: IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
-                    IntegratedPayment.props.form.pan = {element:IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
-                    IntegratedPayment.props.form.cvv = {element:IntegratedPayment.props.api.cvv(document.querySelector('#cvv-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'CVV'})};
-                    IntegratedPayment.props.form.exp = {element:IntegratedPayment.props.api.expiration(document.querySelector('#exp-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Exp Date'})};
-                    IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
-                },
-            };
+                    init: function () {
+                        IntegratedPayment.props.api = new Payplug.IntegratedPayment(<?= $escaper->escapeJs($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>);
+                        IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                        IntegratedPayment.props.form = {};
+                        IntegratedPayment.props.form.cardHolder = {element: IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
+                        IntegratedPayment.props.form.pan = {element:IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
+                        IntegratedPayment.props.form.cvv = {element:IntegratedPayment.props.api.cvv(document.querySelector('#cvv-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'CVV'})};
+                        IntegratedPayment.props.form.exp = {element:IntegratedPayment.props.api.expiration(document.querySelector('#exp-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Exp Date'})};
+                        IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
+                    },
+                };
+            <?php endif; ?>
 
             window.addEventListener('checkout:payment:method-activate', (event) => {
                 const MAGEWIRE_STANDARD_ID = '<?= /* @NoEscape */ $magewire->getId() ?>';
