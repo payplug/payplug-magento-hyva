@@ -29,9 +29,8 @@ $isPopup = false;
 $isOneClick = false;
 
 if (isset($paymentConfig["payplug_payments_standard"])) {
-    $isIntegrated = !$paymentConfig["payplug_payments_standard"]["is_embedded"] && $paymentConfig["payplug_payments_standard"]["is_integrated"];
-    $isRedirected = !$paymentConfig["payplug_payments_standard"]["is_embedded"] && !$paymentConfig["payplug_payments_standard"]["is_integrated"];
-    $isPopup = $paymentConfig["payplug_payments_standard"]["is_embedded"] && !$paymentConfig["payplug_payments_standard"]["is_integrated"];
+    $isIntegrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
+    $isPopup = $paymentConfig["payplug_payments_standard"]["is_embedded"];
     $isOneClick = $paymentConfig["payplug_payments_standard"]["is_one_click"];
 }
 ?>
