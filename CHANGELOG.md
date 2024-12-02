@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.1.0) - 2024-12-XX
+
+### Main features
+
+* Add standard payment method pop-up option
+
+**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.5...1.1.0)**
+
+### Added
+- Add standard payment method pop-up option [#69](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/69)
+
+**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.5...1.1.0)**
+
 ## [1.0.5](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.5) - 2024-11-13
 
 ### Fixes
