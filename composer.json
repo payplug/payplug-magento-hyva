@@ -6,7 +6,7 @@
   "require": {
     "magento/framework": "*",
     "hyva-themes/magento2-compat-module-fallback": "*",
-    "payplug/payplug-magento2": "*"
+    "payplug/payplug-magento2": ">=4.2.0"
   },
   "authors": [{
       "name": "PayPlug",
