@@ -2,23 +2,31 @@
 
 declare(strict_types=1);
 
-use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\CheckoutPayplug\Block\Standard as BlockStandard;
 use Hyva\CheckoutPayplug\Model\Magewire\Payment\Method\Standard as MethodStandard;
 use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
 
-/** @var ViewModelRegistry $viewModels */
-/** @var MethodStandard $magewire */
-/** @var Escaper $escaper */
 /** @var BlockStandard $block */
+/** @var Escaper $escaper */
+/** @var MethodStandard $magewire */
+/** @var StoreConfig $storeConfigViewModel */
+/** @var ViewModelRegistry $viewModels */
 
-$icons = $viewModels->require(PayplugIcons::class);
+$storeConfigViewModel = $viewModels->require(StoreConfig::class);
 $config = $block->getConfig();
+$icons = $viewModels->require(PayplugIcons::class);
+
+$storeCode = $storeConfigViewModel->getStoreConfig('general/locale/code');
 $paymentConfig = $config['payment'];
 $payplugCards = $block->getPayplugCards();
+$cbName = $storeCode === 'it_IT' ? 'postepay' : 'cb';
+
 $integrated = false;
 $isOneClick = false;
+
 if (isset($paymentConfig["payplug_payments_standard"])) {
     $integrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
     $isOneClick = $paymentConfig["payplug_payments_standard"]["is_one_click"];
@@ -36,10 +44,13 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 $date = $payplugCard->getExpDate();
                 $cardExpirationDate = $block->getFormattedExpDate($date);
                 ?>
-
                 <li>
-                    <input type="radio" name="payment[payplug_payments_standard][customer_card_id]" id="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" class="payplug-payments-customer-card"
-                           data-card-id="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" value="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" />
+                    <input type="radio" 
+                           name="payment[payplug_payments_standard][customer_card_id]" 
+                           id="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" 
+                           class="payplug-payments-customer-card"
+                           data-card-id="<?= $escaper->escapeHtmlAttr($customerCardId); ?>"
+                           value="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" />
                     <label for="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>">
                         <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('other')); ?>" alt="">
                         <span class="card-last4"> <b>**** **** **** <?= $escaper->escapeHtml($cardFourDigits); ?></b></span>
@@ -48,7 +59,11 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 </li>
             <?php endforeach; ?>
             <li>
-                <input type="radio" name="payment[payplug_payments_standard][customer_card_id]" id="payplug_payments_card_" class="payplug-payments-customer-card" value="" />
+                <input type="radio" 
+                       name="payment[payplug_payments_standard][customer_card_id]" 
+                       id="payplug_payments_card_" 
+                       class="payplug-payments-customer-card" 
+                       value="" />
                 <label for="payplug_payments_card_">
                     <?= $escaper->escapeHtml(__('Pay with another card')); ?>
                 </label>
@@ -99,12 +114,14 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                x-model="currentCard" />
                     </label>
                     <label class="hover:cursor-pointer">
-                        <span class="sr-only">CB</span>
+                        <span class="sr-only">
+                            <?= $escaper->escapeHtml($storeCode === 'it_IT' ? 'PostePay' : 'CB') ?>
+                        </span>
                         <span :class="currentCard === 'cb' ? 'inline' : 'hidden'" x-cloak>
-                            <?= $icons->renderHtml('cb', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
+                            <?= $icons->renderHtml($cbName, 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <span :class="currentCard === 'cb' ? 'hidden' : 'inline'">
-                        <?= $icons->renderHtml('cb-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
+                        <?= $icons->renderHtml($cbName . '-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
@@ -181,7 +198,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
     <script>
         (() => {
-            window.PAYPLUG_DOMAIN = 'https://secure.payplug.com';
             var oneclick = <?= !empty($payplugCards) && $isOneClick ? 1 : 0; ?>;
             var integrated = <?= $integrated ? 1 : 0; ?>;
 
