@@ -234,9 +234,9 @@ $icons = $viewModels->require(PayplugIcons::class);
         }
     }
 
-    let oney_type = '';
-
     window.addEventListener('checkout:payment:method-activate', (event) => {
+        let oney_type = '';
+
         <?php // Reset place order button to default value ?>
         document.querySelector('.btn-place-order').innerText = '<?= $escaper->escapeJs(__('Place Order')); ?>';
 
@@ -250,17 +250,15 @@ $icons = $viewModels->require(PayplugIcons::class);
                     break;
                 default:
                     oney_type = 'payplug_payments_oney';
-        }
+            }
 
-        hyvaCheckout.payment.activate(oney_type, {
-            validate() {
-                return new Promise(async (resolve, reject) => {
+            hyvaCheckout.payment.activate(oney_type, {
+                async validate() {
                     const selected = document.querySelector('input[name="oney_type"]:checked');
-                    const option = await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
-                        resolve();
-                    });
+                    await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
+                    return true;
                 }
-            }, document.getElementById('payment-method-view-' + oney_type));
+            }, document.getElementById('payplug-payment-form'), 'payment');
 
             const oney = document.querySelector('.oneyOption_wrapper');
             oney && document.querySelector('.oneyOption_wrapper').remove();
