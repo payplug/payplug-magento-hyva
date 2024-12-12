@@ -277,18 +277,16 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                         },
                         async validate() {
                             var card_selected = false;
+
                             if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
                                 if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value) {
                                     card_selected = true;
                                 }
                             }
+
                             if (oneclick && card_selected) {
                                 var selected = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                                 await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', selected.value);
-                                hyvaCheckout.main.getWireComponent().placeOrder();
-                                resolve();
-
-                                return true;
                             } else {
                                 if (integrated) {
                                     hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
@@ -340,12 +338,16 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                     });
                                 }
                             }
+
+                            hyvaCheckout.main.getWireComponent().placeOrder();
+                            resolve();
+                            return true;
                         },
                         loadHostedLib() {
                             return new Promise((resolve, reject) => {
                                 if (!document.getElementById('payplug_hosted_lib')) {
                                     const script = document.createElement('script');
-                                    script.src = 'https://cdn-qa.payplug.com/js/integrated-payment/v1@1/index.js';
+                                    script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
                                     script.setAttribute('id', 'payplug_hosted_lib');
                                     document.head.append(script);
                                 }
