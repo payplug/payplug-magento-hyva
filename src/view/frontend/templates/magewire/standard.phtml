@@ -352,6 +352,10 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                     });
                                 <?php endif; ?>
                             }
+
+                            hyvaCheckout.main.getWireComponent().placeOrder();
+                            resolve();
+                            return true;
                         },
                         <?php if ($isPopup) : ?>
                             async placeOrder() {
@@ -391,7 +395,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             return new Promise((resolve, reject) => {
                                 if (!document.getElementById('payplug_hosted_lib')) {
                                     const script = document.createElement('script');
-                                    script.src = 'https://cdn-qa.payplug.com/js/integrated-payment/v1@1/index.js';
+                                    script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
                                     script.setAttribute('id', 'payplug_hosted_lib');
                                     document.head.append(script);
                                 }
