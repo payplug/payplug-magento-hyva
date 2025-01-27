@@ -351,6 +351,24 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                         });
                                     });
                                 <?php endif; ?>
+
+                                <?php if ($isPopup) : ?>
+                                    const redirectUrl = 'payplug_payments/payment/standard';
+                                    const returnUrl = 'payplug_payments/payment/paymentReturn';
+
+                                    fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`)
+                                        .then(response => response.json())
+                                        .then(({ is_paid, url }) => {
+                                            if (is_paid) {
+                                                window.location.replace(`${BASE_URL}${returnUrl}`);
+                                            } else if (url) {
+                                                Payplug.Form.showPayment(url, isOneClick);
+                                            } else {
+                                                this.redirectToCancelUrl();
+                                            }
+                                        })
+                                        .catch(console.error);
+                                <?php endif; ?>
                             }
 
                             hyvaCheckout.main.getWireComponent().placeOrder();
@@ -358,30 +376,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             return true;
                         },
                         <?php if ($isPopup) : ?>
-                            async placeOrder() {
-                                const redirectUrl = 'payplug_payments/payment/standard';
-                                const returnUrl = 'payplug_payments/payment/paymentReturn';
-
-                                const isValid = await hyvaCheckout.validation.validate();
-                                if (!isValid) return;
-
-                                magewire.plugins.loader.start();
-
-                                await hyvaCheckout.main.getWireComponent().placeOrder();
-
-                                fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`)
-                                    .then(response => response.json())
-                                    .then(({ is_paid, url }) => {
-                                        if (is_paid) {
-                                            window.location.replace(`${BASE_URL}${returnUrl}`);
-                                        } else if (url) {
-                                            Payplug.Form.showPayment(url, isOneClick);
-                                        } else {
-                                            this.redirectToCancelUrl();
-                                        }
-                                    })
-                                    .catch(console.error);
-                            },
                             redirectToCancelUrl() {
                                 const cancelUrl = 'payplug_payments/payment/cancel';
                                 window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
@@ -416,10 +410,10 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                 }, 100);
                             });
                         },
-                    }, MAGEWIRE_STANDARD_SELECTOR, 'payment');
+                    }, MAGEWIRE_STANDARD_SELECTOR);
 
                     if (document.querySelector('ul.payplug-payments-cards li') != null) {
-                        document.querySelector('ul.payplug-payments-cards li input').click()
+                        document.querySelector('ul.payplug-payments-cards li input').click();
                         document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
                             var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                             if (card.value === '') {
