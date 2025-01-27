@@ -25,13 +25,15 @@ $payplugCards = $block->getPayplugCards();
 $cbName = $storeCode === 'it_IT' ? 'postepay' : 'cb';
 
 $isIntegrated = false;
-$isPopup = false;
 $isOneClick = false;
+$isPopup = false;
+$isRedirected = false;
 
 if (isset($paymentConfig["payplug_payments_standard"])) {
     $isIntegrated = $paymentConfig["payplug_payments_standard"]["is_integrated"];
-    $isPopup = $paymentConfig["payplug_payments_standard"]["is_embedded"];
     $isOneClick = $paymentConfig["payplug_payments_standard"]["is_one_click"];
+    $isPopup = $paymentConfig["payplug_payments_standard"]["is_embedded"];
+    $isRedirected = !$isPopup && !$isIntegrated;
 }
 ?>
 
@@ -348,7 +350,9 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                             });
                                         });
                                     });
+                                <?php endif; ?>
 
+                                <?php if ($isIntegrated || $isRedirected) : ?>
                                     hyvaCheckout.main.getWireComponent().placeOrder();
                                     resolve();
                                     return true;
@@ -390,7 +394,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                 <?php endif; ?>
                             }
                         },
-                        <?php if ($isPopup) : ?>
+                        <?php if ($isPopup && !$isOneClick) : ?>
                             placeOrderViaJs() {
                                 <?php // Disable place order ?>
                                 return true;

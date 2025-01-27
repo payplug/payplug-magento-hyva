@@ -51,7 +51,7 @@ class DeferPlaceOrderService extends AbstractPlaceOrderService
 
     public function canRedirect(): bool
     {
-        if ($this->isRedirect() || ($this->payplugConfig->isIntegrated() && $this->oneclick)) {
+        if (($this->payplugConfig->isIntegrated() && $this->oneclick) || $this->isRedirect() || ($this->isPopup() && $this->oneclick)) {
             return true;
         }
 
