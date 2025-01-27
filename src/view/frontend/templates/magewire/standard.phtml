@@ -357,6 +357,21 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                 <?php if ($isPopup) : ?>
                                     const redirectUrl = 'payplug_payments/payment/standard';
                                     const returnUrl = 'payplug_payments/payment/paymentReturn';
+                                    const closeIframe = Payplug.Form._closeIframe;
+
+                                    function redirectToCancelUrl() {
+                                        const cancelUrl = 'payplug_payments/payment/cancel';
+                                        window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
+                                    };
+
+                                    Payplug.Form._closeIframe = () => {
+                                        if (typeof window.redirection_url !== 'undefined' && window.redirection_url) {
+                                            <?php // Payment is completed and redirection is handled by PayPlug form.js ?>
+                                            return;
+                                        }
+
+                                        redirectToCancelUrl();
+                                    };
 
                                     await hyvaCheckout.main.getWireComponent().placeOrder();
 
@@ -368,7 +383,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                             } else if (url) {
                                                 Payplug.Form.showPayment(url, isOneClick);
                                             } else {
-                                                this.redirectToCancelUrl();
+                                                redirectToCancelUrl();
                                             }
                                         })
                                         .catch(console.error);
@@ -376,10 +391,6 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             }
                         },
                         <?php if ($isPopup) : ?>
-                            redirectToCancelUrl() {
-                                const cancelUrl = 'payplug_payments/payment/cancel';
-                                window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
-                            },
                             placeOrderViaJs() {
                                 <?php // Disable place order ?>
                                 return true;
