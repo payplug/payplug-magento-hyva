@@ -62,17 +62,6 @@
                     </argument>
                 </arguments>
             </block>
-            <block name="checkout.payment.method.payplug_payments_giropay" as="payplug_payments_giropay"
-                   template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
-                <arguments>
-                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
-                    <argument name="metadata" xsi:type="array">
-                        <item name="icon" xsi:type="array">
-                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/giropay.svg</item>
-                        </item>
-                    </argument>
-                </arguments>
-            </block>
             <block name="checkout.payment.method.payplug_payments_ideal"
                    as="payplug_payments_ideal"
                    template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
@@ -105,18 +94,6 @@
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
                             <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/satispay.svg</item>
-                        </item>
-                    </argument>
-                </arguments>
-            </block>
-            <block name="checkout.payment.method.payplug_payments_sofort"
-                   as="payplug_payments_sofort"
-                   template="Hyva_CheckoutPayplug::magewire/ppro.phtml">
-                <arguments>
-                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
-                    <argument name="metadata" xsi:type="array">
-                        <item name="icon" xsi:type="array">
-                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/sofort</item>
                         </item>
                     </argument>
                 </arguments>
