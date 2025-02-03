@@ -11,7 +11,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Standard</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">payment-cards</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/payment-cards.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -24,7 +24,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">oney</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/oney.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -37,7 +37,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">oney</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/oney.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -47,7 +47,7 @@
                 <arguments>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">amex</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/amex.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -57,7 +57,7 @@
                 <arguments>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">bancontact</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/bancontact.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -68,7 +68,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">giropay</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/giropay.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -80,7 +80,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">ideal</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/ideal.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -92,7 +92,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">mybank</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/mybank.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -104,7 +104,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">satispay</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/satispay.svg</item>
                         </item>
                     </argument>
                 </arguments>
@@ -116,7 +116,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">sofort</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/sofort</item>
                         </item>
                     </argument>
                 </arguments>
@@ -129,7 +129,7 @@
                     <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\ApplePay</argument>
                     <argument name="metadata" xsi:type="array">
                         <item name="icon" xsi:type="array">
-                            <item name="svg" xsi:type="string">apple_pay</item>
+                            <item name="src" xsi:type="string">Hyva_CheckoutPayplug::svg/payplug/apple_pay.svg</item>
                         </item>
                     </argument>
                 </arguments>
