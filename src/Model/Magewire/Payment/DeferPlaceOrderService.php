@@ -1,75 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hyva\CheckoutPayplug\Model\Magewire\Payment;
 
 use Hyva\Checkout\Model\Magewire\Component\EvaluationResultFactory;
 use Hyva\Checkout\Model\Magewire\Component\EvaluationResultInterface;
 use Hyva\Checkout\Model\Magewire\Payment\AbstractPlaceOrderService;
-use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Exception\PaymentException;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Payplug\Exception\PayplugException;
 use Payplug\Payments\Helper\Config;
 
 class DeferPlaceOrderService extends AbstractPlaceOrderService
 {
     /**
-     * @var PaymentHelper
-     */
-    protected $paymentHelper;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
-    protected $orderRepository;
-
-    /**
-     * @var \Magento\Framework\Controller\ResultFactory
+     * @var ResultFactory
      */
     protected $resultFactory;
-
-    protected $context;
-
     protected $orderId = null;
-
     protected $quote = null;
-
     protected $oneclick = false;
 
-  /**
-   * @var Config
-   */
-  private $payplugConfig;
-
-    /**
-     * @param CartManagementInterface $cartManagement
-     * @param PaymentHelper $paymentHelper
-     * @param OrderRepositoryInterface $orderRepository
-     */
     public function __construct(
-        CartManagementInterface $cartManagement,
-        PaymentHelper $paymentHelper,
-        OrderRepositoryInterface $orderRepository,
-        \Magento\Framework\App\Action\Context $context,
-        Config $payplugConfig
+        protected CartManagementInterface $cartManagement,
+        protected PaymentHelper $paymentHelper,
+        protected OrderRepositoryInterface $orderRepository,
+        protected Context $context,
+        protected Config $payplugConfig
     ) {
-        $this->paymentHelper = $paymentHelper;
-        $this->orderRepository = $orderRepository;
         parent::__construct($cartManagement);
-        $this->context = $context;
-        $this->payplugConfig = $payplugConfig;
-
     }
 
-    /**
-     * @param Quote $quote
-     * @param int|null $orderId
-     * @return string
-     */
     public function getRedirectUrl(Quote $quote, ?int $orderId = null): string
     {
         $paymentMethod = $this->paymentHelper->getMethodInstance($quote->getPayment()->getMethod());
@@ -80,51 +45,54 @@ class DeferPlaceOrderService extends AbstractPlaceOrderService
         if ($checkoutUrl) {
             return $checkoutUrl;
         } else {
-          return parent::REDIRECT_PATH;
+            return parent::REDIRECT_PATH;
         }
-
     }
 
     public function canRedirect(): bool
     {
+        if (($this->payplugConfig->isIntegrated() && $this->oneclick) || $this->isRedirect() || ($this->isPopup() && $this->oneclick)) {
+            return true;
+        }
 
-      if(!$this->payplugConfig->isIntegrated() || ($this->payplugConfig->isIntegrated() && $this->oneclick) ){
-        return true;
-      }
+        return false;
+    }
 
-      return false;
+    public function isRedirect(): bool
+    {
+        return !$this->isPopup() && !$this->payplugConfig->isIntegrated();
+    }
+
+    public function isPopup(): bool
+    {
+        return $this->payplugConfig->isEmbedded();
     }
 
     public function placeOrder(Quote $quote): int
     {
+        $payment = $quote->getPayment()->getAdditionalInformation();
+        if (!empty($payment["payplug_payments_customer_card_id"])) {
+            $this->oneclick = true;
+        }
 
-      $payment = $quote->getPayment()->getAdditionalInformation();
-      if(!empty($payment["payplug_payments_customer_card_id"])){
-        $this->oneclick = true;
-      }
-
-      return (int) $this->cartManagement->placeOrder($quote->getId(), $quote->getPayment());
+        return (int)$this->cartManagement->placeOrder($quote->getId(), $quote->getPayment());
     }
+
     public function evaluateCompletion(EvaluationResultFactory $resultFactory, ?int $orderId = null): EvaluationResultInterface
     {
 
-      if( !$this->payplugConfig->isIntegrated() || $this->oneclick ){
+        if (!$this->payplugConfig->isIntegrated() || $this->oneclick) {
+            return parent::evaluateCompletion($resultFactory, $orderId);
+        }
+
+        // The order ID is required and will only be passed in if the order was created.
+        if ($orderId) {
+
+            // Best practice is always to create a batch to let others inject more if required.
+            return $resultFactory->createBatch()->push($resultFactory->createExecutable('make:pay-plug:payment'));
+        }
+
+        // Just let the abstraction layer dispatch a success result.
         return parent::evaluateCompletion($resultFactory, $orderId);
-      }
-
-      // The order ID is required and will only be passed in if the order was created.
-      if ($orderId) {
-
-        // Best practice is always to create a batch to let others inject more if required.
-        return $resultFactory->createBatch()->push(
-          $resultFactory->createExecutable('make:pay-plug:payment')
-        );
-
-      }
-
-      // Just let the abstraction layer dispatch a success result.
-      return parent::evaluateCompletion($resultFactory, $orderId);
     }
-
-
 }

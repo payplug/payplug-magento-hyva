@@ -5,6 +5,7 @@
             <values>
                 <value id="apple-pay" type="host">applepay.cdn-apple.com</value>
                 <value id="payplug-api" type="host">api-qa.payplug.com</value>
+                <value id="payplug-script" type="host">https://cdn.payplug.com</value>
                 <value id="payplug-script-cd-qa" type="host">cdn-qa.payplug.com</value>
                 <value id="payplug-script-qa" type="host">https://cdn-qa.payplug.com</value>
                 <value id="secure-magenta" type="host">https://secure-magenta.dalenys.com</value>
