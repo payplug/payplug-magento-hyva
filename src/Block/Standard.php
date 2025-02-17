@@ -7,6 +7,7 @@ use Magento\Framework\Locale\ResolverInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Payplug\Payments\Helper\Card;
+use Payplug\Payments\Model\Customer\Card as CustomerCard;
 use Payplug\Payments\Model\Payment\Standard\ConfigProvider as Config;
 
 class Standard extends Template
@@ -34,14 +35,12 @@ class Standard extends Template
     {
         parent::_prepareLayout();
 
-        $metadata = $this->getData('metadata');
-
         if ($this->localeResolver->getLocale() === 'it_IT') {
+            $metadata = $this->getData('metadata');
             $metadata['icon']['src'] = 'Payplug_Payments::images/standard/payment-cards-it.svg';
             $metadata['icon']['attributes']['alt'] = 'Visa Mastercard Postepay';
+            $this->setData('metadata', $metadata);
         }
-
-        $this->setData('metadata', $metadata);
 
         return $this;
     }
@@ -49,7 +48,7 @@ class Standard extends Template
     /**
      * Get customer saved PayPlug cards
      *
-     * @return \Payplug\Payments\Model\Customer\Card[]
+     * @return CustomerCard[]
      */
     public function getPayplugCards(): array
     {
@@ -73,6 +72,4 @@ class Standard extends Template
             'customer_card_id' => $customerCardId
         ]);
     }
-
-
 }
