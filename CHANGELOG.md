@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Main features
 
 * Fix "SvgIcons iconPathPrefix argument should not be changed" issue [#4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/4)
+* Fix payment card logo and alt for italian locales
 * Rename Payplug icons folder
 * Remove Giropay and Sofort unsupported payment methods
 
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update payment methods logo paths [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77) / Issue [#4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/4)
 
 ### Fixed
+- Fix payment card logo and alt for italian locales [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
 - Fix Postepay dark logo [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
 
 ### Removed
