@@ -253,17 +253,3 @@
         @apply rotate-[360deg];
     }
 }
-
-#payment-method-option-payplug_payments_standard {
-    label {
-        @apply justify-end flex-row-reverse gap-3;
-
-        > div {
-            @apply m-0 justify-center;
-        }
-
-        #payment-cards {
-            @apply w-[6.6875rem];
-        }
-    }
-}
