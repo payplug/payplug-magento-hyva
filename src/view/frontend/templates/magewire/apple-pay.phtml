@@ -23,14 +23,14 @@ use Magento\Framework\Escaper;
                         initialize() {
                             this.loadHostedAPLib().then(async () => {
                                 if (this.checkLoadedAP()) {
-                                    document.querySelector('apple-pay-button').addEventListener('click', async (event2) => {
+                                    document.querySelector('apple-pay-button').addEventListener('click', async () => {
                                         hyvaCheckout.order.place();
                                     });
                                 }
                             });
                         },
                         validate() {
-                            let request = {
+                            const request = {
                                 "countryCode": "<?= $escaper->escapeJs($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>",
                                 "currencyCode": "<?= $escaper->escapeJs($magewire->getShipping()->getData('quote_currency_code')); ?>",
                                 "merchantCapabilities": ["supports3DS"],
@@ -44,7 +44,9 @@ use Magento\Framework\Escaper;
                                     'apple_pay_domain': "<?= $escaper->escapeJs($block->getConfig()['payment']['payplug_payments_apple_pay']['domain']); ?>"
                                 }))
                             };
-                            let session = new ApplePaySession(3, request);
+
+                            const session = new ApplePaySession(3, request);
+                            
                             hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', () => {
                                 magewire.plugins.loader.start();
                                 return new Promise((resolve) => {
@@ -104,7 +106,7 @@ use Magento\Framework\Escaper;
                                     script.setAttribute('id', 'apple_pay_cdn');
                                     document.head.append(script);
                                 }
-                                //if it's not loaded yet let's wait 100ms to load it
+                                <?php // If it's not loaded yet let's wait 100ms to load it ?>
                                 let count = 0;
                                 const interval = setInterval(() => {
                                     count++;
@@ -133,9 +135,7 @@ use Magento\Framework\Escaper;
                     document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
                     hyvaCheckout.payment.method = null;
                 }
-            }, {
-                once: true
-            });
+            }, { once: true });
         })();
     </script>
 </div>
