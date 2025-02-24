@@ -23,13 +23,18 @@ use Magento\Framework\Escaper;
                         initialize() {
                             this.loadHostedAPLib().then(async () => {
                                 if (this.checkLoadedAP()) {
-                                    document.querySelector('apple-pay-button').addEventListener('click', async () => {
-                                        hyvaCheckout.order.place();
+                                    document.querySelector('apple-pay-button').addEventListener('click', () => {
+                                        hyvaCheckout.main.getWireComponent().placeOrder();
+                                        this.initApplePay();
                                     });
                                 }
                             });
                         },
-                        validate() {
+                        initApplePay() {
+                            if (!ApplePaySession) {
+                                return;
+                            }
+
                             const request = {
                                 "countryCode": "<?= $escaper->escapeJs($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>",
                                 "currencyCode": "<?= $escaper->escapeJs($magewire->getShipping()->getData('quote_currency_code')); ?>",
@@ -61,13 +66,14 @@ use Magento\Framework\Escaper;
                                             }
                                         });
                                     };
+
                                     session.onpaymentauthorized = event => {
                                         const body = new URLSearchParams({
                                             form_key: hyva.getFormKey(),
                                             token: JSON.stringify(event.payment.token)
                                         });
                                         fetch('<?= $escaper->escapeUrl($block->getUrl("hyva_checkout_payplug/applepay/updateTransaction")); ?>', {
-                                            method: 'post',
+                                            method: 'POST',
                                             credentials: "include",
                                             body,
                                             headers: {
@@ -91,9 +97,11 @@ use Magento\Framework\Escaper;
                                             }
                                         });
                                     };
+
                                     session.oncancel = event => {
                                         window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
                                     };
+
                                     session.begin();
                                 });
                             });
@@ -125,8 +133,8 @@ use Magento\Framework\Escaper;
                         },
                         checkLoadedAP: function() {
                             return document.body.contains(document.querySelector('apple-pay-button'));
-                        }
-                    });
+                        },
+                    }, document.querySelector('apple-pay-button'));
                 } else {
                     var script = document.getElementById("apple_pay_cdn");
                     if (script) {
