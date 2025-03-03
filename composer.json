@@ -2,7 +2,7 @@
   "name": "hyva-themes/magento2-hyva-checkout-payplug",
   "description": "Hyvä Compatibility module for Payplug_Payments",
   "type": "magento2-module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "require": {
     "hyva-themes/magento2-compat-module-fallback": "*",
     "hyva-themes/magento2-hyva-checkout": "^1.1.26",
