@@ -5,14 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.1.1) - 2025-02-17
+## [1.1.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.1.1) - 2025-03-19
 
 ### Main features
 
-* Fix "SvgIcons iconPathPrefix argument should not be changed" issue [#4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/4)
-* Fix payment card logo and alt for italian locales
-* Rename Payplug icons folder
-* Remove Giropay and Sofort unsupported payment methods
+- Fix ApplePay init on button action [#80](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/80) [#81](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/81)
+- Fix "SvgIcons iconPathPrefix argument should not be changed" issue [#4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/4)
+- Fix payment card logo and alt for italian locales
+- Rename Payplug icons folder
+- Remove Giropay and Sofort unsupported payment methods
 
 **[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.1.0...1.1.1)**
 
@@ -23,9 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Normalize standard payment render [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
 - Rename Payplug icons folder [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
+- Sanitize various from Apple Pay template [#80](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/80)
 - Update payment methods logo paths [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77) / Issue [#4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/4)
 
 ### Fixed
+- Fix ApplePay init on button action [#80](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/80) [#81](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/81)
 - Fix payment card logo and alt for italian locales [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
 - Fix Postepay dark logo [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
 

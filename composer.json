@@ -5,9 +5,9 @@
   "version": "1.1.1",
   "require": {
     "hyva-themes/magento2-compat-module-fallback": "*",
-    "hyva-themes/magento2-hyva-checkout": "^1.1.26",
+    "hyva-themes/magento2-hyva-checkout": "^1.1.29",
     "magento/framework": "*",
-    "payplug/payplug-magento2": ">=4.2.0"
+    "payplug/payplug-magento2": ">=4.3.0"
   },
   "authors": [{
       "name": "PayPlug",
