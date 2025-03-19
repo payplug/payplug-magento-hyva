@@ -408,7 +408,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                     script.setAttribute('id', 'payplug_hosted_lib');
                                     document.head.append(script);
                                 }
-                                //if it's not loaded yet let's wait 100ms to load it
+                                <?php // If it's not loaded yet let's wait 100ms to load it ?>
                                 let count = 0;
                                 const interval = setInterval(() => {
                                     count++;
