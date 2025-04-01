@@ -183,6 +183,9 @@
             <block name="magewire.standard"
                    template="Hyva_CheckoutPayplug::magewire/standard-csp-js.phtml"
             />
+            <block name="ppro.standard"
+                   template="Hyva_CheckoutPayplug::magewire/ppro-csp-js.phtml"
+            />
             <block name="oney.simulation"
                    template="Hyva_CheckoutPayplug::oney/simulation-csp-js.phtml"
             />
