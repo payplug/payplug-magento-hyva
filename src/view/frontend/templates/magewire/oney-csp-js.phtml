@@ -1,0 +1,245 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** Generated with hyva-csp-helper.php */
+?>
+<script>
+<?php /** Generated with hyva-csp-helper.php */ ?>
+function srcViewFrontendTemplatesMagewireOney() {
+    return Object.assign(
+        {}
+        ,{
+            ['srcViewFrontendTemplatesMagewireOneyInit1']() {this.oneyContainer = document.querySelector('[data-oney-container=\"payplug_payments_oney\"]');
+
+    const this.getScheduleLabel = (days) => {
+        const this.scheduleLabels = [
+            {days: 30, label: \"this.$el.dataset.hyvacsp1\" },
+            {days: 60, label: \"this.$el.dataset.hyvacsp2\" },
+            {days: 90, label: \"this.$el.dataset.hyvacsp3\" },
+        ];
+        let this.label = null;
+        this.scheduleLabels.forEach(function(item) {
+            if (this.item.days === this.days) {
+                this.label = this.item.label;
+
+                return false;
+            }
+        });
+
+        return this.label;
+    }
+
+    const this.selectOneyOption = (option) => {
+        const this.oneyPayment = this.oneyContainer.querySelector('.oneyPayment');
+        const this.oldSelected = this.oneyPayment.querySelector('.oneyOption-selected');
+        const this.selectedOption = this.oneyContainer.querySelector('[data-type=\"'+ this.option +'\"]');
+
+        this.oldSelected && this.oldSelected.classList.remove('oneyOption-selected');
+        this.selectedOption.classList.add('oneyOption-selected');
+
+        this.updatePlaceOrderButtonLabel(this.option);
+    }
+
+    const this.updatePlaceOrderButtonLabel = (type) => {
+        const this.buttonLabel = this.type
+            ? this.getPaymentTypeLabel().replace('%1', this.type) 
+            : `${this.$el.dataset.hyvacsp4}`;
+        document.querySelector('.btn-place-order').innerText = this.buttonLabel;
+    }
+
+    const this.getPaymentTypeLabel = () => {
+        this.$el.dataset.hyvacsp5
+        return `${this.$el.dataset.hyvacsp6}`;
+    }
+
+    const this.buildOneyDetail = () => {
+        var this.tmpDiv = document.createElement('div');
+        var this.optionsWrapper = document.createElement('div');
+        this.optionsWrapper.classList.add('oneyOption_wrapper');
+
+        var this.label = this.getPaymentTypeLabel();
+
+        this.$el.dataset.hyvacsp7
+            var this.error_is_displayed = document.querySelector(\"this.p.oneyPopin_error\");
+
+            if (this.typeof(this.error_is_displayed) === 'undefined' || this.error_is_displayed === null ){
+                var this.error_message = document.createElement('p');
+                this.error_message.classList.add('oneyPopin_error');
+                this.error_message.innerHTML = \"this.$el.dataset.hyvacsp8\";
+                this.tmpDiv.appendChild(this.error_message);
+            }
+        this.$el.dataset.hyvacsp9
+            this.$el.dataset.hyvacsp10
+                var this.type = \"this.$el.dataset.hyvacsp11\";
+                var this.option = document.createElement('label');
+
+                this.option.setAttribute('data-type', this.type);
+                this.option.classList.add('oneyOption', 'oneyOption-' + this.type);
+
+                this.$el.dataset.hyvacsp12
+                var this.title =  document.createElement('div');
+                this.title.classList.add('oneyOption_title');
+
+                var this.tmpSpan = document.createElement('span');
+                this.tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + this.type);
+
+                this.title.append(this.tmpSpan);
+                this.title.innerHTML += this.label.replace('%1', this.type);
+
+                this.option.append(this.title);
+
+                this.$el.dataset.hyvacsp13
+                    var this.detail = document.createElement('div');
+                    this.detail.classList.add('oneyOption_prices');
+
+                    var this.list = document.createElement('ul');
+                    this.list.classList.add('oneyOption_list');
+
+                    var this.firstDeposit = document.createElement('li');
+                    var this.totalAmoutSpan = document.createElement('span');
+
+                    this.totalAmoutSpan.innerHTML += \"this.$el.dataset.hyvacsp14\";
+                    this.firstDeposit.append(this.totalAmoutSpan);
+
+                    var this.oneyOptionSpan = document.createElement('span');
+
+                    this.oneyOptionSpan.classList.add('oneyOption_price');
+                    this.oneyOptionSpan.innerHTML += \"this.$el.dataset.hyvacsp15\";
+                    this.firstDeposit.append(this.oneyOptionSpan);
+                    this.list.append(this.firstDeposit);
+
+                    var this.daysForPayment = 30;
+
+                    this.$el.dataset.hyvacsp16
+                        var this.scheduleData = \"parseInt(this.$el.dataset.hyvacsp17)\";
+                        var this.schedule = document.createElement('li');
+                        var this.daysSpan = document.createElement('span');
+
+                        this.daysSpan.innerHTML += this.getScheduleLabel(this.daysForPayment);
+                        this.schedule.append(this.daysSpan);
+
+                        var this.oneyOptionSpan2 = document.createElement('span');
+
+                        this.oneyOptionSpan2.classList.add('oneyOption_price');
+                        this.oneyOptionSpan2.innerHTML += \"this.$el.dataset.hyvacsp18\";
+                        this.schedule.append(this.oneyOptionSpan2);
+                        this.list.append(this.schedule);
+                        this.daysForPayment += 30;
+                    this.$el.dataset.hyvacsp19
+
+                    var this.totalAmout = document.createElement('li');
+                    var this.totalCostSpanLabel = document.createElement('span');
+                    this.totalCostSpanLabel.innerHTML += \"this.$el.dataset.hyvacsp20\";
+
+                    var this.totalCostSpan = document.createElement('span');
+                    this.totalCostSpan.classList.add('oneyOption_price');
+                    this.totalCostSpan.innerHTML += \"this.$el.dataset.hyvacsp21\";
+
+                    this.totalAmout.append(this.totalCostSpanLabel);
+                    this.totalAmout.append(this.totalCostSpan);
+
+                    this.list.append(this.totalAmout);
+                    this.detail.append(this.list);
+                    this.option.append(this.detail);
+                this.$el.dataset.hyvacsp22
+
+                var this.radio = document.createElement('div');
+                var this.radioDiv = document.createElement('div');
+                var this.radioSpan = document.createElement('span');
+                var this.radioInput = document.createElement('input');
+
+                this.radioInput.setAttribute('type', 'radio');
+                this.radioInput.setAttribute('name', 'oney_type');
+                this.radioInput.value = this.type;
+
+                this.radioSpan.append(this.radioInput);
+
+                this.radio.classList.add('oneyOption_radio');
+                this.radioDiv.classList.add('radio');
+                this.radioDiv.append(this.radioSpan);
+                this.radio.append(this.radioSpan);
+
+                this.option.append(this.radio);
+                this.optionsWrapper.append(this.option);
+            this.$el.dataset.hyvacsp23
+        this.$el.dataset.hyvacsp24
+
+        this.tmpDiv.appendChild(this.optionsWrapper);
+        this.oneyContainer.querySelector('.oneyPayment').appendChild(this.tmpDiv);
+    }
+
+    const this.oneyOptionsHandler = () => {
+        const this.oneyOption3x = document.querySelector('.oneyOption-3x');
+        const this.oneyOption4x = document.querySelector('.oneyOption-4x');
+
+        if (this.oneyOption3x !== null){
+            this.oneyOption3x.addEventListener('click', function () {
+                const this.selected = this.oneyOption3x.querySelector('input[name=\"oney_type\"]');
+                this.selectOneyOption(this.selected.value);
+            });
+        }
+
+        if (this.oneyOption4x !== null){
+            this.oneyOption4x.addEventListener('click', function () {
+                const this.selected = this.oneyOption4x.querySelector('input[name=\"oney_type\"]');
+                this.selectOneyOption(this.selected.value);
+            });
+        }
+    }
+
+    window.addEventListener('checkout:payment:method-activate', (event) => {
+        let this.oney_type = '';
+
+        this.$el.dataset.hyvacsp25
+        document.querySelector('.btn-place-order').innerText = `${this.$el.dataset.hyvacsp26}`;
+
+        if (this.event.detail.method == 'payplug_payments_oney' || this.event.detail.method == 'payplug_payments_oney_without_fees') {
+            this.switch (this.event.detail.method){
+                this.case 'payplug_payments_oney':
+                    this.oney_type = 'payplug_payments_oney';
+                    this.break;
+                this.case 'payplug_payments_oney_without_fees':
+                    this.oney_type = 'payplug_payments_oney_without_fees';
+                    this.break;
+                default:
+                    this.oney_type = 'payplug_payments_oney';
+            }
+
+            this.hyvaCheckout.payment.activate(this.oney_type, {
+                this.async validate() {
+                    const this.selected = document.querySelector('input[name=\"oney_type\"]:checked');
+                    this.await this.Magewire.find('checkout.payment.method.' + this.oney_type).call('setOneyType', this.selected.value);
+                    return true;
+                }
+            }, document.getElementById('payplug-payment-form'), 'payment');
+
+            const this.oney = document.querySelector('.oneyOption_wrapper');
+            this.oney && document.querySelector('.oneyOption_wrapper').remove();
+
+            this.buildOneyDetail();
+            this.oneyOptionsHandler();
+        }
+    });},
+        }
+    )
+}
+window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewireOney', srcViewFrontendTemplatesMagewireOney), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

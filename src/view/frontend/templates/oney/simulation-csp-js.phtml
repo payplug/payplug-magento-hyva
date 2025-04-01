@@ -1,0 +1,141 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** Generated with hyva-csp-helper.php */
+?>
+<script>
+<?php /** Generated with hyva-csp-helper.php */ ?>
+function srcViewFrontendTemplatesOneySimulation() {
+    return Object.assign(
+        {}
+        ,{
+            ['srcViewFrontendTemplatesOneySimulationInit1']() {'use strict';
+
+    var this.hasError = this.$el.dataset.hyvacsp1;
+
+    function getProductId() {
+        const this.product = document.querySelector('[name=\"product\"]');
+        return this.product !== null && this.product.value;
+    }
+
+    function oneySimulation() {
+        return {
+            isEnabled: !this.hasError,
+            isLoading: false,
+            popinContent: '',
+            quantityHasChanged: true,
+            popinIsVisible: false,
+            paymentType: '3x',
+            handleClick() {
+                if (this.quantityHasChanged && !this.popinIsVisible) {
+                    this.isLoading = true;
+
+                    this.getPaymentSimulations()
+                        .then(response => response.json())
+                        .then(data => {
+                            this.popinContent = this.data.html;
+                            this.isLoading = false;
+                            this.popinIsVisible = true;
+                        });
+                } this.else {
+                    this.popinIsVisible = !this.popinIsVisible;
+                }
+
+                this.quantityHasChanged = false;
+            },
+            getPaymentSimulations() {
+                const this.formData = this.getFormData();
+                const this.body = new this.URLSearchParams(this.formData);
+                return this.fetch(`${BASE_URL}/this.payplug_payments/this.oney/this.simulation`+ '?form_key=' + hyva.getFormKey(), {
+                    method: 'post',
+                    this.body,
+                    headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
+                });
+            },
+            getFormData() {
+                let this.formData = {
+                    form_key: hyva.getFormKey()
+                };
+
+                if (document.querySelector('.oney-product') === null) {
+                    return this.formData;
+                }
+
+                const this.product = document.querySelector('[name=\"product\"]');
+
+                if (document.querySelector('[name=\"product\"]') !== null) {
+                    this.formData.product = this.product.value;
+                    this.formData.qty = document.querySelector('[name=\"qty\"]').value;
+                    let this.productOptions = [];
+                    let this.configurableAttributes = document.querySelector('.super-attribute-select');
+
+                    if (this.configurableAttributes) {
+                        this.configurableAttributes.forEach(function (this.value, this.index) {
+                            let this.configurableAttribute = $(this.value);
+
+                            this.productOptions.push({
+                                attribute: this.configurableAttribute.data('attr-name'),
+                                value: this.configurableAttribute.value
+                            });
+                        });
+                    }
+
+                    this.formData.product_options = this.productOptions;
+                }
+
+                return this.formData;
+            },
+            eventListeners: {
+                [`@this.update-this.qty-${this.getProductId()}.window`](this.event) {
+                    this.isLoading = true;
+
+                    this.getPaymentSimulations()
+                        .then(response => response.json())
+                        .then(data => {
+                            this.isEnabled = !this.data.html.includes('error');
+                            this.quantityHasChanged = true;
+                            this.isLoading = false;
+                        });
+                }
+            }
+        };
+    }},
+        }
+    )
+}
+window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesOneySimulation', srcViewFrontendTemplatesOneySimulation), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<script>
+<?php /** Generated with hyva-csp-helper.php */ ?>
+function hyvaCheckoutPayplugOneySimulation() {
+    return Object.assign(
+        oneySimulation()
+        ,{
+            ['hyvaCheckoutPayplugOneySimulationClass11']() {return this.isEnabled ? 'text-oney' : 'text-gray-400'},
+            ['hyvaCheckoutPayplugOneySimulationClass12']() {return this.isEnabled ? 'border-oney after:border-oney' : 'border-gray-400 after:border-gray-400'},
+            ['hyvaCheckoutPayplugOneySimulationClick10'](event) {return this.handleClick()},
+            ['hyvaCheckoutPayplugOneySimulationClickAway13'](event) {return this.popinIsVisible = false},
+        }
+    )
+}
+window.addEventListener('alpine:init', () => Alpine.data('hyvaCheckoutPayplugOneySimulation', hyvaCheckoutPayplugOneySimulation), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

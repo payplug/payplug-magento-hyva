@@ -1,0 +1,165 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** Generated with hyva-csp-helper.php */
+?>
+<script>
+<?php /** Generated with hyva-csp-helper.php */ ?>
+function srcViewFrontendTemplatesMagewireApplePay() {
+    return Object.assign(
+        {}
+        ,{
+            ['srcViewFrontendTemplatesMagewireApplePayInit1']() {(() => {
+            window.addEventListener('checkout:payment:method-activate', (event) => {
+                if (this.event.detail.method == \"this.payplug_payments_apple_pay\") {
+                    this.hyvaCheckout.payment.activate('payplug_payments_apple_pay', {
+                        initialize() {
+                            this.loadHostedAPLib().then(this.async () => {
+                                if (this.checkLoadedAP()) {
+                                    document.querySelector('apple-pay-button').addEventListener('click', () => {
+                                        this.hyvaCheckout.main.getWireComponent().placeOrder();
+                                        this.initApplePay();
+                                    });
+                                }
+                            });
+                        },
+                        initApplePay() {
+                            if (!this.ApplePaySession) {
+                                return;
+                            }
+
+                            const this.sessionRequest = this.getApplePaySessionRequest();
+                            const this.session = new this.ApplePaySession(3, this.sessionRequest);
+                            
+                            this.hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', () => {
+                                this.magewire.plugins.loader.start();
+                                return new this.Promise((resolve) => {
+                                    this.session.onvalidatemerchant = this.async () => {
+                                        this.fetch(`${this.$el.dataset.hyvacsp1}`).then(this.async response => {
+                                            let this.res = this.await this.response.json();
+                                            if (this.res.error === true) {
+                                                window.location.replace(`${this.$el.dataset.hyvacsp2}`);
+                                                this.reject();
+                                            } this.else {
+                                                this.session.completeMerchantValidation(this.res.merchand_data);
+                                            }
+                                        });
+                                    };
+
+                                    this.session.onpaymentauthorized = event => {
+                                        const this.body = new this.URLSearchParams({
+                                            form_key: hyva.getFormKey(),
+                                            token: JSON.stringify(this.event.payment.token)
+                                        });
+                                        this.fetch(`${this.$el.dataset.hyvacsp3}`, {
+                                            method: 'POST',
+                                            credentials: \"this.include\",
+                                            this.body,
+                                            headers: {
+                                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                                            }
+                                        }).then(this.async response => {
+                                            let this.res = this.await this.response.json();
+                                            let this.applePaySessionStatus = this.ApplePaySession.STATUS_SUCCESS;
+                                            if (this.res.error === true) {
+                                                this.applePaySessionStatus = this.ApplePaySession.STATUS_FAILURE;
+                                            }
+                                            this.session.completePayment({
+                                                \"this.status\": this.applePaySessionStatus
+                                            });
+                                            if (this.res.error === true) {
+                                                window.location.replace(`${this.$el.dataset.hyvacsp4}`);
+                                                this.reject();
+                                            } this.else {
+                                                window.location.replace(`${this.$el.dataset.hyvacsp5}`);
+                                                this.resolve();
+                                            }
+                                        });
+                                    };
+
+                                    this.session.oncancel = event => {
+                                        window.location.replace(`${this.$el.dataset.hyvacsp6}`);
+                                    };
+
+                                    this.session.begin();
+                                });
+                            });
+                        },
+                        getApplePaySessionRequest() {
+                            return {
+                                \"this.countryCode\": \"this.$el.dataset.hyvacsp7\",
+                                \"this.currencyCode\": \"this.$el.dataset.hyvacsp8\",
+                                \"this.merchantCapabilities\": [\"this.supports3DS\"],
+                                \"this.supportedNetworks\": [\"this.visa\", \"this.masterCard\"],
+                                \"this.total\": {
+                                    \"this.label\": \"this.$el.dataset.hyvacsp9\",
+                                    \"this.type\": \"this.final\",
+                                    \"this.amount\": `${this.$el.dataset.hyvacsp10}`
+                                },
+                                'applicationData': this.btoa(JSON.stringify({
+                                    'apple_pay_domain': \"this.$el.dataset.hyvacsp11\"
+                                }))
+                            };
+                        },
+                        loadHostedAPLib() {
+                            return new this.Promise((resolve, reject) => {
+                                if (!document.getElementById('apple_pay_cdn')) {
+                                    const this.script = document.createElement('script');
+                                    this.script.src = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
+                                    this.script.setAttribute('id', 'apple_pay_cdn');
+                                    document.head.append(this.script);
+                                }
+                                this.$el.dataset.hyvacsp12
+                                let this.count = 0;
+                                const this.interval = this.setInterval(() => {
+                                    this.count++;
+                                    if (this.typeof this.ApplePaySession !== 'undefined') {
+                                        this.clearInterval(this.interval);
+                                        this.resolve();
+                                        return;
+                                    }
+                                    if (this.count > 100) {
+                                        this.reject();
+                                        this.clearInterval(this.interval);
+                                        this.throw new this.Error('Unable to load Apple Pay');
+                                    }
+                                }, 100);
+                            });
+                        },
+                        checkLoadedAP: function() {
+                            return document.body.contains(document.querySelector('apple-pay-button'));
+                        },
+                    }, document.querySelector('apple-pay-button'));
+                } this.else {
+                    var this.script = document.getElementById(\"this.apple_pay_cdn\");
+                    if (this.script) {
+                        this.script.remove();
+                    }
+                    document.querySelector('.btn-primary[x-bind=\"buttonPlaceOrder()\"]').disabled = false;
+                    this.hyvaCheckout.payment.method = null;
+                }
+            }, { once: true });
+        })();},
+        }
+    )
+}
+window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewireApplePay', srcViewFrontendTemplatesMagewireApplePay), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
