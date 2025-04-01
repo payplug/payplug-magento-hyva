@@ -173,5 +173,22 @@
                    template="Hyva_CheckoutPayplug::checkout/payment/method/js/payplug.phtml"
             />
         </referenceContainer>
+        <referenceContainer name="magewire.plugin.scripts">
+            <block name="magewire.apple-pay"
+                   template="Hyva_CheckoutPayplug::magewire/apple-pay-csp-js.phtml"
+            />
+            <block name="magewire.oney"
+                   template="Hyva_CheckoutPayplug::magewire/oney-csp-js.phtml"
+            />
+            <block name="magewire.standard"
+                   template="Hyva_CheckoutPayplug::magewire/standard-csp-js.phtml"
+            />
+            <block name="oney.simulation"
+                   template="Hyva_CheckoutPayplug::oney/simulation-csp-js.phtml"
+            />
+            <block name="oney.simulation_content"
+                   template="Hyva_CheckoutPayplug::oney/simulation_content-csp-js.phtml"
+            />
+        </referenceContainer>
     </body>
 </page>
