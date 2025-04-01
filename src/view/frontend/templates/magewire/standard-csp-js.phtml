@@ -18,299 +18,305 @@ use Magento\Framework\View\Element\Template;
 /** @var ViewModelRegistry $viewModels */
 /** @var HyvaCsp $hyvaCsp */
 
-/** Generated with hyva-csp-helper.php */
 ?>
 <script>
-<?php /** Generated with hyva-csp-helper.php */ ?>
 function srcViewFrontendTemplatesMagewireStandard() {
-    return Object.assign(
-        {}
-        ,{
-            ['srcViewFrontendTemplatesMagewireStandardInit1']() {(() => {
-            let this.isOneClick = (this.$el.dataset.hyvacsp1 === 'true');
+    return {
+        ['srcViewFrontendTemplatesMagewireStandardInit1']() {
 
-            this.$el.dataset.hyvacsp2
-                const this.IntegratedPayment = {
-                    props: {
-                        cartId: null,
-                        paymentId: null,
-                        paymentOptionId: null,
-                        form: {},
-                        checkoutForm: null,
-                        api: null,
-                        integratedPayment: null,
-                        token: null,
-                        notValid: true,
-                        fieldsValid: {
-                            cardHolder: false,
-                            pan: false,
-                            cvv: false,
-                            exp: false,
-                        },
-                        fieldsEmpty: {
-                            cardHolder: true,
-                            pan: true,
-                            cvv: true,
-                            exp: true,
-                        },
-                        inputStyle: {
-                            default: {
-                                color: '#2B343D',
-                                fontFamily: 'Poppins, sans-serif',
-                                fontSize: '14px',
-                                textAlign: 'left',
-                                '::placeholder': {
-                                    color: '#969a9f',
-                                },
-                                ':focus': {
+            const phpData = this.$el.dataset,
+
+                phpIsOneClick = phpData.isOneClick === 'true',
+                phpIsIntegrated = phpData.isIntegrated === 'true',
+                phpIsRedirected = phpData.isRedirected === 'true',
+                phpIsPopup = phpData.isPopup === 'true',
+
+                phpSandbox = phpData.sandbox,
+                phpMagewireId = phpData.magewireId
+            ;
+
+            (() => {
+                let isOneClick = phpIsOneClick;
+
+                if (phpIsIntegrated) {
+                    const IntegratedPayment = {
+                        props: {
+                            cartId: null,
+                            paymentId: null,
+                            paymentOptionId: null,
+                            form: {},
+                            checkoutForm: null,
+                            api: null,
+                            integratedPayment: null,
+                            token: null,
+                            notValid: true,
+                            fieldsValid: {
+                                cardHolder: false,
+                                pan: false,
+                                cvv: false,
+                                exp: false,
+                            },
+                            fieldsEmpty: {
+                                cardHolder: true,
+                                pan: true,
+                                cvv: true,
+                                exp: true,
+                            },
+                            inputStyle: {
+                                default: {
                                     color: '#2B343D',
+                                    fontFamily: 'Poppins, sans-serif',
+                                    fontSize: '14px',
+                                    textAlign: 'left',
+                                    '::placeholder': {
+                                        color: '#969a9f',
+                                    },
+                                    ':focus': {
+                                        color: '#2B343D',
+                                    }
+                                },
+                                invalid: {
+                                    color: '#E91932'
                                 }
                             },
-                            invalid: {
-                                color: '#E91932'
-                            }
+                            save_card: false,
+                            scheme: null,
+                            query: null,
+                            submit: null,
+                            order_review: false,
+                            return_url: null
                         },
-                        save_card: false,
-                        scheme: null,
-                        query: null,
-                        submit: null,
-                        order_review: false,
-                        return_url: null
-                    },
-                    init: function () {
-                        this.IntegratedPayment.props.api = new this.Payplug.IntegratedPayment(this.$el.dataset.hyvacsp3);
-                        this.IntegratedPayment.props.api.setDisplayMode3ds(this.Payplug.DisplayMode3ds.LIGHTBOX);
-                        this.IntegratedPayment.props.form = {};
-                        this.IntegratedPayment.props.form.cardHolder = {element: this.IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: this.IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
-                        this.IntegratedPayment.props.form.pan = {element:this.IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: this.IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
-                        this.IntegratedPayment.props.form.cvv = {element:this.IntegratedPayment.props.api.cvv(document.querySelector('#cvv-input-container'), {default: this.IntegratedPayment.props.inputStyle.default, placeholder: 'CVV'})};
-                        this.IntegratedPayment.props.form.exp = {element:this.IntegratedPayment.props.api.expiration(document.querySelector('#exp-input-container'), {default: this.IntegratedPayment.props.inputStyle.default, placeholder: 'Exp Date'})};
-                        this.IntegratedPayment.props.scheme = this.IntegratedPayment.props.api.getSupportedSchemes();
-                    },
-                };
-            this.$el.dataset.hyvacsp4
+                        init: function () {
+                            IntegratedPayment.props.api = new Payplug.IntegratedPayment(phpSandbox);
+                            IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                            IntegratedPayment.props.form = {};
+                            IntegratedPayment.props.form.cardHolder = {element: IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
+                            IntegratedPayment.props.form.pan = {element:IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
+                            IntegratedPayment.props.form.cvv = {element:IntegratedPayment.props.api.cvv(document.querySelector('#cvv-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'CVV'})};
+                            IntegratedPayment.props.form.exp = {element:IntegratedPayment.props.api.expiration(document.querySelector('#exp-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Exp Date'})};
+                            IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
+                        },
+                    };
+                }
 
-            window.addEventListener('checkout:payment:method-activate', (event) => {
-                const this.MAGEWIRE_STANDARD_ID = `${this.$el.dataset.hyvacsp5}`;
-                const this.MAGEWIRE_STANDARD_SELECTOR = document.querySelector(`[this.wire\\:this.id=\"${ this.MAGEWIRE_STANDARD_ID }\"]`);
+                window.addEventListener('checkout:payment:method-activate', (event) => {
+                    const MAGEWIRE_STANDARD_ID = phpMagewireId;
+                    const MAGEWIRE_STANDARD_SELECTOR = document.querySelector(`[wire\\:id="${ MAGEWIRE_STANDARD_ID }"]`);
 
-                if (this.event.detail.method == \"this.payplug_payments_standard\") {
-                    this.hyvaCheckout.payment.activate('payplug_payments_standard', {
-                        initialize() {
-                            this.loadHostedLib()
-                                this.$el.dataset.hyvacsp6
-                                    .then(() => {
+                    if (event.detail.method == "payplug_payments_standard") {
+                        hyvaCheckout.payment.activate('payplug_payments_standard', {...{
+                            initialize() {
+                                const loaded = this.loadHostedLib()
+                                if (phpIsIntegrated) {
+                                    loaded.then(() => {
                                         if (!this.isInitialized()) {
-                                            this.IntegratedPayment.init();
+                                            IntegratedPayment.init();
                                         }
                                     });
-                                this.$el.dataset.hyvacsp7
-                        },
-                        this.$el.dataset.hyvacsp8
+                                }
+                            },
                             isInitialized() {
                                 return document.body.contains(document.getElementById('cardholder'));
                             },
-                        this.$el.dataset.hyvacsp9
-                        this.async validate() {
-                            let this.cardIsSelected = false;
+                            async validate() {
+                                let cardIsSelected = false;
 
-                            if (document.querySelector('input[name=\"payment[payplug_payments_standard][customer_card_id]\"]:checked') != null) {
-                                if (document.querySelector('input[name=\"payment[payplug_payments_standard][customer_card_id]\"]:checked').value) {
-                                    this.cardIsSelected = true;
+                                if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
+                                    if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value) {
+                                        cardIsSelected = true;
+                                    }
                                 }
-                            }
 
-                            if (this.isOneClick && this.cardIsSelected) {
-                                const this.selectedElement = document.querySelector('input[name=\"payment[payplug_payments_standard][customer_card_id]\"]:checked');
-                                const this.cartId = this.selectedElement.value;
+                                if (isOneClick && cardIsSelected) {
+                                    const selectedElement = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                                    const cartId = selectedElement.value;
 
-                                this.await this.Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', this.cartId);
-                                this.hyvaCheckout.main.getWireComponent().placeOrder();
-                                this.resolve();
-                                return true;
-                            } this.else {
-                                this.$el.dataset.hyvacsp10
-                                    this.hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', this.async () => {
-                                        this.$el.dataset.hyvacsp11
-                                        return new this.Promise((resolve) => {
-                                            this.IntegratedPayment.props.api.setDisplayMode3ds(this.Payplug.DisplayMode3ds.LIGHTBOX);
-                                            this.IntegratedPayment.props.api.validateForm()
-                                            this.IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
-                                                this.magewire.plugins.loader.start();
-                                                if (this.isFormValid) {                                                    
-                                                    this.fetch(`${this.$el.dataset.hyvacsp12}`).then(response => {
-                                                        let this.res = this.response.clone().json();
-                                                        this.res.then(result => {
-                                                            if (this.typeof result.error !== 'undefined' && result.error) {
-                                                                window.location.replace(this.response.url);
-                                                                this.reject();
-                                                            } this.else {
-                                                                if (this.typeof result.payment_id !== this.undefined && result.payment_id) {
-                                                                    let this.save_card = false;
-                                                                    if (document.querySelector(\"#this.payplug_save_card\") != null &&
-                                                                        this.typeof document.querySelector(\"#this.payplug_save_card\") != \"this.undefined\" &&
-                                                                        document.querySelector(\"#this.payplug_save_card\").checked) {
-                                                                        this.save_card = true;
+                                    await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', cartId);
+                                    hyvaCheckout.main.getWireComponent().placeOrder();
+                                    resolve();
+                                    return true;
+                                } else {
+                                    if (phpIsIntegrated) {
+                                        hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
+                                            <?php // Just simulating a 5 seconds API request ?>
+                                            return new Promise((resolve) => {
+                                                IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                                                IntegratedPayment.props.api.validateForm()
+                                                IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                                                    magewire.plugins.loader.start();
+                                                    if (isFormValid) {
+                                                        fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
+                                                            let res = response.clone().json();
+                                                            res.then(result => {
+                                                                if (typeof result.error !== 'undefined' && result.error) {
+                                                                    window.location.replace(response.url);
+                                                                    reject();
+                                                                } else {
+                                                                    if (typeof result.payment_id !== undefined && result.payment_id) {
+                                                                        let save_card = false;
+                                                                        if (document.querySelector("#payplug_save_card") != null &&
+                                                                            typeof document.querySelector("#payplug_save_card") != "undefined" &&
+                                                                            document.querySelector("#payplug_save_card").checked) {
+                                                                            save_card = true;
+                                                                        }
+
+                                                                        IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
+                                                                        IntegratedPayment.props.api.onCompleted(function (event) {
+                                                                            window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
+                                                                            resolve();
+                                                                        });
+
+                                                                    } else {
+                                                                        window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
+                                                                        reject();
                                                                     }
-
-                                                                    this.IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: this.save_card});
-                                                                    this.IntegratedPayment.props.api.onCompleted(function (this.event) {
-                                                                        window.location.replace(`${this.$el.dataset.hyvacsp13}`);
-                                                                        this.resolve();
-                                                                    });
-
-                                                                } this.else {
-                                                                    window.location.replace(`${this.$el.dataset.hyvacsp14}`);
-                                                                    this.reject();
                                                                 }
-                                                            }
+                                                            });
                                                         });
-                                                    });
-                                                } this.else {
-                                                    this.reject();
-                                                    this.magewire.plugins.loader.stop();
-                                                    document.querySelector('.btn-primary[x-bind=\"buttonPlaceOrder()\"]').disabled = false;
-                                                    return false;
-                                                }
+                                                    } else {
+                                                        reject();
+                                                        magewire.plugins.loader.stop();
+                                                        document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
+                                                        return false;
+                                                    }
+                                                });
                                             });
                                         });
-                                    });
-                                this.$el.dataset.hyvacsp15
+                                    }
 
-                                this.$el.dataset.hyvacsp16
-                                    this.hyvaCheckout.main.getWireComponent().placeOrder();
-                                    this.resolve();
-                                    return true;
-                                this.$el.dataset.hyvacsp17
+                                    if (phpIsIntegrated || phpIsRedirected) {
+                                        hyvaCheckout.main.getWireComponent().placeOrder();
+                                        resolve();
+                                        return true;
+                                    }
 
-                                this.$el.dataset.hyvacsp18
-                                    const this.redirectUrl = 'payplug_payments/payment/standard';
-                                    const this.returnUrl = 'payplug_payments/payment/paymentReturn';
-                                    const this.closeIframe = this.Payplug.Form._closeIframe;
+                                    if (phpIsPopup) {
+                                        const redirectUrl = 'payplug_payments/payment/standard';
+                                        const returnUrl = 'payplug_payments/payment/paymentReturn';
+                                        const closeIframe = Payplug.Form._closeIframe;
 
-                                    function redirectToCancelUrl() {
-                                        const this.cancelUrl = 'payplug_payments/payment/cancel';
-                                        window.location.replace(`${BASE_URL}${this.cancelUrl}?this.form_key=${hyva.getFormKey()}`);
-                                    };
+                                        function redirectToCancelUrl() {
+                                            const cancelUrl = 'payplug_payments/payment/cancel';
+                                            window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
+                                        };
 
-                                    this.Payplug.Form._closeIframe = () => {
-                                        if (this.typeof window.redirection_url !== 'undefined' && window.redirection_url) {
-                                            this.$el.dataset.hyvacsp19
+                                        Payplug.Form._closeIframe = () => {
+                                            if (typeof window.redirection_url !== 'undefined' && window.redirection_url) {
+                                                <?php // Payment is completed and redirection is handled by PayPlug form.js ?>
+                                                return;
+                                            }
+
+                                            redirectToCancelUrl();
+                                        };
+
+                                        await hyvaCheckout.main.getWireComponent().placeOrder();
+
+                                        fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`)
+                                            .then(response => response.json())
+                                            .then(({ is_paid, url }) => {
+                                                if (is_paid) {
+                                                    window.location.replace(`${BASE_URL}${returnUrl}`);
+                                                } else if (url) {
+                                                    Payplug.Form.showPayment(url, isOneClick);
+                                                } else {
+                                                    redirectToCancelUrl();
+                                                }
+                                            })
+                                            .catch(console.error);
+                                    }
+                                }
+                            },
+                            loadHostedLib() {
+                                return new Promise((resolve, reject) => {
+                                    if (!document.getElementById('payplug_hosted_lib')) {
+                                        const script = document.createElement('script');
+                                        script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
+                                        script.setAttribute('id', 'payplug_hosted_lib');
+                                        document.head.append(script);
+                                    }
+                                    <?php // If it's not loaded yet let's wait 100ms to load it ?>
+                                    let count = 0;
+                                    const interval = setInterval(() => {
+                                        count++;
+                                        if (typeof Payplug !== 'undefined') {
+                                            clearInterval(interval);
+                                            resolve();
                                             return;
                                         }
-
-                                        this.redirectToCancelUrl();
-                                    };
-
-                                    this.await this.hyvaCheckout.main.getWireComponent().placeOrder();
-
-                                    this.fetch(`${BASE_URL}${this.redirectUrl}?this.should_redirect=0`)
-                                        .then(response => response.json())
-                                        .then(({ is_paid, url }) => {
-                                            if (this.is_paid) {
-                                                window.location.replace(`${BASE_URL}${this.returnUrl}`);
-                                            } this.else if (this.url) {
-                                                this.Payplug.Form.showPayment(this.url, this.isOneClick);
-                                            } this.else {
-                                                this.redirectToCancelUrl();
-                                            }
-                                        })
-                                        .catch(this.console.error);
-                                this.$el.dataset.hyvacsp20
-                            }
-                        },
-                        this.$el.dataset.hyvacsp21
-                            placeOrderViaJs() {
-                                this.$el.dataset.hyvacsp22
-                                return true;
+                                        if (count > 100) {
+                                            reject();
+                                            clearInterval(interval);
+                                            throw new Error('Unable to load Payplug');
+                                        }
+                                    }, 100);
+                                });
                             },
-                        this.$el.dataset.hyvacsp23
-                        loadHostedLib() {
-                            return new this.Promise((resolve, reject) => {
-                                if (!document.getElementById('payplug_hosted_lib')) {
-                                    const this.script = document.createElement('script');
-                                    this.script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
-                                    this.script.setAttribute('id', 'payplug_hosted_lib');
-                                    document.head.append(this.script);
+                        }, ...(() => (phpIsPopup && !phpIsOneClick ? {
+                            placeOrderViaJs() {
+                                <?php // Disable place order ?>
+                                return true;
+                            }
+                        } : {}))()}, MAGEWIRE_STANDARD_SELECTOR);
+
+                        if (document.querySelector('ul.payplug-payments-cards li') != null) {
+                            document.querySelector('ul.payplug-payments-cards li input').click();
+                            document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
+                                var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                                if (card.value === '') {
+                                    isOneClick = false;
+
+                                    if (phpIsIntegrated) {
+                                        document.querySelector("#payplug-payment-form").classList.remove("-hide");
+                                    }
+                                } else {
+                                    isOneClick = true;
+
+                                    if (phpIsIntegrated) {
+                                        document.querySelector("#payplug-payment-form").classList.add("-hide");
+                                    }
                                 }
-                                this.$el.dataset.hyvacsp24
-                                let this.count = 0;
-                                const this.interval = this.setInterval(() => {
-                                    this.count++;
-                                    if (this.typeof this.Payplug !== 'undefined') {
-                                        this.clearInterval(this.interval);
-                                        this.resolve();
-                                        return;
-                                    }
-                                    if (this.count > 100) {
-                                        this.reject();
-                                        this.clearInterval(this.interval);
-                                        this.throw new this.Error('Unable to load Payplug');
-                                    }
-                                }, 100);
                             });
-                        },
-                    }, this.MAGEWIRE_STANDARD_SELECTOR);
-
-                    if (document.querySelector('ul.payplug-payments-cards li') != null) {
-                        document.querySelector('ul.payplug-payments-cards li input').click();
-                        document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
-                            var this.card = document.querySelector('input[name=\"payment[payplug_payments_standard][customer_card_id]\"]:checked');
-                            if (this.card.value === '') {
-                                this.isOneClick = false;
-
-                                this.$el.dataset.hyvacsp25
-                                    document.querySelector(\"#this.payplug-this.payment-this.form\").classList.remove(\"-this.hide\");
-                                this.$el.dataset.hyvacsp26
-                            } this.else {
-                                this.isOneClick = true;
-
-                                this.$el.dataset.hyvacsp27
-                                    document.querySelector(\"#this.payplug-this.payment-this.form\").classList.add(\"-this.hide\");
-                                this.$el.dataset.hyvacsp28
-                            }
-                        });
-                    }
-                } this.else {
-                    var this.script = document.getElementById(\"this.payplug-this.js\");
-                    if (this.script) {
-                        this.script.remove();
-                    }
-                    document.querySelector('.btn-primary[x-bind=\"buttonPlaceOrder()\"]').disabled = false;
-                    this.hyvaCheckout.payment.method = null;
-                }
-            }, {once: true});
-
-            this.$el.dataset.hyvacsp29
-                const this.cardholder = document.querySelector('#cardholder-input-container');
-                const this.pan = document.querySelector('#pan-input-container');
-                const this.exp = document.querySelector('#exp-input-container');
-                const this.cvv = document.querySelector('#cvv-input-container');
-                const this.options = { attributes: true }
-                function callback(mutationList, observer) {
-                    this.mutationList.forEach(function(mutation) {
-                        if ( this.mutation.attributeName === 'class' ) {
-                            if (this.mutation.target.classList.contains(\"this.integrated_payment_error\")) {
-                                this.mutation.target.style.border = \"1px this.solid #this.FF0000\";
-                                let this.id = this.mutation.target.id
-                                document.querySelector('.error-container.'+this.id+ ' .invalid-field').style.display = \"this.block\";
-                            } this.else {
-                                let this.id = this.mutation.target.id
-                                this.mutation.target.style.border = \"1px this.solid #this.d5d6d8\";
-                                document.querySelector('.error-container.'+this.id+ ' .invalid-field').style.display = \"this.none\";
-                            }
                         }
-                    })
+                    } else {
+                        var script = document.getElementById("payplug-js");
+                        if (script) {
+                            script.remove();
+                        }
+                        document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
+                        hyvaCheckout.payment.method = null;
+                    }
+                }, {once: true});
+
+                if (phpIsIntegrated) {
+                    const cardholder = document.querySelector('#cardholder-input-container');
+                    const pan = document.querySelector('#pan-input-container');
+                    const exp = document.querySelector('#exp-input-container');
+                    const cvv = document.querySelector('#cvv-input-container');
+                    const options = { attributes: true }
+                    function callback(mutationList, observer) {
+                        mutationList.forEach(function(mutation) {
+                            if ( mutation.attributeName === 'class' ) {
+                                if (mutation.target.classList.contains("integrated_payment_error")) {
+                                    mutation.target.style.border = "1px solid #FF0000";
+                                    let id = mutation.target.id
+                                    document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "block";
+                                } else {
+                                    let id = mutation.target.id
+                                    mutation.target.style.border = "1px solid #d5d6d8";
+                                    document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "none";
+                                }
+                            }
+                        })
+                    }
+                    const observer = new MutationObserver(callback)
+                    observer.observe(cardholder, options)
+                    observer.observe(pan, options)
+                    observer.observe(exp, options)
+                    observer.observe(cvv, options)
                 }
-                const this.observer = new this.MutationObserver(this.callback)
-                this.observer.observe(this.cardholder, this.options)
-                this.observer.observe(this.pan, this.options)
-                this.observer.observe(this.exp, this.options)
-                this.observer.observe(this.cvv, this.options)
-            this.$el.dataset.hyvacsp30
-        })();},
-        }
-    )
+            })();
+        },
+    }
 }
 window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewireStandard', srcViewFrontendTemplatesMagewireStandard), {once: true});
 </script>

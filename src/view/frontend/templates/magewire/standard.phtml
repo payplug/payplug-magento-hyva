@@ -200,5 +200,15 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
         </style>
     <?php endif; ?>
 
-    <div x-data="srcViewFrontendTemplatesMagewireStandard" x-init="srcViewFrontendTemplatesMagewireStandardInit1" data-hyvacsp1="<?= !empty($payplugCards) && $isOneClick ? 'true' : 'false'; ?>" data-hyvacsp2="<?php if ($isIntegrated) : ?>" data-hyvacsp3="<?= $escaper->escapeHtmlAttr($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>" data-hyvacsp4="<?php endif; ?>" data-hyvacsp5="<?= /* @NoEscape */ $magewire->getId() ?>" data-hyvacsp6="<?php if ($isIntegrated) : ?>" data-hyvacsp7="<?php endif; ?>" data-hyvacsp8="<?php if ($isIntegrated) : ?>" data-hyvacsp9="<?php endif; ?>" data-hyvacsp10="<?php if ($isIntegrated) : ?>" data-hyvacsp11="<?php // Just simulating a 5 seconds API request ?>" data-hyvacsp12="<?= $escaper->escapeUrl($block->getUrl(\"payplug_payments/payment/standard\", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>" data-hyvacsp13="<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>" data-hyvacsp14="<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>" data-hyvacsp15="<?php endif; ?>" data-hyvacsp16="<?php if ($isIntegrated || $isRedirected) : ?>" data-hyvacsp17="<?php endif; ?>" data-hyvacsp18="<?php if ($isPopup) : ?>" data-hyvacsp19="<?php // Payment is completed and redirection is handled by PayPlug form.js ?>" data-hyvacsp20="<?php endif; ?>" data-hyvacsp21="<?php if ($isPopup && !$isOneClick) : ?>" data-hyvacsp22="<?php // Disable place order ?>" data-hyvacsp23="<?php endif; ?>" data-hyvacsp24="<?php // If it's not loaded yet let's wait 100ms to load it ?>" data-hyvacsp25="<?php if ($isIntegrated) : ?>" data-hyvacsp26="<?php endif; ?>" data-hyvacsp27="<?php if ($isIntegrated) : ?>" data-hyvacsp28="<?php endif; ?>" data-hyvacsp29="<?php if ($isIntegrated) : ?>" data-hyvacsp30="<?php endif; ?>"></div>
+    <div x-data="srcViewFrontendTemplatesMagewireStandard"
+         x-init="srcViewFrontendTemplatesMagewireStandardInit1"
+
+         data-is-one-click="<?= !empty($payplugCards) && $isOneClick ? 'true' : 'false' ?>"
+         data-is-integrated="<?= $isIntegrated ? 'true' : 'false' ?>'"
+         data-is-redirected="<?= $isRedirected ? 'true' : 'false' ?>"
+         data-is-popup="<?= $isPopup ? 'true' : 'false' ?>"
+
+         data-sandbox="<?= $escaper->escapeHtmlAttr($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>"
+         data-magewire-id="<?= $escaper->escapeHtmlAttr($magewire->getId()) ?>"
+    ></div>
 </div>
