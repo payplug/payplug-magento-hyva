@@ -26,97 +26,100 @@ function srcViewFrontendTemplatesOneySimulation() {
     return Object.assign(
         {}
         ,{
-            ['srcViewFrontendTemplatesOneySimulationInit1']() {'use strict';
+            ['srcViewFrontendTemplatesOneySimulationInit1']() {
 
-    var this.hasError = this.$el.dataset.hyvacsp1;
+                var hasError = this.$el.dataset.hyvacsp1;
 
-    function getProductId() {
-        const this.product = document.querySelector('[name=\"product\"]');
-        return this.product !== null && this.product.value;
-    }
-
-    function oneySimulation() {
-        return {
-            isEnabled: !this.hasError,
-            isLoading: false,
-            popinContent: '',
-            quantityHasChanged: true,
-            popinIsVisible: false,
-            paymentType: '3x',
-            handleClick() {
-                if (this.quantityHasChanged && !this.popinIsVisible) {
-                    this.isLoading = true;
-
-                    this.getPaymentSimulations()
-                        .then(response => response.json())
-                        .then(data => {
-                            this.popinContent = this.data.html;
-                            this.isLoading = false;
-                            this.popinIsVisible = true;
-                        });
-                } this.else {
-                    this.popinIsVisible = !this.popinIsVisible;
+                function getProductId() {
+                    const product = document.querySelector('[name="product"]');
+                    return product !== null && product.value;
                 }
 
-                this.quantityHasChanged = false;
-            },
-            getPaymentSimulations() {
-                const this.formData = this.getFormData();
-                const this.body = new this.URLSearchParams(this.formData);
-                return this.fetch(`${BASE_URL}/this.payplug_payments/this.oney/this.simulation`+ '?form_key=' + hyva.getFormKey(), {
-                    method: 'post',
-                    this.body,
-                    headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
-                });
-            },
-            getFormData() {
-                let this.formData = {
-                    form_key: hyva.getFormKey()
-                };
+                function oneySimulation() {
+                    return {
+                        isEnabled: !hasError,
+                        isLoading: false,
+                        popinContent: '',
+                        quantityHasChanged: true,
+                        popinIsVisible: false,
+                        paymentType: '3x',
+                        handleClick() {
+                            if (this.quantityHasChanged && !this.popinIsVisible) {
+                                this.isLoading = true;
 
-                if (document.querySelector('.oney-product') === null) {
-                    return this.formData;
-                }
+                                this.getPaymentSimulations()
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        this.popinContent = data.html;
+                                        this.isLoading = false;
+                                        this.popinIsVisible = true;
+                                    });
+                            } else {
+                                this.popinIsVisible = !this.popinIsVisible;
+                            }
 
-                const this.product = document.querySelector('[name=\"product\"]');
-
-                if (document.querySelector('[name=\"product\"]') !== null) {
-                    this.formData.product = this.product.value;
-                    this.formData.qty = document.querySelector('[name=\"qty\"]').value;
-                    let this.productOptions = [];
-                    let this.configurableAttributes = document.querySelector('.super-attribute-select');
-
-                    if (this.configurableAttributes) {
-                        this.configurableAttributes.forEach(function (this.value, this.index) {
-                            let this.configurableAttribute = $(this.value);
-
-                            this.productOptions.push({
-                                attribute: this.configurableAttribute.data('attr-name'),
-                                value: this.configurableAttribute.value
+                            this.quantityHasChanged = false;
+                        },
+                        getPaymentSimulations() {
+                            const formData = this.getFormData();
+                            const body = new URLSearchParams(formData);
+                            return fetch(`${BASE_URL}/payplug_payments/oney/simulation`+ '?form_key=' + hyva.getFormKey(), {
+                                method: 'post',
+                                body,
+                                headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
                             });
-                        });
-                    }
+                        },
+                        getFormData() {
+                            let formData = {
+                                form_key: hyva.getFormKey()
+                            };
 
-                    this.formData.product_options = this.productOptions;
+                            if (document.querySelector('.oney-product') === null) {
+                                return formData;
+                            }
+
+                            const product = document.querySelector('[name="product"]');
+
+                            if (document.querySelector('[name="product"]') !== null) {
+                                formData.product = product.value;
+                                formData.qty = document.querySelector('[name="qty"]').value;
+                                let productOptions = [];
+                                let configurableAttributes = document.querySelector('.super-attribute-select');
+
+                                if (configurableAttributes) {
+                                    configurableAttributes.forEach(function (value, index) {
+                                        let configurableAttribute = $(value);
+
+                                        productOptions.push({
+                                            attribute: configurableAttribute.data('attr-name'),
+                                            value: configurableAttribute.value
+                                        });
+                                    });
+                                }
+
+                                formData.product_options = productOptions;
+                            }
+
+                            return formData;
+                        },
+                        eventListeners: {
+                            [`@update-qty-${getProductId()}.window`](event) {
+                                this.isLoading = true;
+
+                                this.getPaymentSimulations()
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        this.isEnabled = !data.html.includes('error');
+                                        this.quantityHasChanged = true;
+                                        this.isLoading = false;
+                                    });
+                            }
+                        }
+                    };
                 }
 
-                return this.formData;
+                window.oneySimulation = oneySimulation
             },
-            eventListeners: {
-                [`@this.update-this.qty-${this.getProductId()}.window`](this.event) {
-                    this.isLoading = true;
-
-                    this.getPaymentSimulations()
-                        .then(response => response.json())
-                        .then(data => {
-                            this.isEnabled = !this.data.html.includes('error');
-                            this.quantityHasChanged = true;
-                            this.isLoading = false;
-                        });
-                }
-            }
-        };
-    }},
         }
     )
 }
