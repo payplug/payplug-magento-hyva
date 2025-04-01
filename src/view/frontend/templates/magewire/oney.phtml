@@ -55,4 +55,32 @@ $icons = $viewModels->require(PayplugIcons::class);
     <?php endif; ?>
 </style>
 
-<div x-data="srcViewFrontendTemplatesMagewireOney" x-init="srcViewFrontendTemplatesMagewireOneyInit1" data-hyvacsp1="<?= $escaper->escapeHtmlAttr(__('In 30 days')); ?>" data-hyvacsp2="<?= $escaper->escapeHtmlAttr(__('In 60 days')); ?>" data-hyvacsp3="<?= $escaper->escapeHtmlAttr(__('In 90 days')); ?>" data-hyvacsp4="<?= $escaper->escapeHtmlAttr(__('Place Order')); ?>" data-hyvacsp5="<?php $label = $isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1'; ?>" data-hyvacsp6="<?= $escaper->escapeHtmlAttr(__($label)) ?>" data-hyvacsp7="<?php if ($hasError): ?>" data-hyvacsp8="<?= $escaper->escapeHtmlAttr($message); ?>" data-hyvacsp9="<?php else : ?>" data-hyvacsp10="<?php foreach ($oneySimulation->getOptions() as $option) : ?>" data-hyvacsp11="<?= $escaper->escapeHtmlAttr($option->getType()); ?>" data-hyvacsp12="<?php // Title ?>" data-hyvacsp13="<?php if ($option->getSchedules()) : ?>" data-hyvacsp14="<?= $escaper->escapeHtmlAttr(__('Total order amount')); ?>" data-hyvacsp15="<?= $escaper->escapeHtmlAttr($pricingHelper->currency($option->getFirstDeposit(), true, false)); ?>" data-hyvacsp16="<?php foreach ($option->getSchedules() as $i => $schedule): ?>" data-hyvacsp17="<?= $escaper->escapeHtmlAttr(__(sprintf('Installment %d:', $i + 1))); ?>" data-hyvacsp18="<?= $escaper->escapeHtmlAttr($pricingHelper->currency($schedule->getAmount(), true, false)); ?>" data-hyvacsp19="<?php endforeach; ?>" data-hyvacsp20="<?= $escaper->escapeHtmlAttr(__('Total cost')); ?>" data-hyvacsp21="<?= $escaper->escapeHtmlAttr($pricingHelper->currency($option->getTotalAmount(), true, false)); ?>" data-hyvacsp22="<?php endif; ?>" data-hyvacsp23="<?php endforeach; ?>" data-hyvacsp24="<?php endif; ?>" data-hyvacsp25="<?php // Reset place order button to default value ?>" data-hyvacsp26="<?= $escaper->escapeHtmlAttr(__('Place Order')); ?>"></div>
+<?php
+$options = array_map(static function($option) use ($pricingHelper) {
+    $schedules = $option->getSchedules();
+    $keys = array_keys($schedules);
+
+    return [
+        'type' => $option->getType(),
+        'firstDeposit' => $pricingHelper->currency($option->getFirstDeposit(), true, false),
+        'totalAmount' => $pricingHelper->currency($option->getTotalAmount(), true, false),
+
+        'schedules' => array_map(static function($schedule, $i) use ($pricingHelper) {
+            return [
+//                'i' => __(sprintf('Installment %d:', $i + 1)),
+                'amount' => $pricingHelper->currency($schedule->getAmount(), true, false),
+            ];
+        }, $schedules, $keys),
+    ];
+}, $oneySimulation->getOptions());
+?>
+<div x-data="srcViewFrontendTemplatesMagewireOney"
+     x-init="srcViewFrontendTemplatesMagewireOneyInit1"
+
+     data-label="<?= $escaper->escapeHtmlAttr(__($isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1')) ?>"
+     data-has-error="<?= $escaper->escapeHtmlAttr($hasError ? 'true' : 'false') ?>"
+     data-message="<?= $escaper->escapeHtmlAttr($message) ?>"
+
+     data-options="<?= $escaper->escapeHtmlAttr(json_encode($options)) ?>"
+
+></div>
