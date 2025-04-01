@@ -15,5 +15,13 @@ use Magento\Framework\Escaper;
 <div>
     <apple-pay-button buttonstyle="black" type="pay" locale="en"></apple-pay-button>
 
-    <div x-data="srcViewFrontendTemplatesMagewireApplePay" x-init="srcViewFrontendTemplatesMagewireApplePayInit1" data-hyvacsp1="<?= $escaper->escapeUrl($block->getUrl(\"payplug_payments/applepay/getTransactionData\")); ?>" data-hyvacsp2="<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>" data-hyvacsp3="<?= $escaper->escapeUrl($block->getUrl(\"hyva_checkout_payplug/applepay/updateTransaction\")); ?>" data-hyvacsp4="<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>" data-hyvacsp5="<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>" data-hyvacsp6="<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>" data-hyvacsp7="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>" data-hyvacsp8="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getData('quote_currency_code')); ?>" data-hyvacsp9="<?= $escaper->escapeHtmlAttr($block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name']); ?>" data-hyvacsp10="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getData(\"grand_total\")); ?>" data-hyvacsp11="<?= $escaper->escapeHtmlAttr($block->getConfig()['payment']['payplug_payments_apple_pay']['domain']); ?>" data-hyvacsp12="<?php // If it's not loaded yet let's wait 100ms to load it ?>"></div>
+    <div x-data="srcViewFrontendTemplatesMagewireApplePay"
+         x-init="srcViewFrontendTemplatesMagewireApplePayInit1"
+
+         data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>"
+         data-shipping-currrency="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getData('quote_currency_code')); ?>"
+         data-merchant-name="<?= $escaper->escapeHtmlAttr($block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name']); ?>"
+         data-total="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getData("grand_total")); ?>"
+         data-domain="<?= $escaper->escapeHtmlAttr($block->getConfig()['payment']['payplug_payments_apple_pay']['domain']); ?>"
+     ></div>
 </div>
