@@ -1,0 +1,58 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+?>
+<script>
+function srcViewFrontendTemplatesMagewirePpro() {
+    return {
+        ['srcViewFrontendTemplatesMagewirePproInit1']() {
+
+            const phpData = this.$el.dataset,
+
+                phpBillingCountryId = phpData.billingCountryId,
+                phpShippingCountryId = phpData.shippingCountryId,
+                phpMethod = phpData.method;
+
+            (() => {
+                window.addEventListener('checkout:payment:method-activate', (event) => {
+                    let data = {
+                        'billingCountry': phpBillingCountryId,
+                        'shippingCountry': phpShippingCountryId,
+                        'paymentMethod': phpMethod,
+                    };
+                    const body = new URLSearchParams(data);
+                    fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + '?form_key=' + hyva.getFormKey(), {
+                        method: 'post',
+                        body,
+                        headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
+                    }).then(async response => {
+                        let res = await response.json();
+                        if (typeof res.data != "undefined" && typeof res.data.message != "undefined") {
+                            document.getElementById('message').textContent = res.data.message;
+                        }
+                    });
+                }, {once: true});
+            })();
+        }
+    }
+}
+window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewirePpro', srcViewFrontendTemplatesMagewirePpro), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
