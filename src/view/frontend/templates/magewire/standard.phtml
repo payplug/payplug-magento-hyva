@@ -287,6 +287,52 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             },
                         <?php endif; ?>
                         async validate() {
+                            <?php if ($isIntegrated) : ?>
+                                <?php $validationFetchUrl = $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>
+
+                                IntegratedPayment.props.api.validateForm();
+                                IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                                    if (isFormValid) {
+                                        hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
+                                            <?php // Simulating a 5 seconds API request ?>
+                                            return new Promise((resolve) => {
+                                                IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                                                magewire.plugins.loader.start();
+                                                fetch('<?= $validationFetchUrl ?>')
+                                                    .then(response => response.json())
+                                                    .then(result => {
+                                                        if (result.error) {
+                                                            window.location.replace(response.url);
+                                                            reject();
+                                                        } else {                                                            
+                                                            if (result.payment_id) {
+                                                                const saveCardCheckbox = document.querySelector("#payplug_save_card");
+                                                                const cardIsSaved = saveCardCheckbox && saveCardCheckbox.checked;
+
+                                                                IntegratedPayment.props.api.pay(result.payment_id, 0, { 
+                                                                    save_card: cardIsSaved 
+                                                                });
+
+                                                                IntegratedPayment.props.api.onCompleted(function (event) {
+                                                                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
+                                                                    resolve();
+                                                                });
+
+                                                            } else {
+                                                                window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
+                                                                reject();
+                                                            }
+                                                        }
+                                                });
+                                            });
+                                        });
+
+                                        hyvaCheckout.main.getWireComponent().placeOrder();
+                                        return true;
+                                    }
+                                });
+                            <?php endif; ?>
+
                             let cardIsSelected = false;
 
                             if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
@@ -304,55 +350,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                                 resolve();
                                 return true;
                             } else {
-                                <?php if ($isIntegrated) : ?>
-                                    hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
-                                        <?php // Just simulating a 5 seconds API request ?>
-                                        return new Promise((resolve) => {
-                                            IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                                            IntegratedPayment.props.api.validateForm()
-                                            IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
-                                                magewire.plugins.loader.start();
-                                                if (isFormValid) {                                                    
-                                                    fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
-                                                        let res = response.clone().json();
-                                                        res.then(result => {
-                                                            if (typeof result.error !== 'undefined' && result.error) {
-                                                                window.location.replace(response.url);
-                                                                reject();
-                                                            } else {
-                                                                if (typeof result.payment_id !== undefined && result.payment_id) {
-                                                                    let save_card = false;
-                                                                    if (document.querySelector("#payplug_save_card") != null &&
-                                                                        typeof document.querySelector("#payplug_save_card") != "undefined" &&
-                                                                        document.querySelector("#payplug_save_card").checked) {
-                                                                        save_card = true;
-                                                                    }
-
-                                                                    IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
-                                                                    IntegratedPayment.props.api.onCompleted(function (event) {
-                                                                        window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
-                                                                        resolve();
-                                                                    });
-
-                                                                } else {
-                                                                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
-                                                                    reject();
-                                                                }
-                                                            }
-                                                        });
-                                                    });
-                                                } else {
-                                                    reject();
-                                                    magewire.plugins.loader.stop();
-                                                    document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
-                                                    return false;
-                                                }
-                                            });
-                                        });
-                                    });
-                                <?php endif; ?>
-
-                                <?php if ($isIntegrated || $isRedirected) : ?>
+                                <?php if ($isRedirected) : ?>
                                     hyvaCheckout.main.getWireComponent().placeOrder();
                                     resolve();
                                     return true;
