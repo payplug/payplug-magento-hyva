@@ -108,29 +108,14 @@ use Magento\Framework\Escaper;
                                 }))
                             };
                         },
-                        loadHostedAPLib() {
-                            return new Promise((resolve, reject) => {
-                                if (!document.getElementById('apple_pay_cdn')) {
-                                    const script = document.createElement('script');
-                                    script.src = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
-                                    script.setAttribute('id', 'apple_pay_cdn');
-                                    document.head.append(script);
-                                }
-                                <?php // If it's not loaded yet let's wait 100ms to load it ?>
-                                let count = 0;
-                                const interval = setInterval(() => {
-                                    count++;
-                                    if (typeof ApplePaySession !== 'undefined') {
-                                        clearInterval(interval);
-                                        resolve();
-                                        return;
-                                    }
-                                    if (count > 100) {
-                                        reject();
-                                        clearInterval(interval);
-                                        throw new Error('Unable to load Apple Pay');
-                                    }
-                                }, 100);
+                        loadHostedLib() {
+                            return new Promise(resolve => {
+                                const script = document.createElement('script');
+                                script.type = 'text/javascript';
+                                script.src = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
+                                script.async = true;
+                                script.onload = resolve;
+                                document.head.appendChild(script);
                             });
                         },
                         checkLoadedAP: function() {

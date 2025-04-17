@@ -399,28 +399,13 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                             },
                         <?php endif; ?>
                         loadHostedLib() {
-                            return new Promise((resolve, reject) => {
-                                if (!document.getElementById('payplug_hosted_lib')) {
-                                    const script = document.createElement('script');
-                                    script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
-                                    script.setAttribute('id', 'payplug_hosted_lib');
-                                    document.head.append(script);
-                                }
-                                <?php // If it's not loaded yet let's wait 100ms to load it ?>
-                                let count = 0;
-                                const interval = setInterval(() => {
-                                    count++;
-                                    if (typeof Payplug !== 'undefined') {
-                                        clearInterval(interval);
-                                        resolve();
-                                        return;
-                                    }
-                                    if (count > 100) {
-                                        reject();
-                                        clearInterval(interval);
-                                        throw new Error('Unable to load Payplug');
-                                    }
-                                }, 100);
+                            return new Promise(resolve => {
+                                const script = document.createElement('script');
+                                script.type = 'text/javascript';
+                                script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
+                                script.async = true;
+                                script.onload = resolve;
+                                document.head.appendChild(script);
                             });
                         },
                     }, MAGEWIRE_STANDARD_SELECTOR);
