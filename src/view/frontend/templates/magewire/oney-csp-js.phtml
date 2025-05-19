@@ -32,8 +32,6 @@ function srcViewFrontendTemplatesMagewireOney() {
                 phpOptions = JSON.parse(phpData.options)
             ;
 
-            const oneyContainer = document.querySelector('[data-oney-container="payplug_payments_oney"]');
-
             const getScheduleLabel = (days) => {
                 const scheduleLabels = [
                     {days: 30, label: "<?= $escaper->escapeJs(__('In 30 days')); ?>" },
@@ -53,9 +51,9 @@ function srcViewFrontendTemplatesMagewireOney() {
             }
 
             const selectOneyOption = (option) => {
-                const oneyPayment = oneyContainer.querySelector('.oneyPayment');
+                const oneyPayment = document.querySelector('.oneyPayment');
                 const oldSelected = oneyPayment.querySelector('.oneyOption-selected');
-                const selectedOption = oneyContainer.querySelector('[data-type="'+ option +'"]');
+                const selectedOption = oneyPayment.querySelector('[data-type="'+ option +'"]');
 
                 oldSelected && oldSelected.classList.remove('oneyOption-selected');
                 selectedOption.classList.add('oneyOption-selected');
@@ -186,7 +184,7 @@ function srcViewFrontendTemplatesMagewireOney() {
                 }
 
                 tmpDiv.appendChild(optionsWrapper);
-                oneyContainer.querySelector('.oneyPayment').appendChild(tmpDiv);
+                document.querySelector('.oneyPayment').appendChild(tmpDiv);
             }
 
             const oneyOptionsHandler = () => {
@@ -240,7 +238,7 @@ function srcViewFrontendTemplatesMagewireOney() {
                     buildOneyDetail();
                     oneyOptionsHandler();
                 }
-            }, { once: true });
+            });
         }
     }
 }
