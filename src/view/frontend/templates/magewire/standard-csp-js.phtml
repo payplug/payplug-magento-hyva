@@ -216,7 +216,7 @@ function srcViewFrontendTemplatesMagewireStandard() {
                                                     } else {
                                                         reject();
                                                         magewire.plugins.loader.stop();
-                                                        document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
+                                                        document.querySelector('.btn-place-order').disabled = false;
                                                         return false;
                                                     }
                                                 });
@@ -322,7 +322,7 @@ function srcViewFrontendTemplatesMagewireStandard() {
                         if (script) {
                             script.remove();
                         }
-                        document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
+                        document.querySelector('.btn-place-order').disabled = false;
                         hyvaCheckout.payment.method = null;
                     }
                 });

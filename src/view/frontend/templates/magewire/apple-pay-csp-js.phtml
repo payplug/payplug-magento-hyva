@@ -162,7 +162,7 @@ function srcViewFrontendTemplatesMagewireApplePay() {
                             if (script) {
                                 script.remove();
                             }
-                            document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
+                            document.querySelector('.btn-place-order').disabled = false;
                             hyvaCheckout.payment.method = null;
                         }
                     }, { once: true });
