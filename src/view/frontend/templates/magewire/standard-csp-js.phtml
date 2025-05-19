@@ -23,7 +23,6 @@ use Magento\Framework\View\Element\Template;
 function srcViewFrontendTemplatesMagewireStandard() {
     return {
         ['srcViewFrontendTemplatesMagewireStandardInit1']() {
-
             const phpData = this.$el.dataset,
 
                 phpIsOneClick = phpData.isOneClick === 'true',
@@ -37,10 +36,51 @@ function srcViewFrontendTemplatesMagewireStandard() {
 
             (() => {
                 let isOneClick = phpIsOneClick;
+                let integratedPayment;
 
                 if (phpIsIntegrated) {
-                    const IntegratedPayment = {
-                        props: {
+                    function addIntegratedPaymentPropsToForm() {
+                        integratedPayment.props.form = {};
+
+                        integratedPayment.props.form.cardHolder = {
+                            element: integratedPayment.props.api.cardHolder(
+                                document.querySelector('#cardholder-input-container'), {
+                                    default: integratedPayment.props.inputStyle.default, 
+                                    placeholder: 'Name'
+                                }
+                            )
+                        };
+
+                        integratedPayment.props.form.pan = {
+                            element: integratedPayment.props.api.cardNumber(
+                                document.querySelector('#pan-input-container'), {
+                                    default: integratedPayment.props.inputStyle.default, 
+                                    placeholder: 'Card Number'
+                                }
+                            )
+                        };
+
+                        integratedPayment.props.form.cvv = {
+                            element: integratedPayment.props.api.cvv(
+                                document.querySelector('#cvv-input-container'), {
+                                    default: integratedPayment.props.inputStyle.default, 
+                                    placeholder: 'CVV'
+                                }
+                            )
+                        };
+
+                        integratedPayment.props.form.exp = {
+                            element:integratedPayment.props.api.expiration(
+                                document.querySelector('#exp-input-container'), {
+                                    default: integratedPayment.props.inputStyle.default, 
+                                    placeholder: 'Exp Date'
+                                }
+                            )
+                        };
+                    }
+
+                    function getIntegratedPaymentProps() {
+                        return {
                             cartId: null,
                             paymentId: null,
                             paymentOptionId: null,
@@ -85,16 +125,16 @@ function srcViewFrontendTemplatesMagewireStandard() {
                             submit: null,
                             order_review: false,
                             return_url: null
-                        },
+                        }
+                    }
+
+                    integratedPayment = {
+                        props: getIntegratedPaymentProps(),
                         init: function () {
-                            IntegratedPayment.props.api = new Payplug.IntegratedPayment(phpSandbox);
-                            IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                            IntegratedPayment.props.form = {};
-                            IntegratedPayment.props.form.cardHolder = {element: IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
-                            IntegratedPayment.props.form.pan = {element:IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
-                            IntegratedPayment.props.form.cvv = {element:IntegratedPayment.props.api.cvv(document.querySelector('#cvv-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'CVV'})};
-                            IntegratedPayment.props.form.exp = {element:IntegratedPayment.props.api.expiration(document.querySelector('#exp-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Exp Date'})};
-                            IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
+                            integratedPayment.props.api = new Payplug.IntegratedPayment(phpSandbox);
+                            integratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                            addIntegratedPaymentPropsToForm();
+                            integratedPayment.props.scheme = integratedPayment.props.api.getSupportedSchemes();
                         },
                     };
                 }
@@ -110,7 +150,7 @@ function srcViewFrontendTemplatesMagewireStandard() {
                                 if (phpIsIntegrated) {
                                     loaded.then(() => {
                                         if (!this.isInitialized()) {
-                                            IntegratedPayment.init();
+                                            integratedPayment.init();
                                         }
                                     });
                                 }
@@ -140,9 +180,9 @@ function srcViewFrontendTemplatesMagewireStandard() {
                                         hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                             <?php // Just simulating a 5 seconds API request ?>
                                             return new Promise((resolve) => {
-                                                IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                                                IntegratedPayment.props.api.validateForm()
-                                                IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                                                integratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                                                integratedPayment.props.api.validateForm()
+                                                integratedPayment.props.api.onValidateForm(({isFormValid}) => {
                                                     magewire.plugins.loader.start();
                                                     if (isFormValid) {
                                                         fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
@@ -160,8 +200,8 @@ function srcViewFrontendTemplatesMagewireStandard() {
                                                                             save_card = true;
                                                                         }
 
-                                                                        IntegratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
-                                                                        IntegratedPayment.props.api.onCompleted(function (event) {
+                                                                        integratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
+                                                                        integratedPayment.props.api.onCompleted(function (event) {
                                                                             window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
                                                                             resolve();
                                                                         });
@@ -285,7 +325,7 @@ function srcViewFrontendTemplatesMagewireStandard() {
                         document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
                         hyvaCheckout.payment.method = null;
                     }
-                }, {once: true});
+                });
 
                 if (phpIsIntegrated) {
                     const cardholder = document.querySelector('#cardholder-input-container');

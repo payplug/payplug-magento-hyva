@@ -240,10 +240,10 @@ function srcViewFrontendTemplatesMagewireOney() {
                     buildOneyDetail();
                     oneyOptionsHandler();
                 }
-            });
+            }, { once: true });
         }
     }
 }
-window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewireOney', srcViewFrontendTemplatesMagewireOney), {once: true});
+window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewireOney', srcViewFrontendTemplatesMagewireOney), { once: true });
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>

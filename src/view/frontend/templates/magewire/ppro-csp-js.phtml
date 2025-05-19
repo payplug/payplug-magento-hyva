@@ -48,11 +48,11 @@ function srcViewFrontendTemplatesMagewirePpro() {
                             document.getElementById('message').textContent = res.data.message;
                         }
                     });
-                }, {once: true});
+                }, { once: true });
             })();
         }
     }
 }
-window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewirePpro', srcViewFrontendTemplatesMagewirePpro), {once: true});
+window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewirePpro', srcViewFrontendTemplatesMagewirePpro), { once: true });
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
