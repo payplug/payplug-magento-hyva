@@ -72,7 +72,7 @@ $options = array_map(static function($option) use ($pricingHelper) {
             ];
         }, $schedules, $keys),
     ];
-}, $oneySimulation->getOptions());
+}, $oneySimulation->getOptions() ?? []);
 ?>
 <div x-data="srcViewFrontendTemplatesMagewireOney"
      x-init="srcViewFrontendTemplatesMagewireOneyInit1"
