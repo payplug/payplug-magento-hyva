@@ -22,17 +22,19 @@ $popinPosition = $block->getPopinPosition() ?? 'top';
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
 
-<div x-data="srcViewFrontendTemplatesOneySimulation" x-init="srcViewFrontendTemplatesOneySimulationInit1" data-hyvacsp1="<?= $hasError ?>"></div>
-<div x-data="hyvaCheckoutPayplugOneySimulation"
+<div x-data="oneySimulation()" 
+     x-init="initOneySimulation" 
+     data-hyvacsp1="<?= $hasError ?>"></div>
+<div x-data="checkoutOneySimulation"
      x-bind="eventListeners"
      class="relative flex flex-col gap-4 lg:gap-0">
      <?= $block->getChildHtml('loading') ?>
 
     <?php // Button ?>
     <button type="button"
-            @click="hyvaCheckoutPayplugOneySimulationClick10"
+            @click="clickHandler"
             class="inline-flex items-center text-left"
-            :class="hyvaCheckoutPayplugOneySimulationClass11">
+            :class="oneyButtonClass()">
         <span class="uppercase text-sm font-bold">
             <?= $block->escapeHtml(__('Or pay in')); ?>
         </span>
@@ -63,9 +65,9 @@ $icons = $viewModels->require(PayplugIcons::class);
                 after:hidden lg:after:block after:absolute after:w-6 after:h-6
                 after:transform after:translate-x-2/4 <?= $popinPosition === 'top' ? 'lg:after:top-0 after:translate-y-8' : 'after:bottom-0 after:-translate-y-8' ?> after:rotate-45
                 after:bg-white after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5"
-         :class="hyvaCheckoutPayplugOneySimulationClass12"
+         :class="oneyPopinClass"
          x-show="popinIsVisible"
          x-html="popinContent"
-         @click.away="hyvaCheckoutPayplugOneySimulationClickAway13"
+         @click.away="closePopinHandler"
          x-cloak></div>
 </div>

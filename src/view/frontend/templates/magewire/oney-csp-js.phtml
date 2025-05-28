@@ -1,10 +1,4 @@
 <?php
-/**
- * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
- */
 
 declare(strict_types=1);
 
@@ -17,231 +11,235 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 /** @var HyvaCsp $hyvaCsp */
-
 ?>
+
 <script>
-function srcViewFrontendTemplatesMagewireOney() {
-    return {
-        srcViewFrontendTemplatesMagewireOneyInit1() {
+    function magewireOney() {
+        return {
+            initMagewireOney() {
+                const {
+                    label,
+                    hasError,
+                    message,
+                    options
+                } = this.$el.dataset;
 
-            const phpData = this.$el.dataset,
-                phpLabel = phpData.label,
-                phpHasError = phpData.hasError === 'true',
-                phpMessage = phpData.message,
+                const parsedOptions = JSON.parse(options);
 
-                phpOptions = JSON.parse(phpData.options)
-            ;
+                const getScheduleLabel = (days) => {
+                    const scheduleLabels = [
+                        {days: 30, label: "<?= $escaper->escapeJs(__('In 30 days')); ?>" },
+                        {days: 60, label: "<?= $escaper->escapeJs(__('In 60 days')); ?>" },
+                        {days: 90, label: "<?= $escaper->escapeJs(__('In 90 days')); ?>" },
+                    ];
+                    let label = null;
+                    scheduleLabels.forEach(function(item) {
+                        if (item.days === days) {
+                            label = item.label;
 
-            const getScheduleLabel = (days) => {
-                const scheduleLabels = [
-                    {days: 30, label: "<?= $escaper->escapeJs(__('In 30 days')); ?>" },
-                    {days: 60, label: "<?= $escaper->escapeJs(__('In 60 days')); ?>" },
-                    {days: 90, label: "<?= $escaper->escapeJs(__('In 90 days')); ?>" },
-                ];
-                let label = null;
-                scheduleLabels.forEach(function(item) {
-                    if (item.days === days) {
-                        label = item.label;
+                            return false;
+                        }
+                    });
 
-                        return false;
+                    return label;
+                }
+
+                const selectOneyOption = (option) => {
+                    const oneyPayment = document.querySelector('.oneyPayment');
+                    const oldSelected = oneyPayment.querySelector('.oneyOption-selected');
+                    const selectedOption = oneyPayment.querySelector('[data-type="'+ option +'"]');
+
+                    oldSelected && oldSelected.classList.remove('oneyOption-selected');
+                    selectedOption.classList.add('oneyOption-selected');
+
+                    updatePlaceOrderButtonLabel(option);
+                }
+
+                const updatePlaceOrderButtonLabel = (type) => {
+                    const buttonLabel = type
+                        ? getPaymentTypeLabel().replace('%1', type)
+                        : '<?= $escaper->escapeJs(__('Place Order')); ?>';
+                    document.querySelector('.btn-place-order').innerText = buttonLabel;
+                }
+
+                const getPaymentTypeLabel = () => {
+                    return label;
+                }
+
+                const buildOneyDetail = () => {
+                    var tmpDiv = document.createElement('div');
+                    var optionsWrapper = document.createElement('div');
+                    optionsWrapper.classList.add('oneyOption_wrapper');
+
+                    var label = getPaymentTypeLabel();
+
+                    if (hasError) {
+                        var error_is_displayed = document.querySelector("p.oneyPopin_error");
+
+                        if (typeof (error_is_displayed) === 'undefined' || error_is_displayed === null) {
+                            var error_message = document.createElement('p');
+                            error_message.classList.add('oneyPopin_error');
+                            error_message.innerHTML = message;
+                            tmpDiv.appendChild(error_message);
+                        }
+                    } else {
+                        parsedOptions.forEach(option => {
+                            var type = option.type;
+                            var option = document.createElement('label');
+
+                            option.setAttribute('data-type', type);
+                            option.classList.add('oneyOption', 'oneyOption-' + type);
+
+                            <?php // Title ?>
+                            var title = document.createElement('div');
+                            title.classList.add('oneyOption_title');
+
+                            var tmpSpan = document.createElement('span');
+                            tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + type);
+
+                            title.append(tmpSpan);
+                            title.innerHTML += label.replace('%1', type);
+
+                            option.append(title);
+
+                            if (option.schedules.length > 0) {
+                                var detail = document.createElement('div');
+                                detail.classList.add('oneyOption_prices');
+
+                                var list = document.createElement('ul');
+                                list.classList.add('oneyOption_list');
+
+                                var firstDeposit = document.createElement('li');
+                                var totalAmoutSpan = document.createElement('span');
+
+                                totalAmoutSpan.innerHTML += "<?= $escaper->escapeJs(__('Total order amount')); ?>";
+                                firstDeposit.append(totalAmoutSpan);
+
+                                var oneyOptionSpan = document.createElement('span');
+
+                                oneyOptionSpan.classList.add('oneyOption_price');
+                                oneyOptionSpan.innerHTML += option.firstDeposit;
+                                firstDeposit.append(oneyOptionSpan);
+                                list.append(firstDeposit);
+
+                                var daysForPayment = 30;
+
+                                option.schedules.forEach(schedule => {
+                                    var schedule = document.createElement('li');
+                                    var daysSpan = document.createElement('span');
+
+                                    daysSpan.innerHTML += getScheduleLabel(daysForPayment);
+                                    schedule.append(daysSpan);
+
+                                    var oneyOptionSpan2 = document.createElement('span');
+
+                                    oneyOptionSpan2.classList.add('oneyOption_price');
+                                    oneyOptionSpan2.innerHTML += schedule.amount;
+                                    schedule.append(oneyOptionSpan2);
+                                    list.append(schedule);
+                                    daysForPayment += 30;
+                                })
+
+                                var totalAmout = document.createElement('li');
+                                var totalCostSpanLabel = document.createElement('span');
+                                totalCostSpanLabel.innerHTML += "<?= $escaper->escapeJs(__('Total cost')); ?>";
+
+                                var totalCostSpan = document.createElement('span');
+                                totalCostSpan.classList.add('oneyOption_price');
+                                totalCostSpan.innerHTML += option.totalAmount;
+
+                                totalAmout.append(totalCostSpanLabel);
+                                totalAmout.append(totalCostSpan);
+
+                                list.append(totalAmout);
+                                detail.append(list);
+                                option.append(detail);
+                            }
+
+                            var radio = document.createElement('div');
+                            var radioDiv = document.createElement('div');
+                            var radioSpan = document.createElement('span');
+                            var radioInput = document.createElement('input');
+
+                            radioInput.setAttribute('type', 'radio');
+                            radioInput.setAttribute('name', 'oney_type');
+                            radioInput.value = type;
+
+                            radioSpan.append(radioInput);
+
+                            radio.classList.add('oneyOption_radio');
+                            radioDiv.classList.add('radio');
+                            radioDiv.append(radioSpan);
+                            radio.append(radioSpan);
+
+                            option.append(radio);
+                            optionsWrapper.append(option);
+                        });
+                    }
+
+                    tmpDiv.appendChild(optionsWrapper);
+                    document.querySelector('.oneyPayment').appendChild(tmpDiv);
+                }
+
+                const oneyOptionsHandler = () => {
+                    const oneyOption3x = document.querySelector('.oneyOption-3x');
+                    const oneyOption4x = document.querySelector('.oneyOption-4x');
+
+                    if (oneyOption3x !== null){
+                        oneyOption3x.addEventListener('click', function () {
+                            const selected = oneyOption3x.querySelector('input[name="oney_type"]');
+                            selectOneyOption(selected.value);
+                        });
+                    }
+
+                    if (oneyOption4x !== null){
+                        oneyOption4x.addEventListener('click', function () {
+                            const selected = oneyOption4x.querySelector('input[name="oney_type"]');
+                            selectOneyOption(selected.value);
+                        });
+                    }
+                }
+
+                window.addEventListener('checkout:payment:method-activate', (event) => {
+                    let oney_type = '';
+
+                    <?php // Reset place order button to default value ?>
+                    document.querySelector('.btn-place-order').innerText = '<?= $escaper->escapeJs(__('Place Order')); ?>';
+
+                    if (event.detail.method == 'payplug_payments_oney' || event.detail.method == 'payplug_payments_oney_without_fees') {
+                        switch (event.detail.method){
+                            case 'payplug_payments_oney':
+                                oney_type = 'payplug_payments_oney';
+                                break;
+                            case 'payplug_payments_oney_without_fees':
+                                oney_type = 'payplug_payments_oney_without_fees';
+                                break;
+                            default:
+                                oney_type = 'payplug_payments_oney';
+                        }
+
+                        hyvaCheckout.payment.activate(oney_type, {
+                            async validate() {
+                                const selected = document.querySelector('input[name="oney_type"]:checked');
+                                await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
+                                return true;
+                            }
+                        }, document.getElementById('payplug-payment-form'), 'payment');
+
+                        const oney = document.querySelector('.oneyOption_wrapper');
+                        oney && document.querySelector('.oneyOption_wrapper').remove();
+
+                        buildOneyDetail();
+                        oneyOptionsHandler();
                     }
                 });
-
-                return label;
             }
-
-            const selectOneyOption = (option) => {
-                const oneyPayment = document.querySelector('.oneyPayment');
-                const oldSelected = oneyPayment.querySelector('.oneyOption-selected');
-                const selectedOption = oneyPayment.querySelector('[data-type="'+ option +'"]');
-
-                oldSelected && oldSelected.classList.remove('oneyOption-selected');
-                selectedOption.classList.add('oneyOption-selected');
-
-                updatePlaceOrderButtonLabel(option);
-            }
-
-            const updatePlaceOrderButtonLabel = (type) => {
-                const buttonLabel = type
-                    ? getPaymentTypeLabel().replace('%1', type)
-                    : '<?= $escaper->escapeJs(__('Place Order')); ?>';
-                document.querySelector('.btn-place-order').innerText = buttonLabel;
-            }
-
-            const getPaymentTypeLabel = () => {
-                return phpLabel;
-            }
-
-            const buildOneyDetail = () => {
-                var tmpDiv = document.createElement('div');
-                var optionsWrapper = document.createElement('div');
-                optionsWrapper.classList.add('oneyOption_wrapper');
-
-                var label = getPaymentTypeLabel();
-
-                if (phpHasError) {
-                    var error_is_displayed = document.querySelector("p.oneyPopin_error");
-
-                    if (typeof (error_is_displayed) === 'undefined' || error_is_displayed === null) {
-                        var error_message = document.createElement('p');
-                        error_message.classList.add('oneyPopin_error');
-                        error_message.innerHTML = phpMessage;
-                        tmpDiv.appendChild(error_message);
-                    }
-                } else {
-                    phpOptions.forEach(phpOption => {
-                        var type = phpOption.type;
-                        var option = document.createElement('label');
-
-                        option.setAttribute('data-type', type);
-                        option.classList.add('oneyOption', 'oneyOption-' + type);
-
-                        <?php // Title ?>
-                        var title = document.createElement('div');
-                        title.classList.add('oneyOption_title');
-
-                        var tmpSpan = document.createElement('span');
-                        tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + type);
-
-                        title.append(tmpSpan);
-                        title.innerHTML += label.replace('%1', type);
-
-                        option.append(title);
-
-                        if (phpOption.schedules.length > 0) {
-                            var detail = document.createElement('div');
-                            detail.classList.add('oneyOption_prices');
-
-                            var list = document.createElement('ul');
-                            list.classList.add('oneyOption_list');
-
-                            var firstDeposit = document.createElement('li');
-                            var totalAmoutSpan = document.createElement('span');
-
-                            totalAmoutSpan.innerHTML += "<?= $escaper->escapeJs(__('Total order amount')); ?>";
-                            firstDeposit.append(totalAmoutSpan);
-
-                            var oneyOptionSpan = document.createElement('span');
-
-                            oneyOptionSpan.classList.add('oneyOption_price');
-                            oneyOptionSpan.innerHTML += phpOption.firstDeposit;
-                            firstDeposit.append(oneyOptionSpan);
-                            list.append(firstDeposit);
-
-                            var daysForPayment = 30;
-
-                            phpOption.schedules.forEach(phpSchedule => {
-                                var schedule = document.createElement('li');
-                                var daysSpan = document.createElement('span');
-
-                                daysSpan.innerHTML += getScheduleLabel(daysForPayment);
-                                schedule.append(daysSpan);
-
-                                var oneyOptionSpan2 = document.createElement('span');
-
-                                oneyOptionSpan2.classList.add('oneyOption_price');
-                                oneyOptionSpan2.innerHTML += phpSchedule.amount;
-                                schedule.append(oneyOptionSpan2);
-                                list.append(schedule);
-                                daysForPayment += 30;
-                            })
-
-                            var totalAmout = document.createElement('li');
-                            var totalCostSpanLabel = document.createElement('span');
-                            totalCostSpanLabel.innerHTML += "<?= $escaper->escapeJs(__('Total cost')); ?>";
-
-                            var totalCostSpan = document.createElement('span');
-                            totalCostSpan.classList.add('oneyOption_price');
-                            totalCostSpan.innerHTML += phpOption.totalAmount;
-
-                            totalAmout.append(totalCostSpanLabel);
-                            totalAmout.append(totalCostSpan);
-
-                            list.append(totalAmout);
-                            detail.append(list);
-                            option.append(detail);
-                        }
-
-                        var radio = document.createElement('div');
-                        var radioDiv = document.createElement('div');
-                        var radioSpan = document.createElement('span');
-                        var radioInput = document.createElement('input');
-
-                        radioInput.setAttribute('type', 'radio');
-                        radioInput.setAttribute('name', 'oney_type');
-                        radioInput.value = type;
-
-                        radioSpan.append(radioInput);
-
-                        radio.classList.add('oneyOption_radio');
-                        radioDiv.classList.add('radio');
-                        radioDiv.append(radioSpan);
-                        radio.append(radioSpan);
-
-                        option.append(radio);
-                        optionsWrapper.append(option);
-                    });
-                }
-
-                tmpDiv.appendChild(optionsWrapper);
-                document.querySelector('.oneyPayment').appendChild(tmpDiv);
-            }
-
-            const oneyOptionsHandler = () => {
-                const oneyOption3x = document.querySelector('.oneyOption-3x');
-                const oneyOption4x = document.querySelector('.oneyOption-4x');
-
-                if (oneyOption3x !== null){
-                    oneyOption3x.addEventListener('click', function () {
-                        const selected = oneyOption3x.querySelector('input[name="oney_type"]');
-                        selectOneyOption(selected.value);
-                    });
-                }
-
-                if (oneyOption4x !== null){
-                    oneyOption4x.addEventListener('click', function () {
-                        const selected = oneyOption4x.querySelector('input[name="oney_type"]');
-                        selectOneyOption(selected.value);
-                    });
-                }
-            }
-
-            window.addEventListener('checkout:payment:method-activate', (event) => {
-                let oney_type = '';
-
-                <?php // Reset place order button to default value ?>
-                document.querySelector('.btn-place-order').innerText = '<?= $escaper->escapeJs(__('Place Order')); ?>';
-
-                if (event.detail.method == 'payplug_payments_oney' || event.detail.method == 'payplug_payments_oney_without_fees') {
-                    switch (event.detail.method){
-                        case 'payplug_payments_oney':
-                            oney_type = 'payplug_payments_oney';
-                            break;
-                        case 'payplug_payments_oney_without_fees':
-                            oney_type = 'payplug_payments_oney_without_fees';
-                            break;
-                        default:
-                            oney_type = 'payplug_payments_oney';
-                    }
-
-                    hyvaCheckout.payment.activate(oney_type, {
-                        async validate() {
-                            const selected = document.querySelector('input[name="oney_type"]:checked');
-                            await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
-                            return true;
-                        }
-                    }, document.getElementById('payplug-payment-form'), 'payment');
-
-                    const oney = document.querySelector('.oneyOption_wrapper');
-                    oney && document.querySelector('.oneyOption_wrapper').remove();
-
-                    buildOneyDetail();
-                    oneyOptionsHandler();
-                }
-            });
         }
     }
-}
-window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesMagewireOney', srcViewFrontendTemplatesMagewireOney), { once: true });
+    
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('magewireOney', magewireOney)
+    }, { once: true });
 </script>
+
 <?php $hyvaCsp->registerInlineScript() ?>

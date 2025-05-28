@@ -1,10 +1,4 @@
 <?php
-/**
- * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
- */
 
 declare(strict_types=1);
 
@@ -17,26 +11,28 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 /** @var HyvaCsp $hyvaCsp */
-
-/** Generated with hyva-csp-helper.php */
 ?>
+
 <script>
-<?php /** Generated with hyva-csp-helper.php */ ?>
-function hyvaCheckoutPayplugOneySimulationContent() {
-    return Object.assign(
-        {}
-        ,{
-            ['hyvaCheckoutPayplugOneySimulationContentAriaSelected16']() {return this.paymentType === '3x'},
-            ['hyvaCheckoutPayplugOneySimulationContentAriaSelected19']() {return this.paymentType === '4x'},
-            ['hyvaCheckoutPayplugOneySimulationContentClass15']() {return this.paymentType === '3x' ? 'bg-oney-lighter text-gray-600' : 'bg-white text-gray-400'},
-            ['hyvaCheckoutPayplugOneySimulationContentClass18']() {return this.paymentType === '4x' ? 'bg-oney-lighter text-gray-600' : 'bg-white text-gray-400'},
-            ['hyvaCheckoutPayplugOneySimulationContentClick14'](event) {return this.popinIsVisible = false},
-            ['hyvaCheckoutPayplugOneySimulationContentClick17'](event) {return this.paymentType = '3x'},
-            ['hyvaCheckoutPayplugOneySimulationContentClick20'](event) {return this.paymentType = '4x'},
-            ['hyvaCheckoutPayplugOneySimulationContentShow21']() {return this.paymentType === `${this.$el.dataset.hyvacsp1}`},
-        }
-    )
-}
-window.addEventListener('alpine:init', () => Alpine.data('hyvaCheckoutPayplugOneySimulationContent', hyvaCheckoutPayplugOneySimulationContent), {once: true});
+    function checkoutOneySimulationContent() {
+        return Object.assign(
+            {},
+            {
+                ['checkoutOneySimulationContentAriaSelected16']() {return this.paymentType === '3x'},
+                ['checkoutOneySimulationContentAriaSelected19']() {return this.paymentType === '4x'},
+                ['checkoutOneySimulationContentClass15']() {return this.paymentType === '3x' ? 'bg-oney-lighter text-gray-600' : 'bg-white text-gray-400'},
+                ['checkoutOneySimulationContentClass18']() {return this.paymentType === '4x' ? 'bg-oney-lighter text-gray-600' : 'bg-white text-gray-400'},
+                ['checkoutOneySimulationContentClick14'](event) {return this.popinIsVisible = false},
+                ['checkoutOneySimulationContentClick17'](event) {return this.paymentType = '3x'},
+                ['checkoutOneySimulationContentClick20'](event) {return this.paymentType = '4x'},
+                ['checkoutOneySimulationContentShow21']() {return this.paymentType === `${this.$el.dataset.hyvacsp1}`},
+            }
+        )
+    }
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('checkoutOneySimulationContent', checkoutOneySimulationContent)
+    }, {once: true});
 </script>
+
 <?php $hyvaCsp->registerInlineScript() ?>

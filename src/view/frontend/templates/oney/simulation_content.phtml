@@ -23,7 +23,7 @@ $heroicons = $viewModels->require(HeroiconsSolid::class);
 /** @var PayplugIcons $viewModels */
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
-<div x-data="hyvaCheckoutPayplugOneySimulationContent">
+<div x-data="checkoutOneySimulationContent">
 
 <?php if (!$oneySimulation->getSuccess() || !empty($message)): ?>
     <p class="error text-sm text-primary">
@@ -32,7 +32,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 <?php else: ?>
     <button type="button"
             class="hidden lg:inline-block absolute top-4 right-4"
-            @click="hyvaCheckoutPayplugOneySimulationContentClick14">
+            @click="checkoutOneySimulationContentClick14">
         <span class="sr-only"><?= $block->escapeHtml(__('Close')); ?></span>
         <?= $heroicons->xHtml('text-oney', 30, 30, ['aria-hidden' => 'true']); ?>
     </button>
@@ -65,33 +65,33 @@ $icons = $viewModels->require(PayplugIcons::class);
             <li>
                 <button type="button"
                         class="flex w-full py-1.5 px-4 text-sm font-semibold border border-oney bg-oney-lighter"
-                        :class="hyvaCheckoutPayplugOneySimulationContentClass15"
+                        :class="checkoutOneySimulationContentClass15"
                         id="tab-3x"
                         aria-controls="panel-3x"
-                        :aria-selected="hyvaCheckoutPayplugOneySimulationContentAriaSelected16"
+                        :aria-selected="checkoutOneySimulationContentAriaSelected16"
                         role="tab"
                         tabindex="0"
-                        @click="hyvaCheckoutPayplugOneySimulationContentClick17">
+                        @click="checkoutOneySimulationContentClick17">
                     <?= $block->escapeHtml(__('Payment in %1', '3x')); ?>
                 </button>
             </li>
             <li class="relative -top-[1px]">
                 <button type="button"
                         class="flex w-full py-1.5 px-4 text-sm font-semibold border border-oney bg-oney-lighter"
-                        :class="hyvaCheckoutPayplugOneySimulationContentClass18"
+                        :class="checkoutOneySimulationContentClass18"
                         id="tab-4x"
                         aria-controls="panel-4x"
-                        :aria-selected="hyvaCheckoutPayplugOneySimulationContentAriaSelected19"
+                        :aria-selected="checkoutOneySimulationContentAriaSelected19"
                         role="tab"
                         tabindex="0"
-                        @click="hyvaCheckoutPayplugOneySimulationContentClick20">
+                        @click="checkoutOneySimulationContentClick20">
                     <?= $block->escapeHtml(__('Payment in %1', '4x')); ?>
                 </button>
             </li>
         </ul>
 
         <?php foreach ($oneySimulation->getOptions() as $option): ?>
-            <div x-show="hyvaCheckoutPayplugOneySimulationContentShow21" data-hyvacsp1="<?= /* @noEscape */ $option->getType(); ?>"
+            <div x-show="checkoutOneySimulationContentShow21" data-hyvacsp1="<?= /* @noEscape */ $option->getType(); ?>"
                  role="tabpanel"
                  id="panel-<?= /* @noEscape */ $option->getType(); ?>"
                  aria-labelledby="tab-<?= /* @noEscape */ $option->getType(); ?>"

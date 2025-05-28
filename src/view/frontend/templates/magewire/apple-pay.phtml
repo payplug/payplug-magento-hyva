@@ -9,15 +9,17 @@ use Magento\Framework\Escaper;
 /** @var ApplePay $magewire */
 /** @var ApplePayBlock $block */
 /** @var Escaper $escaper */
-
 ?>
 
 <div>
-    <apple-pay-button buttonstyle="black" type="pay" locale="en"></apple-pay-button>
+    <apple-pay-button 
+        buttonstyle="black" 
+        type="pay" 
+        locale="en"
+    ></apple-pay-button>
 
-    <div x-data="srcViewFrontendTemplatesMagewireApplePay"
-         x-init="srcViewFrontendTemplatesMagewireApplePayInit1"
-
+    <div x-data="magewireApplePay()"
+         x-init="initMagewireApplePay"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>"
          data-shipping-currrency="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getData('quote_currency_code')); ?>"
          data-merchant-name="<?= $escaper->escapeHtmlAttr($block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name']); ?>"

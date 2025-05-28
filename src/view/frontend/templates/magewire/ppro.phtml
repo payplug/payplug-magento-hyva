@@ -15,12 +15,12 @@ use Magento\Framework\Escaper;
 
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
+
 <div>
     <span id="message" class="text-gray-500 font-medium text-sm"></span>
 
-    <div x-data="srcViewFrontendTemplatesMagewirePpro"
-         x-init="srcViewFrontendTemplatesMagewirePproInit1"
-
+    <div x-data="magewirePpro()"
+         x-init="initMagewirePpro"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"
          data-method="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getPayment()->getMethod()) ?>"
