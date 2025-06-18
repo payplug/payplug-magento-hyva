@@ -32,7 +32,9 @@ use Magento\Framework\View\Element\Template;
                         {days: 60, label: "<?= $escaper->escapeJs(__('In 60 days')); ?>" },
                         {days: 90, label: "<?= $escaper->escapeJs(__('In 90 days')); ?>" },
                     ];
+
                     let label = null;
+
                     scheduleLabels.forEach(function(item) {
                         if (item.days === days) {
                             label = item.label;
@@ -73,7 +75,7 @@ use Magento\Framework\View\Element\Template;
 
                     var label = getPaymentTypeLabel();
 
-                    if (hasError) {
+                    if (hasError === "true") {
                         var error_is_displayed = document.querySelector("p.oneyPopin_error");
 
                         if (typeof (error_is_displayed) === 'undefined' || error_is_displayed === null) {
@@ -102,7 +104,7 @@ use Magento\Framework\View\Element\Template;
 
                             option.append(title);
 
-                            if (option.schedules.length > 0) {
+                            if (option.schedules && option.schedules.length > 0) {
                                 var detail = document.createElement('div');
                                 detail.classList.add('oneyOption_prices');
 
