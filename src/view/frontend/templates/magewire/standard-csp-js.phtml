@@ -17,7 +17,7 @@ use Magento\Framework\View\Element\Template;
     'use strict';
 
     (() => {
-        const { 
+        const {
             isOneClick, 
             isIntegrated,
             isRedirected,
@@ -138,7 +138,7 @@ use Magento\Framework\View\Element\Template;
                 hyvaCheckout.payment.activate('payplug_payments_standard', {...{
                     initialize() {
                         const loaded = this.loadHostedLib()
-                        if (isIntegrated) {
+                        if (isIntegrated === 'true') {
                             loaded.then(() => {
                                 if (!this.isInitialized()) {
                                     integratedPayment.init();
@@ -146,7 +146,7 @@ use Magento\Framework\View\Element\Template;
                             });
                         }
 
-                        if (isIntegrated) {
+                        if (isIntegrated === 'true') {
                             const cardholder = document.querySelector('#cardholder-input-container');
                             const pan = document.querySelector('#pan-input-container');
                             const exp = document.querySelector('#exp-input-container');
@@ -197,7 +197,7 @@ use Magento\Framework\View\Element\Template;
                             resolve();
                             return true;
                         } else {
-                            if (isIntegrated) {
+                            if (isIntegrated === 'true') {
                                 hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                     <?php // Just simulating a 5 seconds API request ?>
                                     return new Promise((resolve) => {
@@ -245,7 +245,7 @@ use Magento\Framework\View\Element\Template;
                                 });
                             }
 
-                            if (isIntegrated || isRedirected) {
+                            if (isIntegrated === 'true' || isRedirected === 'true') {
                                 hyvaCheckout.main.getWireComponent().placeOrder();
                                 resolve();
                                 return true;
@@ -326,13 +326,13 @@ use Magento\Framework\View\Element\Template;
                         if (card.value === '') {
                             isOneClick = false;
 
-                            if (isIntegrated) {
+                            if (isIntegrated === 'true') {
                                 document.querySelector("#payplug-payment-form").classList.remove("-hide");
                             }
                         } else {
                             isOneClick = true;
 
-                            if (isIntegrated) {
+                            if (isIntegrated === 'true') {
                                 document.querySelector("#payplug-payment-form").classList.add("-hide");
                             }
                         }
