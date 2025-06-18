@@ -76,7 +76,9 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
     <?php endif; ?>
 
     <?php if ($isIntegrated) : ?>
-        <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? '-hide' : '' ?>">
+        <div id="payplug-payment-form"
+             class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? '-hide' : '' ?>"
+             wire:ignore>
             <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
             </div>
             <div class="error-container cardholder-input-container">
