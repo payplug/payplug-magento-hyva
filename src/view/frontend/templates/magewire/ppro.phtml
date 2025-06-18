@@ -19,7 +19,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 <div>
     <span id="message" class="text-gray-500 font-medium text-sm"></span>
 
-    <div x-data="magewirePpro()"
+    <div x-data="magewirePpro"
          x-init="initMagewirePpro"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"

@@ -76,7 +76,7 @@ $options = array_map(static function($option) use ($pricingHelper) {
 }, $oneySimulation->getOptions() ?? []);
 ?>
 
-<div x-data="magewireOney()"
+<div x-data="magewireOney"
      x-init="initMagewireOney"
      data-label="<?= $escaper->escapeHtmlAttr(__($isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1')) ?>"
      data-has-error="<?= $escaper->escapeHtmlAttr($hasError ? 'true' : 'false') ?>"

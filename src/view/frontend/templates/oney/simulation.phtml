@@ -22,7 +22,7 @@ $popinPosition = $block->getPopinPosition() ?? 'top';
 $icons = $viewModels->require(PayplugIcons::class);
 ?>
 
-<div x-data="oneySimulation()" 
+<div x-data="oneySimulation"
      x-init="initOneySimulation" 
      data-hyvacsp1="<?= $hasError ?>"></div>
 <div x-data="checkoutOneySimulation"
