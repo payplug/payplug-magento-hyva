@@ -17,6 +17,9 @@ use Magento\Framework\View\Element\Template;
     'use strict';
 
     (() => {
+        let integratedPayment = {};
+        const standardPaymentOptions = document.querySelector('[x-data="magewireStandardPayment"]').dataset;
+        const formatedStandardPaymentOptions = convertStringToBoolean(standardPaymentOptions);
         const {
             isOneClick, 
             isIntegrated,
@@ -24,9 +27,17 @@ use Magento\Framework\View\Element\Template;
             isPopup,
             sandbox,
             magewireId
-        } = document.querySelector('[x-data="magewireStandardPayment"]').dataset;
+        } = formatedStandardPaymentOptions;
 
-        let integratedPayment = {};
+        function convertStringToBoolean (objectOfStrings) {
+            return Object.fromEntries(
+                Object.entries(objectOfStrings).map(([key, value]) => {
+                    if (value === "true") return [key, true];
+                    if (value === "false") return [key, false];
+                    return [key, value];
+                })
+            );
+        }   
 
         function getCurrentPaymentMethod () {
             return document.querySelector('#payment-method-list').dataset.method || '';
@@ -138,7 +149,7 @@ use Magento\Framework\View\Element\Template;
                 hyvaCheckout.payment.activate('payplug_payments_standard', {...{
                     initialize() {
                         const loaded = this.loadHostedLib()
-                        if (isIntegrated === 'true') {
+                        if (isIntegrated) {
                             loaded.then(() => {
                                 if (!this.isInitialized()) {
                                     integratedPayment.init();
@@ -146,7 +157,7 @@ use Magento\Framework\View\Element\Template;
                             });
                         }
 
-                        if (isIntegrated === 'true') {
+                        if (isIntegrated) {
                             const cardholder = document.querySelector('#cardholder-input-container');
                             const pan = document.querySelector('#pan-input-container');
                             const exp = document.querySelector('#exp-input-container');
@@ -197,17 +208,19 @@ use Magento\Framework\View\Element\Template;
                             resolve();
                             return true;
                         } else {
-                            if (isIntegrated === 'true') {
+                            if (isIntegrated) {
                                 hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                     <?php // Just simulating a 5 seconds API request ?>
                                     return new Promise((resolve) => {
-                                        integratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                                        integratedPayment.props.api.validateForm()
-                                        integratedPayment.props.api.onValidateForm(({isFormValid}) => {
+                                        const payplugApi = integratedPayment.props.api;
+                                        payplugApi.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+                                        payplugApi.validateForm()
+                                        payplugApi.onValidateForm(({isFormValid}) => {
                                             magewire.plugins.loader.start();
                                             if (isFormValid) {
                                                 fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
                                                     let res = response.clone().json();
+
                                                     res.then(result => {
                                                         if (typeof result.error !== 'undefined' && result.error) {
                                                             window.location.replace(response.url);
@@ -215,18 +228,19 @@ use Magento\Framework\View\Element\Template;
                                                         } else {
                                                             if (typeof result.payment_id !== undefined && result.payment_id) {
                                                                 let save_card = false;
+
                                                                 if (document.querySelector("#payplug_save_card") != null &&
                                                                     typeof document.querySelector("#payplug_save_card") != "undefined" &&
                                                                     document.querySelector("#payplug_save_card").checked) {
                                                                     save_card = true;
                                                                 }
 
-                                                                integratedPayment.props.api.pay(result.payment_id, 0, {save_card: save_card});
-                                                                integratedPayment.props.api.onCompleted(function (event) {
+                                                                payplugApi.pay(result.payment_id, 0, { save_card: save_card });
+
+                                                                payplugApi.onCompleted(function (event) {
                                                                     window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
                                                                     resolve();
                                                                 });
-
                                                             } else {
                                                                 window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
                                                                 reject();
@@ -245,7 +259,7 @@ use Magento\Framework\View\Element\Template;
                                 });
                             }
 
-                            if (isIntegrated === 'true' || isRedirected === 'true') {
+                            if (isIntegrated || isRedirected) {
                                 hyvaCheckout.main.getWireComponent().placeOrder();
                                 resolve();
                                 return true;
@@ -326,13 +340,13 @@ use Magento\Framework\View\Element\Template;
                         if (card.value === '') {
                             isOneClick = false;
 
-                            if (isIntegrated === 'true') {
+                            if (isIntegrated) {
                                 document.querySelector("#payplug-payment-form").classList.remove("-hide");
                             }
                         } else {
                             isOneClick = true;
 
-                            if (isIntegrated === 'true') {
+                            if (isIntegrated) {
                                 document.querySelector("#payplug-payment-form").classList.add("-hide");
                             }
                         }
