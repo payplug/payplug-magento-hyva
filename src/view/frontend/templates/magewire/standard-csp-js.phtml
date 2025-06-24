@@ -121,37 +121,29 @@ use Magento\Framework\View\Element\Template;
                     }
 
                     if (isIntegrated) {
-                        const cardholder = document.querySelector('#cardholder-input-container');
-                        const pan = document.querySelector('#pan-input-container');
-                        const exp = document.querySelector('#exp-input-container');
-                        const cvv = document.querySelector('#cvv-input-container');
-                        const options = { attributes: true };
-                        const observer = new MutationObserver(callback);
-
-                        function callback(mutationList, observer) {
-                            mutationList.forEach(function(mutation) {
-                                if ( mutation.attributeName === 'class' ) {
-                                    if (mutation.target.classList.contains("integrated_payment_error")) {
-                                        mutation.target.style.border = "1px solid #FF0000";
-                                        let id = mutation.target.id
-                                        document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "block";
-                                    } else {
-                                        let id = mutation.target.id
-                                        mutation.target.style.border = "1px solid #d5d6d8";
-                                        document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "none";
-                                    }
-                                }
-                            })
-                        }
-
-                        observer.observe(cardholder, options)
-                        observer.observe(pan, options)
-                        observer.observe(exp, options)
-                        observer.observe(cvv, options)
+                        this.setFieldsError();
                     }
                 },
                 isInitialized() {
                     return Object.keys(integratedPayment).length;
+                },
+                setFieldsError() {
+                    const inputs = document.querySelectorAll('#cardholder-input-container, #pan-input-container, #exp-input-container, #cvv-input-container');
+                        
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach(mutation => {
+                            if (mutation.attributeName === 'class') {
+                                const input = mutation.target;
+                                const isValid = !input.classList.contains("integrated_payment_error");
+                                input.style.border = isValid ? "1px solid #d5d6d8" : "1px solid #FF0000";
+                                document.querySelector(`.error-container.${input.id} .invalid-field`).style.display = isValid ? "none" : "block";
+                            }
+                        });
+                    });
+
+                    const config = { attributes: true };
+                    
+                    inputs.forEach(input => observer.observe(input, config));
                 },
                 async validate() {
                     let cardIsSelected = false;
