@@ -101,10 +101,9 @@ use Magento\Framework\View\Element\Template;
         function initStandardPayment () {
             hyvaCheckout.payment.activate('payplug_payments_standard', {
                 initialize() {
-                    const loaded = this.loadHostedLib();
 
                     if (isIntegrated) {
-                        loaded
+                        this.loadPayplugApi()
                             .then(() => {
                                 if (!this.isInitialized()) {
                                     setIntegratedPayment();
@@ -231,7 +230,7 @@ use Magento\Framework\View\Element\Template;
                         }
                     }
                 },
-                loadHostedLib () {
+                loadPayplugApi () {
                     return new Promise(resolve => {
                         const script = document.createElement('script');
                         script.type = 'text/javascript';
