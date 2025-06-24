@@ -21,12 +21,11 @@ use Magento\Framework\View\Element\Template;
         const standardPaymentOptions = document.querySelector('[x-data="magewireStandardPayment"]').dataset;
         const formatedStandardPaymentOptions = convertStringToBoolean(standardPaymentOptions);
         const {
-            isOneClick, 
+            isOneClick,
             isIntegrated,
             isRedirected,
             isPopup,
-            sandbox,
-            magewireId
+            sandbox
         } = formatedStandardPaymentOptions;
 
         function convertStringToBoolean (objectOfStrings) {
