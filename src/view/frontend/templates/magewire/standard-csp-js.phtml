@@ -151,7 +151,7 @@ use Magento\Framework\View\Element\Template;
                     }
                 },
                 isInitialized() {
-                    return document.body.contains(document.getElementById('cardholder'));
+                    return Object.keys(integratedPayment).length;
                 },
                 async validate() {
                     let cardIsSelected = false;
