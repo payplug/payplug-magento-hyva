@@ -129,7 +129,6 @@ use Magento\Framework\View\Element\Template;
                 },
                 setFieldsError() {
                     const inputs = document.querySelectorAll('#cardholder-input-container, #pan-input-container, #exp-input-container, #cvv-input-container');
-                        
                     const observer = new MutationObserver((mutations) => {
                         mutations.forEach(mutation => {
                             if (mutation.attributeName === 'class') {
@@ -142,7 +141,6 @@ use Magento\Framework\View\Element\Template;
                     });
 
                     const config = { attributes: true };
-                    
                     inputs.forEach(input => observer.observe(input, config));
                 },
                 async validate() {
@@ -158,41 +156,29 @@ use Magento\Framework\View\Element\Template;
                     } else {
                         if (isIntegrated) {
                             hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
-                                <?php // Just simulating a 5 seconds API request ?>
-                                return new Promise((resolve) => {
+                                return new Promise((resolve, reject) => {
                                     integratedPayment.validateForm();
                                     integratedPayment.onValidateForm(({ isFormValid }) => {
                                         if (isFormValid) {
-                                            fetch('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/standard', ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
-                                                let res = response.clone().json();
-
-                                                res.then(result => {
-                                                    if (typeof result.error !== 'undefined' && result.error) {
-                                                        window.location.replace(response.url);
+                                            fetch('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/standard', ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>')
+                                                .then(response => response.json())
+                                                .then(({ payment_id, error }) => {
+                                                     if (error) {
                                                         reject();
-                                                    } else {
-                                                        if (typeof result.payment_id !== undefined && result.payment_id) {
-                                                            let save_card = false;
-
-                                                            if (document.querySelector("#payplug_save_card") != null &&
-                                                                typeof document.querySelector("#payplug_save_card") != "undefined" &&
-                                                                document.querySelector("#payplug_save_card").checked) {
-                                                                save_card = true;
-                                                            }
-
-                                                            integratedPayment.pay(result.payment_id, 0, { save_card: save_card });
-
-                                                            integratedPayment.onCompleted(function (event) {
-                                                                window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
-                                                                resolve();
-                                                            });
-                                                        } else {
-                                                            window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
-                                                            reject();
-                                                        }
                                                     }
+
+                                                    const saveCard = document.querySelector("#payplug_save_card")?.checked || false;
+
+                                                    integratedPayment.pay(payment_id, 0, { save_card: saveCard });
+                                                    integratedPayment.onCompleted(function (event) {
+                                                        window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
+                                                        resolve();
+                                                    });
+                                                })
+                                                .catch(() => {
+                                                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
+                                                    reject();
                                                 });
-                                            });
                                         } else {
                                             magewire.plugins.loader.stop();
                                             document.querySelector('.btn-place-order').disabled = false;
