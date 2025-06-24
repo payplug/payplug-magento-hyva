@@ -101,7 +101,6 @@ use Magento\Framework\View\Element\Template;
         function initStandardPayment () {
             hyvaCheckout.payment.activate('payplug_payments_standard', {
                 initialize() {
-
                     if (isIntegrated) {
                         this.loadPayplugApi()
                             .then(() => {
@@ -205,8 +204,7 @@ use Magento\Framework\View\Element\Template;
                             };
 
                             Payplug.Form._closeIframe = () => {
-                                if (typeof window.redirection_url !== 'undefined' && window.redirection_url) {
-                                    <?php // Payment is completed and redirection is handled by PayPlug form.js ?>
+                                if (window.redirection_url) {
                                     return;
                                 }
 
