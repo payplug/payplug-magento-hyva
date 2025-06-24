@@ -16,9 +16,11 @@ use Magento\Framework\View\Element\Template;
 <script>
     'use strict';
 
-    (() => {
+    function magewireStandardPayment() {
         const $wire = this.$wire;
-        const standardPaymentOptions = document.querySelector('[x-data="magewireStandardPayment"]').dataset;
+        const $el = this.$el;
+
+        const standardPaymentOptions = $el.dataset;
         const formatedStandardPaymentOptions = convertStringToBoolean(standardPaymentOptions);
         const {
             isOneClick,
@@ -28,6 +30,8 @@ use Magento\Framework\View\Element\Template;
             sandbox
         } = formatedStandardPaymentOptions;
 
+        let integratedPayment = {};
+
         function convertStringToBoolean (objectOfStrings) {
             return Object.fromEntries(
                 Object.entries(objectOfStrings).map(([key, value]) => {
@@ -36,7 +40,7 @@ use Magento\Framework\View\Element\Template;
                     return [key, value];
                 })
             );
-        }   
+        }
 
         function getCurrentPaymentMethod () {
             return document.querySelector('#payment-method-list').dataset.method || '';
