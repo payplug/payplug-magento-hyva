@@ -104,11 +104,20 @@ use Magento\Framework\View\Element\Template;
                     const loaded = this.loadHostedLib();
 
                     if (isIntegrated) {
-                        loaded.then(() => {
-                            if (!this.isInitialized()) {
-                                setIntegratedPayment();
-                            }
-                        });
+                        loaded
+                            .then(() => {
+                                if (!this.isInitialized()) {
+                                    setIntegratedPayment();
+                                }
+                            })
+                            .catch(error => {
+                                window.dispatchMessages([
+                                    {
+                                        type: 'error',
+                                        text: '<?= $escaper->escapeJs(__('The Payplug library could not load correctly')) ?>'
+                                    }
+                                ], 2000);
+                            });
                     }
 
                     if (isIntegrated) {
@@ -166,10 +175,10 @@ use Magento\Framework\View\Element\Template;
                             hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                 <?php // Just simulating a 5 seconds API request ?>
                                 return new Promise((resolve) => {
-                                    integratedPayment.validateForm()
-                                    integratedPayment.onValidateForm(({isFormValid}) => {
+                                    integratedPayment.validateForm();
+                                    integratedPayment.onValidateForm(({ isFormValid }) => {
                                         if (isFormValid) {
-                                            fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
+                                            fetch('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/standard', ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>').then(response => {
                                                 let res = response.clone().json();
 
                                                 res.then(result => {
@@ -251,29 +260,14 @@ use Magento\Framework\View\Element\Template;
                         }
                     }
                 },
-                loadHostedLib() {
-                    return new Promise((resolve, reject) => {
-                        if (!document.getElementById('payplug_hosted_lib')) {
-                            const script = document.createElement('script');
-                            script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
-                            script.setAttribute('id', 'payplug_hosted_lib');
-                            document.head.append(script);
-                        }
-                        <?php // If it's not loaded yet let's wait 100ms to load it ?>
-                        let count = 0;
-                        const interval = setInterval(() => {
-                            count++;
-                            if (typeof Payplug !== 'undefined') {
-                                clearInterval(interval);
-                                resolve();
-                                return;
-                            }
-                            if (count > 100) {
-                                reject();
-                                clearInterval(interval);
-                                throw new Error('Unable to load Payplug');
-                            }
-                        }, 100);
+                loadHostedLib () {
+                    return new Promise(resolve => {
+                        const script = document.createElement('script');
+                        script.type = 'text/javascript';
+                        script.src =  '<?= $escaper->escapeJs($escaper->escapeUrl('https://cdn.payplug.com/js/integrated-payment/v1@1/index.js')) ?>';
+                        script.async = true;
+                        script.onload = resolve;
+                        document.head.appendChild(script);
                     });
                 },
                 placeOrderViaJs() {
