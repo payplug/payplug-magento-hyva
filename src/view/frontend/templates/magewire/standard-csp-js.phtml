@@ -17,7 +17,7 @@ use Magento\Framework\View\Element\Template;
     'use strict';
 
     (() => {
-        let integratedPayment = {};
+        const $wire = this.$wire;
         const standardPaymentOptions = document.querySelector('[x-data="magewireStandardPayment"]').dataset;
         const formatedStandardPaymentOptions = convertStringToBoolean(standardPaymentOptions);
         const {
@@ -146,9 +146,11 @@ use Magento\Framework\View\Element\Template;
             const currentPaymentMethod = getCurrentPaymentMethod();
 
             if (currentPaymentMethod === "payplug_payments_standard") {
-                hyvaCheckout.payment.activate('payplug_payments_standard', {...{
+                hyvaCheckout.payment.activate('payplug_payments_standard', {
+
                     initialize() {
-                        const loaded = this.loadHostedLib()
+                        const loaded = this.loadHostedLib();
+
                         if (isIntegrated) {
                             loaded.then(() => {
                                 if (!this.isInitialized()) {
@@ -324,17 +326,19 @@ use Magento\Framework\View\Element\Template;
                             }, 100);
                         });
                     },
-                }, ...(() => (isPopup && !isOneClick ? {
                     placeOrderViaJs() {
                         <?php // Disable place order ?>
-                        return true;
+                        if (isPopup && !isOneClick) {
+                            return true;
+                        }
                     }
-                } : {}))()});
+                }, $wire);
 
                 if (document.querySelector('ul.payplug-payments-cards li') != null) {
                     document.querySelector('ul.payplug-payments-cards li input').click();
                     document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
                         var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                        
                         if (card.value === '') {
                             isOneClick = false;
 
@@ -360,30 +364,12 @@ use Magento\Framework\View\Element\Template;
             }
         }
 
-        function magewireStandardPayment() {
-            return {
-                ['initMagewireStandardPayment']() {
-                    window.addEventListener('checkout:init:payment', () => {
-                        initStandardPayment();
-                    });
-
-                    window.addEventListener('checkout:payment:method-activate', () => {
-                        initStandardPayment();
-                    });
-                }
-            }
-        }
-
-        window.addEventListener('checkout:step:loaded', event => {
-            if (event.detail.route === 'payment') {
-                initStandardPayment();
-            }
-        });
-
-        window.addEventListener('alpine:init', () => {
-            Alpine.data('magewireStandardPayment', magewireStandardPayment);
-        }, {once: true});
-    })();
+        initStandardPayment();
+    }
+    
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('magewireStandardPayment', magewireStandardPayment)
+    }, {once: true});
 </script>
 
 <?php $hyvaCsp->registerInlineScript() ?>
