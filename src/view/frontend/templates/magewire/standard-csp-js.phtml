@@ -146,18 +146,11 @@ use Magento\Framework\View\Element\Template;
                     inputs.forEach(input => observer.observe(input, config));
                 },
                 async validate() {
-                    let cardIsSelected = false;
-
-                    if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
-                        if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value) {
-                            cardIsSelected = true;
-                        }
-                    }
+                    const selectedElement = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                    const cardIsSelected = selectedElement && selectedElement.value;
 
                     if (isOneClick && cardIsSelected) {
-                        const selectedElement = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                         const cartId = selectedElement.value;
-
                         await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', cartId);
                         hyvaCheckout.main.getWireComponent().placeOrder();
                         resolve();
