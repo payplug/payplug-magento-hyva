@@ -42,108 +42,61 @@ use Magento\Framework\View\Element\Template;
             );
         }
 
-        function getCurrentPaymentMethod () {
-            return document.querySelector('#payment-method-list').dataset.method || '';
-        }
-
-        function addIntegratedPaymentPropsToForm () {
-            integratedPayment.props.form = {};
-
-            integratedPayment.props.form.cardHolder = {
-                element: integratedPayment.props.api.cardHolder(
-                    document.querySelector('#cardholder-input-container'), {
-                        default: integratedPayment.props.inputStyle.default, 
-                        placeholder: 'Name'
-                    }
-                )
-            };
-
-            integratedPayment.props.form.pan = {
-                element: integratedPayment.props.api.cardNumber(
-                    document.querySelector('#pan-input-container'), {
-                        default: integratedPayment.props.inputStyle.default, 
-                        placeholder: 'Card Number'
-                    }
-                )
-            };
-
-            integratedPayment.props.form.cvv = {
-                element: integratedPayment.props.api.cvv(
-                    document.querySelector('#cvv-input-container'), {
-                        default: integratedPayment.props.inputStyle.default, 
-                        placeholder: 'CVV'
-                    }
-                )
-            };
-
-            integratedPayment.props.form.exp = {
-                element:integratedPayment.props.api.expiration(
-                    document.querySelector('#exp-input-container'), {
-                        default: integratedPayment.props.inputStyle.default, 
-                        placeholder: 'Exp Date'
-                    }
-                )
-            };
-        }
-
-        function getIntegratedPaymentProps () {
-            return {
-                cartId: null,
-                paymentId: null,
-                paymentOptionId: null,
-                form: {},
-                checkoutForm: null,
-                api: null,
-                integratedPayment: null,
-                token: null,
-                notValid: true,
-                fieldsValid: {
-                    cardHolder: false,
-                    pan: false,
-                    cvv: false,
-                    exp: false,
-                },
-                fieldsEmpty: {
-                    cardHolder: true,
-                    pan: true,
-                    cvv: true,
-                    exp: true,
-                },
-                inputStyle: {
-                    default: {
-                        color: '#2B343D',
-                        fontFamily: 'Poppins, sans-serif',
-                        fontSize: '14px',
-                        textAlign: 'left',
-                        '::placeholder': {
-                            color: '#969a9f',
-                        },
-                        ':focus': {
-                            color: '#2B343D',
-                        }
+        function setIntegratedFormFields () {
+            const fieldStyle = {
+                default: {
+                    color: '#2B343D',
+                    fontFamily: 'Poppins, sans-serif',
+                    fontSize: '14px',
+                    textAlign: 'left',
+                    '::placeholder': {
+                        color: '#969a9f',
                     },
-                    invalid: {
-                        color: '#E91932'
+                    ':focus': {
+                        color: '#2B343D',
                     }
                 },
-                save_card: false,
-                scheme: null,
-                query: null,
-                submit: null,
-                order_review: false,
-                return_url: null
-            }
+                invalid: {
+                    color: '#E91932'
+                }
+            };
+
+            const fields = [
+                {
+                    selector: '#cardholder-input-container',
+                    method: 'cardHolder',
+                    placeholder: '<?= $escaper->escapeJs(__('Name')) ?>'
+                },
+                {
+                    selector: '#pan-input-container',
+                    method: 'cardNumber',
+                    placeholder: '<?= $escaper->escapeJs(__('Card Number')) ?>'
+                },
+                {
+                    selector: '#cvv-input-container',
+                    method: 'cvv',
+                    placeholder: '<?= $escaper->escapeJs(__('CVV')) ?>'
+                },
+                {
+                    selector: '#exp-input-container',
+                    method: 'expiration',
+                    placeholder: '<?= $escaper->escapeJs(__('Exp Date')) ?>'
+                }
+            ];
+
+            fields.forEach(({ selector, method, placeholder }) => {
+                integratedPayment[method](
+                    document.querySelector(selector), 
+                    { ...fieldStyle, placeholder });
+            });
         }
 
-        integratedPayment = {
+        function setIntegratedPayment () {
             integratedPayment = new Payplug.IntegratedPayment(isSandbox);
-            init: function () {
-                integratedPayment.props.api = new Payplug.IntegratedPayment(sandbox);
-                integratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                addIntegratedPaymentPropsToForm();
-                integratedPayment.props.scheme = integratedPayment.props.api.getSupportedSchemes();
-            },
-        };
+            integratedPayment.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+            integratedPayment.getSupportedSchemes();
+            setIntegratedFormFields();            
+        }
 
         function initStandardPayment () {
             hyvaCheckout.payment.activate('payplug_payments_standard', {
@@ -352,6 +305,7 @@ use Magento\Framework\View\Element\Template;
                 });
             }
         }
+
         initStandardPayment();
     }
     
