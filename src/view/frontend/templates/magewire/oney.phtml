@@ -33,12 +33,12 @@ $icons = $viewModels->require(PayplugIcons::class);
 
 <div>
     <div data-oney-container="payplug_payments_oney">
-        <div id="oneyPayment" class="oneyPayment oneyPayment-open"></div>
+        <div id="oney-payment" class="oney-payment oney-payment-open"></div>
     </div>
 
     <div class="payment-method-content"></div>
 
-    <span class="oneyPopin <?php if ($hasError): ?>oneyPopin-error<?php endif; ?>"></span>
+    <span class="oney-popin <?php if ($hasError): ?>oney-popin-error<?php endif; ?>"></span>
 
     <style>
         <?php if($isOneyWithoutFees): ?>

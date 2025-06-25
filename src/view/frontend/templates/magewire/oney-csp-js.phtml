@@ -41,12 +41,12 @@ use Magento\Framework\View\Element\Template;
         }
 
         function selectOneyOption (option) {
-            const oneyPayment = document.querySelector('#oneyPayment');
-            const oldSelected = oneyPayment.querySelector('.oneyOption-selected');
+            const oneyPayment = document.querySelector('#oney-payment');
+            const oldSelected = oneyPayment.querySelector('.oney-option-selected');
             selectedOption = oneyPayment.querySelector('[data-type="'+ option +'"]');
 
-            oldSelected && oldSelected.classList.remove('oneyOption-selected');
-            selectedOption.classList.add('oneyOption-selected');
+            oldSelected && oldSelected.classList.remove('oney-option-selected');
+            selectedOption.classList.add('oney-option-selected');
 
             updatePlaceOrderButtonLabel(option);
         }
@@ -58,20 +58,20 @@ use Magento\Framework\View\Element\Template;
                 const htmlTemplate = `
                     <div class="field">
                         <input type="radio" id="${type}" name="oney_type" value="${type}" class="sr-only" />
-                        <label data-type="${type}" for="${type}" class="oneyOption oneyOption-${type}">
-                            <div class="oneyOption_title">
-                                <span class="oneyOption_logo oneyLogo oneyLogo-3x"></span>Paiement en ${type} sans frais
+                        <label data-type="${type}" for="${type}" class="oney-option oney-option-${type}">
+                            <div class="oney-option-title">
+                                <span class="oney-option-logo oneyLogo oneyLogo-3x"></span>Paiement en ${type} sans frais
                             </div>
-                            <div class="oneyOption_prices">
-                                <ul class="oneyOption_list">
+                            <div class="oney-option-prices">
+                                <ul class="oney-option-list">
                                     <li>
                                         <span>Montant à payer à la commande</span>
-                                        <span class="oneyOption_price">${firstDeposit}</span>
+                                        <span class="oney-option-price">${firstDeposit}</span>
                                     </li>
                                     ${htmlSchedulesTemplate}
                                     <li>
                                         <span>Total</span>
-                                        <span class="oneyOption_price">${totalAmount}</span>
+                                        <span class="oney-option-price">${totalAmount}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -82,7 +82,7 @@ use Magento\Framework\View\Element\Template;
                 const template = document.createElement('template');
                 template.innerHTML = htmlTemplate.trim();
                 const node = template.content.firstElementChild;
-                document.querySelector('#oneyPayment').appendChild(node);
+                document.querySelector('#oney-payment').appendChild(node);
             });
         }
 
@@ -98,7 +98,7 @@ use Magento\Framework\View\Element\Template;
                 htmlSchedulesTemplate += `
                     <li>
                         <span>${dueDate}</span>
-                        <span class="oneyOption_price">${amount}</span>
+                        <span class="oney-option-price">${amount}</span>
                     </li>
                 `;
 
