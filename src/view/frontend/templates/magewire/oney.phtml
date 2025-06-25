@@ -23,6 +23,7 @@ if (!$oneySimulation->getSuccess() || !empty($message)) {
     $hasError = true;
 }
 
+$oneyType = $oneySimulation->getMethod();
 $isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
 $pricingHelper = $this->helper(Data::class);
 
@@ -32,7 +33,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 
 <div>
     <div data-oney-container="payplug_payments_oney">
-        <div class="oneyPayment oneyPayment-open"></div>
+        <div id="oneyPayment" class="oneyPayment oneyPayment-open"></div>
     </div>
 
     <div class="payment-method-content"></div>
@@ -58,30 +59,29 @@ $icons = $viewModels->require(PayplugIcons::class);
     </style>
 
     <?php
-    $options = array_map(static function($option) use ($pricingHelper) {
-        $schedules = $option->getSchedules();
-        $keys = array_keys($schedules);
+        $options = array_map(static function($option) use ($pricingHelper) {
+            $schedules = $option->getSchedules();
+            $keys = array_keys($schedules);
 
-        return [
-            'type' => $option->getType(),
-            'firstDeposit' => $pricingHelper->currency($option->getFirstDeposit(), true, false),
-            'totalAmount' => $pricingHelper->currency($option->getTotalAmount(), true, false),
+            return [
+                'type' => $option->getType(),
+                'firstDeposit' => $pricingHelper->currency($option->getFirstDeposit(), true, false),
+                'totalAmount' => $pricingHelper->currency($option->getTotalAmount(), true, false),
 
-            'schedules' => array_map(static function($schedule, $i) use ($pricingHelper) {
-                return [
-    //                'i' => __(sprintf('Installment %d:', $i + 1)),
-                    'amount' => $pricingHelper->currency($schedule->getAmount(), true, false),
-                ];
-            }, $schedules, $keys),
-        ];
-    }, $oneySimulation->getOptions() ?? []);
+                'schedules' => array_map(static function($schedule, $i) use ($pricingHelper) {
+                    return [
+                        'amount' => $pricingHelper->currency($schedule->getAmount(), true, false),
+                    ];
+                }, $schedules, $keys),
+            ];
+        }, $oneySimulation->getOptions() ?? []);
     ?>
 
-    <div x-data="magewireOney"
-        x-init="initMagewireOney"
+    <div x-data="magewireOneyPayment"
         data-label="<?= $escaper->escapeHtmlAttr(__($isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1')) ?>"
         data-has-error="<?= $escaper->escapeHtmlAttr($hasError ? 'true' : 'false') ?>"
         data-message="<?= $escaper->escapeHtmlAttr($message) ?>"
         data-options="<?= $escaper->escapeHtmlAttr(json_encode($options)) ?>"
+        data-type="<?= $escaper->escapeHtmlAttr($oneyType) ?>"
     ></div>
 </div>
