@@ -142,6 +142,10 @@ use Magento\Framework\View\Element\Template;
                     inputs.forEach(input => observer.observe(input, config));
                 },
                 async validate() {
+                    const cancelUrl = BASE_URL + 'payplug_payments/payment/cancel';
+                    const redirectUrl = BASE_URL + 'payplug_payments/payment/standard';
+                    const returnUrl = BASE_URL + 'payplug_payments/payment/paymentReturn';
+
                     const selectedElement = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
                     const cardIsSelected = selectedElement && selectedElement.value;
 
@@ -158,7 +162,7 @@ use Magento\Framework\View\Element\Template;
                                     integratedPayment.validateForm();
                                     integratedPayment.onValidateForm(({ isFormValid }) => {
                                         if (isFormValid) {
-                                            fetch('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/standard', ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>')
+                                            fetch(redirectUrl + '?should_redirect=0&integrated=1')
                                                 .then(response => response.json())
                                                 .then(({ payment_id, error }) => {
                                                      if (error) {
@@ -169,12 +173,12 @@ use Magento\Framework\View\Element\Template;
 
                                                     integratedPayment.pay(payment_id, 0, { save_card: saveCard });
                                                     integratedPayment.onCompleted(function (event) {
-                                                        window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
+                                                        window.location.replace(returnUrl);
                                                         resolve();
                                                     });
                                                 })
                                                 .catch(() => {
-                                                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
+                                                    window.location.replace(cancelUrl);
                                                     reject();
                                                 });
                                         } else {
@@ -194,13 +198,10 @@ use Magento\Framework\View\Element\Template;
                         }
 
                         if (isPopup) {
-                            const redirectUrl = 'payplug_payments/payment/standard';
-                            const returnUrl = 'payplug_payments/payment/paymentReturn';
                             const closeIframe = Payplug.Form._closeIframe;
 
                             function redirectToCancelUrl() {
-                                const cancelUrl = 'payplug_payments/payment/cancel';
-                                window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
+                                window.location.replace(cancelUrl + '?form_key=${hyva.getFormKey()}');
                             };
 
                             Payplug.Form._closeIframe = () => {
@@ -213,11 +214,11 @@ use Magento\Framework\View\Element\Template;
 
                             await hyvaCheckout.main.getWireComponent().placeOrder();
 
-                            fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`)
+                            fetch(redirectUrl + '?should_redirect=0')
                                 .then(response => response.json())
                                 .then(({ is_paid, url }) => {
                                     if (is_paid) {
-                                        window.location.replace(`${BASE_URL}${returnUrl}`);
+                                        window.location.replace(returnUrl);
                                     } else if (url) {
                                         Payplug.Form.showPayment(url, isOneClick);
                                     } else {
