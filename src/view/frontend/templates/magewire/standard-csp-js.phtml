@@ -23,20 +23,20 @@ use Magento\Framework\View\Element\Template;
         const standardPaymentOptions = $el.dataset;
         const formatedStandardPaymentOptions = convertStringToBoolean(standardPaymentOptions);
         const {
-            isOneClick,
             isIntegrated,
             isRedirected,
             isPopup,
             isSandbox
         } = formatedStandardPaymentOptions;
 
+        let isOneClick = formatedStandardPaymentOptions.isOneClick;
         let integratedPayment = {};
 
         function convertStringToBoolean (objectOfStrings) {
             return Object.fromEntries(
                 Object.entries(objectOfStrings).map(([key, value]) => {
-                    if (value === "true") return [key, true];
-                    if (value === "false") return [key, false];
+                    if (value === 'true') return [key, true];
+                    if (value === 'false') return [key, false];
                     return [key, value];
                 })
             );
@@ -102,6 +102,7 @@ use Magento\Framework\View\Element\Template;
             hyvaCheckout.payment.activate('payplug_payments_standard', {
                 initialize() {
                     if (isIntegrated) {
+                        this.setFieldsError();
                         this.loadPayplugApi()
                             .then(() => {
                                 if (!this.isInitialized()) {
@@ -118,8 +119,8 @@ use Magento\Framework\View\Element\Template;
                             });
                     }
 
-                    if (isIntegrated) {
-                        this.setFieldsError();
+                    if (isOneClick) {
+                        this.bindIntegratedPaymentFormToggle();
                     }
                 },
                 isInitialized() {
@@ -131,9 +132,9 @@ use Magento\Framework\View\Element\Template;
                         mutations.forEach(mutation => {
                             if (mutation.attributeName === 'class') {
                                 const input = mutation.target;
-                                const isValid = !input.classList.contains("integrated_payment_error");
-                                input.style.border = isValid ? "1px solid #d5d6d8" : "1px solid #FF0000";
-                                document.querySelector(`.error-container.${input.id} .invalid-field`).style.display = isValid ? "none" : "block";
+                                const isValid = !input.classList.contains('integrated_payment_error');
+                                input.style.border = isValid ? '1px solid #d5d6d8' : '1px solid #FF0000';
+                                document.querySelector(`.error-container.${input.id} .invalid-field`).style.display = isValid ? 'none' : 'block';
                             }
                         });
                     });
@@ -169,7 +170,7 @@ use Magento\Framework\View\Element\Template;
                                                         reject();
                                                     }
 
-                                                    const saveCard = document.querySelector("#payplug_save_card")?.checked || false;
+                                                    const saveCard = document.querySelector('#payplug_save_card')?.checked;
 
                                                     integratedPayment.pay(payment_id, 0, { save_card: saveCard });
                                                     integratedPayment.onCompleted(function (event) {
@@ -239,6 +240,23 @@ use Magento\Framework\View\Element\Template;
                         document.head.appendChild(script);
                     });
                 },
+                bindIntegratedPaymentFormToggle () {
+                    const otherCard = document.querySelector('#other-card');
+                    const integratedPaymentForm = document.querySelector('#payplug-payment-form');
+                    const radios = document.querySelectorAll('input[name="payment[payplug_payments_standard][customer_card_id]"]');
+
+                    radios.forEach(radio => {
+                        radio.addEventListener('change', (event) => {
+                            if (otherCard.checked) {
+                                isOneClick = false;
+                                integratedPaymentForm.classList.remove('-hide');
+                            } else {
+                                isOneClick = false;
+                                integratedPaymentForm.classList.add('-hide');
+                            }
+                        });
+                    });
+                },
                 placeOrderViaJs() {
                     <?php // Disable place order ?>
                     if (isPopup && !isOneClick) {
@@ -246,27 +264,6 @@ use Magento\Framework\View\Element\Template;
                     }
                 }
             }, $wire);
-
-            if (document.querySelector('ul.payplug-payments-cards li') != null) {
-                document.querySelector('ul.payplug-payments-cards li input').click();
-                document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
-                    var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-                    
-                    if (card.value === '') {
-                        isOneClick = false;
-
-                        if (isIntegrated) {
-                            document.querySelector("#payplug-payment-form").classList.remove("-hide");
-                        }
-                    } else {
-                        isOneClick = true;
-
-                        if (isIntegrated) {
-                            document.querySelector("#payplug-payment-form").classList.add("-hide");
-                        }
-                    }
-                });
-            }
         }
 
         initStandardPayment();

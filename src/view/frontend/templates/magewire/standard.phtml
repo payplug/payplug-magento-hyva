@@ -38,37 +38,44 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 ?>
 
 <div>
+    <?php // Prepaid card ?>
     <?php if (!empty($payplugCards) && $isOneClick) : ?>
-        <ul class="payplug-payments-cards">
+        <ul class="pl-5 space-y-4" id="payplug-payments-cards">
             <?php foreach ($payplugCards as $payplugCard) : ?>
                 <?php
-                $customerCardId = $payplugCard->getCustomerCardId();
-                $cardBrand = $payplugCard->getBrand();
-                $cardFourDigits = $payplugCard->getLastFour();
-                $date = $payplugCard->getExpDate();
-                $cardExpirationDate = $block->getFormattedExpDate($date);
+                    $customerCardId = $payplugCard->getCustomerCardId();
+                    $cardBrand = $payplugCard->getBrand();
+                    $cardFourDigits = $payplugCard->getLastFour();
+                    $date = $payplugCard->getExpDate();
+                    $cardExpirationDate = $block->getFormattedExpDate($date);
                 ?>
-                <li>
-                    <input type="radio" 
+                <li class="flex items-center gap-x-2.5">
+                    <input type="radio"
                            name="payment[payplug_payments_standard][customer_card_id]" 
                            id="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" 
                            class="payplug-payments-customer-card"
                            data-card-id="<?= $escaper->escapeHtmlAttr($customerCardId); ?>"
                            value="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" />
-                    <label for="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>">
-                        <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('other')); ?>" alt="">
-                        <span class="card-last4"> <b>**** **** **** <?= $escaper->escapeHtml($cardFourDigits); ?></b></span>
-                        <span>(<?= $escaper->escapeHtml($cardExpirationDate); ?>)</span>
+                    <label for="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" class="mb-0">
+                        <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('other')); ?>"
+                             class="inline"
+                             width="24"
+                             height="24"
+                             alt="" />
+                        <span class="font-bold">
+                            **** **** **** <?= $escaper->escapeHtml($cardFourDigits); ?>
+                            <span class="font-normal">(<?= $escaper->escapeHtml($cardExpirationDate); ?>)</span>
+                        </span>
                     </label>
                 </li>
-            <?php endforeach; ?>
-            <li>
-                <input type="radio" 
+            <?php endforeach ?>
+            <li class="flex items-center gap-x-2.5">
+                <input type="radio"
                        name="payment[payplug_payments_standard][customer_card_id]" 
-                       id="payplug_payments_card_" 
+                       id="other-card"
                        class="payplug-payments-customer-card" 
                        value="" />
-                <label for="payplug_payments_card_">
+                <label for="other-card" class="mb-0">
                     <?= $escaper->escapeHtml(__('Pay with another card')); ?>
                 </label>
             </li>
@@ -77,7 +84,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
     <?php if ($isIntegrated) : ?>
         <div id="payplug-payment-form"
-             class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? '-hide' : '' ?>"
+             class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? 'ml-[46px] pt-3 -hide' : '' ?>"
              wire:ignore>
             <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
             </div>
@@ -165,7 +172,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
             <?php if ($paymentConfig["payplug_payments_standard"]['is_one_click']) : ?>
                 <div class="save-card-container">
                     <input type="checkbox" name="save_card" id="payplug_save_card">
-                    <label for="payplug_save_card"><?= $escaper->escapeHtml(__('Save my credit card')); ?></label>
+                    <label for="payplug_save_card" class="inline align-middle"><?= $escaper->escapeHtml(__('Save my credit card')); ?></label>
                 </div>
             <?php endif; ?>
 
