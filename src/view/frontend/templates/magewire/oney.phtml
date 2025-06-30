@@ -11,9 +11,10 @@ use Magento\Framework\Pricing\Helper\Data;
 use Payplug\Payments\Gateway\Config\OneyWithoutFees;
 
 /** @var Escaper $escaper */
+/** @var PayplugIcons $viewModels */
+/** @var Simulation $block */
 /** @var Template $block */
 /** @var ViewModelRegistry $viewModels */
-/** @var Simulation $block */
 
 $hasError = false;
 $oneySimulation = $block->getOneySimulation();
@@ -26,37 +27,16 @@ if (!$oneySimulation->getSuccess() || !empty($message)) {
 $oneyType = $oneySimulation->getMethod();
 $isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
 $pricingHelper = $this->helper(Data::class);
-
-/** @var PayplugIcons $viewModels */
 $icons = $viewModels->require(PayplugIcons::class);
+
+$oney3xLogo = $icons->renderHtml('oney/3x' . ($isOneyWithoutFees ? '-without-fees' : ''), '', 150, 32, ['aria-hidden' => 'true']);
+$oney4xLogo = $icons->renderHtml('oney/4x' . ($isOneyWithoutFees ? '-without-fees' : ''), '', 150, 32, ['aria-hidden' => 'true']);
 ?>
 
 <div>
-    <div data-oney-container="payplug_payments_oney">
-        <div id="oney-payment" class="oney-payment oney-payment-open"></div>
-    </div>
-
-    <div class="payment-method-content"></div>
-
+    <div id="oney-payment" class="oney-payment oney-payment-open"></div>
+    <div class="payment-method-content" wire:ignore></div>
     <span class="oney-popin <?php if ($hasError): ?>oney-popin-error<?php endif; ?>"></span>
-
-    <style>
-        <?php if($isOneyWithoutFees): ?>
-            .oneyLogo-3x {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/3x')); ?>');
-            }
-            .oneyLogo-4x {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/4x')); ?>');
-            }
-        <?php else: ?>
-            .oneyLogo-3x {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('3x')); ?>');
-            }
-            .oneyLogo-4x {
-                background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('4x')); ?>');
-            }
-        <?php endif; ?>
-    </style>
 
     <?php
         $options = array_map(static function($option) use ($pricingHelper) {
@@ -83,5 +63,7 @@ $icons = $viewModels->require(PayplugIcons::class);
         data-message="<?= $escaper->escapeHtmlAttr($message) ?>"
         data-options="<?= $escaper->escapeHtmlAttr(json_encode($options)) ?>"
         data-type="<?= $escaper->escapeHtmlAttr($oneyType) ?>"
+        data-logo-three-times="<?= $escaper->escapeHtmlAttr($oney3xLogo) ?>"
+        data-logo-four-times="<?= $escaper->escapeHtmlAttr($oney4xLogo) ?>"
     ></div>
 </div>

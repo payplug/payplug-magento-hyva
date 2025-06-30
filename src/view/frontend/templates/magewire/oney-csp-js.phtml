@@ -25,17 +25,18 @@ use Magento\Framework\View\Element\Template;
             hasError,
             message,
             options,
-            type : oneyType
+            type : oneyType,
+            logoThreeTimes: logo3x,
+            logoFourTimes: logo4x,
         } = this.$el.dataset;
 
         let selectedOption = null;
-
         const parsedOptions = JSON.parse(options);
 
         function updatePlaceOrderButtonLabel (type) {
             const buttonLabel = type
                 ? label.replace('%1', type)
-                : '<?= $escaper->escapeJs(__('Place Order')); ?>';
+                : '<?= $escaper->escapeJs(__('Place Order')) ?>';
 
             document.querySelector('.btn-place-order').innerText = buttonLabel;
         }
@@ -43,13 +44,16 @@ use Magento\Framework\View\Element\Template;
         function buildOneyOptions () {
             parsedOptions.forEach(({ firstDeposit, schedules, totalAmount, type }) => {
                 const htmlSchedulesTemplate = getHtmlSchedules(schedules);
+                const logo = type === '3x' ? logo3x : logo4x;
+                const title = "<?= $escaper->escapeJs(__('Payment in %1 at no cost')) ?>".replace('%1', type);
                 
                 const htmlTemplate = `
                     <div class="field">
                         <input type="radio" id="${type}" name="oney_type" value="${type}" class="sr-only" />
                         <label data-type="${type}" for="${type}" class="oney-option oney-option-${type}">
                             <div class="oney-option-title">
-                                <span class="oney-option-logo oneyLogo oneyLogo-3x"></span>Paiement en ${type} sans frais
+                                ${logo}
+                                ${oneyType === 'payplug_payments_oney_without_fees' ? title : ''}
                             </div>
                             <div class="oney-option-prices">
                                 <ul class="oney-option-list">
