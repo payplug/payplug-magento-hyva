@@ -24,7 +24,47 @@
 }
 
 .oney-payment {
-    @apply flex gap-4 justify-between max-h-[90px] overflow-hidden;
+    @apply relative pt-[90px];
+
+    @screen md {
+        @apply flex gap-4 justify-between pt-0 overflow-hidden;
+    }
+
+    .field {
+        @apply flex-1 mt-0;
+
+        &:nth-child(1),
+        &:nth-child(2) {
+            input {
+                &:checked {
+                    + label {
+                        .oney-option-prices {
+                            @apply flex;
+                        }
+
+                        .oney-option-title {
+                            border-bottom: 5px solid #81bc00;
+
+                            @screen md {
+                                @apply border-0;
+                            }
+                        }
+
+                        @screen md {
+                            @apply border-[#81bc00] after:opacity-100;
+                            background: rgba(129, 188, 0, 0.15);
+                        }
+                    } 
+                }
+            }
+        }
+
+        &:nth-child(2) {
+            .oney-option-title {
+                @apply left-auto right-0 border-l-0;
+            }
+        }
+    }
 
     &-disabled {
         @apply max-h-[none];
@@ -95,11 +135,10 @@
 }
 
 .oney-option {
-    @apply relative flex flex-col items-center h-full m-0 p-[30px] border border-solid border-[#dce0e8] bg-white cursor-pointer hover:border-[#81bc00] after:hover:opacity-100;
+    @apply flex flex-col items-center h-full m-0 bg-white cursor-pointer;
 
-    &-selected {
-        @apply border-[#81bc00] after:opacity-100;
-        background: rgba(129, 188, 0, 0.15);
+    @screen md {
+        @apply p-6 border border-solid border-[#dce0e8] hover:border-[#81bc00] after:hover:opacity-100;
     }
 
     &-wrapper {
@@ -115,11 +154,19 @@
     }
 
     &-title {
-        @apply box-border flex flex-col justify-center items-center h-[90px] text-[#2f2930] text-[13px] font-medium pt-0 pb-[35px] px-0;
+        @apply flex flex-col justify-center items-center h-[90px] absolute top-0 left-0 w-1/2 p-3 bg-white border border-[#dce0e8] border-b-white border-b-[5px] text-[#2f2930] text-[13px] font-medium;
+
+        @screen md {
+            @apply static top-auto left-auto right-auto w-full pt-0 pb-[35px] px-0 bg-transparent border-0;
+        }
     }
 
     &-prices {
-        @apply flex flex-col justify-between h-full w-full;
+        @apply hidden flex-col justify-between h-full w-full border p-4;
+
+        @screen md {
+            @apply flex border-0 p-0;
+        }
 
         ul {
             @apply flex flex-col h-full w-full text-[#2f2930] text-[15px] font-semibold m-0 pl-0;
@@ -301,7 +348,7 @@
             }
     
             &-prices {
-                @apply box-border hidden h-auto border px-4 py-[30px] border-solid border-[#dce0e8];
+                @apply box-border hidden h-auto px-4 py-[30px] border border-[#dce0e8];
         
                 ul {
                     li {
@@ -311,7 +358,7 @@
             }
     
             &-title {
-                @apply absolute w-6/12 border p-0 border-b-[5px] border-b-transparent border-solid border-[#dce0e8] left-0 top-0;
+                @apply absolute w-6/12 border p-0 border-b-[5px] border-b-transparent border-[#dce0e8] left-0 top-0;
                 background: transparent;
             }
         

@@ -40,17 +40,6 @@ use Magento\Framework\View\Element\Template;
             document.querySelector('.btn-place-order').innerText = buttonLabel;
         }
 
-        function selectOneyOption (option) {
-            const oneyPayment = document.querySelector('#oney-payment');
-            const oldSelected = oneyPayment.querySelector('.oney-option-selected');
-            selectedOption = oneyPayment.querySelector('[data-type="'+ option +'"]');
-
-            oldSelected && oldSelected.classList.remove('oney-option-selected');
-            selectedOption.classList.add('oney-option-selected');
-
-            updatePlaceOrderButtonLabel(option);
-        }
-
         function buildOneyOptions () {
             parsedOptions.forEach(({ firstDeposit, schedules, totalAmount, type }) => {
                 const htmlSchedulesTemplate = getHtmlSchedules(schedules);
@@ -113,7 +102,7 @@ use Magento\Framework\View\Element\Template;
                 const isOption = event?.target?.attributes?.name?.nodeValue === 'oney_type';
 
                 if (isOption) {
-                    selectOneyOption(event.target.id);
+                    updatePlaceOrderButtonLabel(event.target.id);
                 }
             });
         }
