@@ -1,0 +1,142 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+?>
+
+<script>
+    'use strict';
+
+    function magewireOneyPayment() {                         
+        const $wire = this.$wire;
+        const $el = this.$el;
+
+        const {
+            label,
+            hasError,
+            message,
+            options,
+            type : oneyType,
+            logoThreeTimes: logo3x,
+            logoFourTimes: logo4x,
+        } = this.$el.dataset;
+
+        let selectedOption = null;
+        const parsedOptions = JSON.parse(options);
+
+        function updatePlaceOrderButtonLabel (type) {
+            const buttonLabel = type
+                ? label.replace('%1', type)
+                : '<?= $escaper->escapeJs(__('Place Order')) ?>';
+
+            document.querySelector('.btn-place-order').innerText = buttonLabel;
+        }
+
+        function buildOneyOptions () {
+            parsedOptions.forEach(({ firstDeposit, schedules, totalAmount, type }) => {
+                const htmlSchedulesTemplate = getHtmlSchedules(schedules);
+                const logo = type === '3x' ? logo3x : logo4x;
+                const title = "<?= $escaper->escapeJs(__('Payment in %1 at no cost')) ?>".replace('%1', type);
+                
+                const htmlTemplate = `
+                    <div class="field">
+                        <input type="radio" id="${type}" name="oney_type" value="${type}" class="sr-only" />
+                        <label data-type="${type}" for="${type}" class="oney-option oney-option-${type}">
+                            <div class="oney-option-title">
+                                ${logo}
+                                ${oneyType === 'payplug_payments_oney_without_fees' ? title : ''}
+                            </div>
+                            <div class="oney-option-prices">
+                                <ul class="oney-option-list">
+                                    <li>
+                                        <span>Montant à payer à la commande</span>
+                                        <span class="oney-option-price">${firstDeposit}</span>
+                                    </li>
+                                    ${htmlSchedulesTemplate}
+                                    <li>
+                                        <span>Total</span>
+                                        <span class="oney-option-price">${totalAmount}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </label>
+                    </div>
+                `;
+
+                const template = document.createElement('template');
+                template.innerHTML = htmlTemplate.trim();
+                const node = template.content.firstElementChild;
+                document.querySelector('#oney-payment').appendChild(node);
+            });
+        }
+
+        function getHtmlSchedules (schedules) {
+            let htmlSchedulesTemplate = ``;
+            const step = 30;
+            let days = step;
+
+            for (const schedule of schedules) {
+                const { amount } = schedule;
+                const dueDate = '<?= $escaper->escapeJs(__('In %1 days', '%1')) ?>'.replace('%1', days);
+
+                htmlSchedulesTemplate += `
+                    <li>
+                        <span>${dueDate}</span>
+                        <span class="oney-option-price">${amount}</span>
+                    </li>
+                `;
+
+                days += step;
+            }
+
+            return htmlSchedulesTemplate;
+        }
+
+        function bindOneyOptionsHandler () {
+            document.addEventListener('click', (event) => {
+                const isOption = event?.target?.attributes?.name?.nodeValue === 'oney_type';
+
+                if (isOption) {
+                    updatePlaceOrderButtonLabel(event.target.id);
+                }
+            });
+        }
+
+        function initOneyPayment () {
+            <?php // Reset place order button to default value ?>
+            if (document.querySelector('.btn-place-order')) {
+                document.querySelector('.btn-place-order').innerText = '<?= $escaper->escapeJs(__('Place Order')); ?>';
+            }
+
+            if (oneyType === 'payplug_payments_oney' || oneyType === 'payplug_payments_oney_without_fees') {
+                hyvaCheckout.payment.activate(oneyType, {
+                    initialize() {
+                        buildOneyOptions();
+                        bindOneyOptionsHandler();
+                    },
+                    async validate() {
+                        await Magewire.find('checkout.payment.method.' + oneyType).call('setOneyType', selectedOption.dataset.type);
+                        return true;
+                    }
+                });
+            }
+        }
+
+        initOneyPayment();
+    }
+    
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('magewireOneyPayment', magewireOneyPayment)
+    }, { once: true });
+</script>
+
+<?php $hyvaCsp->registerInlineScript() ?>
