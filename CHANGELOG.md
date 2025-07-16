@@ -20,15 +20,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Code optimizations and refactoring on standard and Oney payment methods [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
+- Sanitize Payplug and Apple Pay SDK scripts load [#87](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/87)
 
 ### Fixed
 - Fix standard and Oney payment method initialization when preselected [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
 - Fix sandbox variable namming [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
 - Fix save card render on standard payment method [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
+- Fix integrated payment form validation console error on submit [#92](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/92)
 
 ### Removed
 - Remove useless OneStepCheckout CSS rules [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
-
 
 ## [1.1.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.1.1) - 2025-03-19
 
