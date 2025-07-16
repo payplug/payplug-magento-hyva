@@ -1,10 +1,18 @@
+const oneyColor = '#81BC00';
+
 module.exports = {
   theme: {
     extend: {
       colors: {
         oney: {
-          'DEFAULT': '#81BC00',
+          'DEFAULT': oneyColor,
           lighter: '#ECF5D9'
+        }
+      },
+      borderColor: {
+        oney: {
+          'DEFAULT': oneyColor,
+          lighter: '#DCE0E8'
         }
       },
       width: {

@@ -38,37 +38,44 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 ?>
 
 <div>
+    <?php // Prepaid card ?>
     <?php if (!empty($payplugCards) && $isOneClick) : ?>
-        <ul class="payplug-payments-cards">
+        <ul class="pl-5 space-y-4" id="payplug-payments-cards">
             <?php foreach ($payplugCards as $payplugCard) : ?>
                 <?php
-                $customerCardId = $payplugCard->getCustomerCardId();
-                $cardBrand = $payplugCard->getBrand();
-                $cardFourDigits = $payplugCard->getLastFour();
-                $date = $payplugCard->getExpDate();
-                $cardExpirationDate = $block->getFormattedExpDate($date);
+                    $customerCardId = $payplugCard->getCustomerCardId();
+                    $cardBrand = $payplugCard->getBrand();
+                    $cardFourDigits = $payplugCard->getLastFour();
+                    $date = $payplugCard->getExpDate();
+                    $cardExpirationDate = $block->getFormattedExpDate($date);
                 ?>
-                <li>
-                    <input type="radio" 
+                <li class="flex items-center gap-x-2.5">
+                    <input type="radio"
                            name="payment[payplug_payments_standard][customer_card_id]" 
                            id="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" 
                            class="payplug-payments-customer-card"
                            data-card-id="<?= $escaper->escapeHtmlAttr($customerCardId); ?>"
                            value="<?= $escaper->escapeHtmlAttr($customerCardId); ?>" />
-                    <label for="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>">
-                        <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('other')); ?>" alt="">
-                        <span class="card-last4"> <b>**** **** **** <?= $escaper->escapeHtml($cardFourDigits); ?></b></span>
-                        <span>(<?= $escaper->escapeHtml($cardExpirationDate); ?>)</span>
+                    <label for="payplug_payments_card_<?= $escaper->escapeHtmlAttr($customerCardId); ?>" class="mb-0">
+                        <img src="data:image/svg+xml,<?= rawurlencode($icons->renderHtml('other')); ?>"
+                             class="inline"
+                             width="24"
+                             height="24"
+                             alt="" />
+                        <span class="font-bold">
+                            **** **** **** <?= $escaper->escapeHtml($cardFourDigits); ?>
+                            <span class="font-normal">(<?= $escaper->escapeHtml($cardExpirationDate); ?>)</span>
+                        </span>
                     </label>
                 </li>
-            <?php endforeach; ?>
-            <li>
-                <input type="radio" 
+            <?php endforeach ?>
+            <li class="flex items-center gap-x-2.5">
+                <input type="radio"
                        name="payment[payplug_payments_standard][customer_card_id]" 
-                       id="payplug_payments_card_" 
+                       id="other-card"
                        class="payplug-payments-customer-card" 
                        value="" />
-                <label for="payplug_payments_card_">
+                <label for="other-card" class="mb-0">
                     <?= $escaper->escapeHtml(__('Pay with another card')); ?>
                 </label>
             </li>
@@ -76,7 +83,9 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
     <?php endif; ?>
 
     <?php if ($isIntegrated) : ?>
-        <div id="payplug-payment-form" class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? '-hide' : '' ?>">
+        <div id="payplug-payment-form"
+             class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? 'ml-[46px] pt-3 -hide' : '' ?>"
+             wire:ignore>
             <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
             </div>
             <div class="error-container cardholder-input-container">
@@ -87,51 +96,54 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 <div>
                     <?= $escaper->escapeHtml(__('Your card')); ?>
                 </div>
-                <div x-data="{ currentCard: '' }"
+                <div x-data="integratedStandardPayment"
                      class="flex justify-between items-center flex-wrap w-[115px]">
                     <label class="hover:cursor-pointer">
                         <span class="sr-only">Visa</span>
-                        <span :class="currentCard === 'visa' ? 'inline' : 'hidden'" x-cloak>
+                        <span :class="visaCardClass" x-cloak>
                             <?= $icons->renderHtml('visa', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
-                        <span :class="currentCard === 'visa' ? 'hidden' : 'inline'">
+                        <span :class="visaCardDarkClass">
                             <?= $icons->renderHtml('visa-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
                                name="schemeOptions"
                                value="visa"
-                               x-model="currentCard" />
+                               :value="currentCard" 
+                               @change="handleInputChange()" />
                     </label>
                     <label class="hover:cursor-pointer">
                         <span class="sr-only">Mastercard</span>
-                        <span :class="currentCard === 'mastercard' ? 'inline' : 'hidden'" x-cloak>
+                        <span :class="masterCardClass" x-cloak>
                             <?= $icons->renderHtml('mastercard', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
-                        <span :class="currentCard === 'mastercard' ? 'hidden' : 'inline'">
+                        <span :class="masterCardDarkClass">
                             <?= $icons->renderHtml('mastercard-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
                                name="schemeOptions"
                                value="mastercard"
-                               x-model="currentCard" />
+                               :value="currentCard" 
+                               @change="handleInputChange()" />
                     </label>
                     <label class="hover:cursor-pointer">
                         <span class="sr-only">
                             <?= $escaper->escapeHtml($storeCode === 'it_IT' ? 'PostePay' : 'CB') ?>
                         </span>
-                        <span :class="currentCard === 'cb' ? 'inline' : 'hidden'" x-cloak>
+                        <span :class="cbCardClass" x-cloak>
                             <?= $icons->renderHtml($cbName, 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
-                        <span :class="currentCard === 'cb' ? 'hidden' : 'inline'">
+                        <span :class="cbCardDarkClass">
                         <?= $icons->renderHtml($cbName . '-dark', 'w-payment-card h-payment-card', 33, 22, ['aria-hidden' => 'true']); ?>
                         </span>
                         <input type="radio"
                                class="sr-only"
                                name="schemeOptions"
                                value="cb"
-                               x-model="currentCard" />
+                               :value="currentCard" 
+                               @change="handleInputChange()" />
                     </label>
                 </div>
             </div>
@@ -160,7 +172,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
             <?php if ($paymentConfig["payplug_payments_standard"]['is_one_click']) : ?>
                 <div class="save-card-container">
                     <input type="checkbox" name="save_card" id="payplug_save_card">
-                    <label for="payplug_save_card"><?= $escaper->escapeHtml(__('Save my credit card')); ?></label>
+                    <label for="payplug_save_card" class="inline align-middle"><?= $escaper->escapeHtml(__('Save my credit card')); ?></label>
                 </div>
             <?php endif; ?>
 
@@ -200,272 +212,11 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
         </style>
     <?php endif; ?>
 
-    <script>
-        (() => {
-            let isOneClick = <?= !empty($payplugCards) && $isOneClick ? 'true' : 'false'; ?>;
-
-            <?php if ($isIntegrated) : ?>
-                const IntegratedPayment = {
-                    props: {
-                        cartId: null,
-                        paymentId: null,
-                        paymentOptionId: null,
-                        form: {},
-                        checkoutForm: null,
-                        api: null,
-                        integratedPayment: null,
-                        token: null,
-                        notValid: true,
-                        fieldsValid: {
-                            cardHolder: false,
-                            pan: false,
-                            cvv: false,
-                            exp: false,
-                        },
-                        fieldsEmpty: {
-                            cardHolder: true,
-                            pan: true,
-                            cvv: true,
-                            exp: true,
-                        },
-                        inputStyle: {
-                            default: {
-                                color: '#2B343D',
-                                fontFamily: 'Poppins, sans-serif',
-                                fontSize: '14px',
-                                textAlign: 'left',
-                                '::placeholder': {
-                                    color: '#969a9f',
-                                },
-                                ':focus': {
-                                    color: '#2B343D',
-                                }
-                            },
-                            invalid: {
-                                color: '#E91932'
-                            }
-                        },
-                        save_card: false,
-                        scheme: null,
-                        query: null,
-                        submit: null,
-                        order_review: false,
-                        return_url: null
-                    },
-                    init: function () {
-                        IntegratedPayment.props.api = new Payplug.IntegratedPayment(<?= $escaper->escapeJs($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>);
-                        IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                        IntegratedPayment.props.form = {};
-                        IntegratedPayment.props.form.cardHolder = {element: IntegratedPayment.props.api.cardHolder(document.querySelector('#cardholder-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Name'})};
-                        IntegratedPayment.props.form.pan = {element:IntegratedPayment.props.api.cardNumber(document.querySelector('#pan-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Card Number'})};
-                        IntegratedPayment.props.form.cvv = {element:IntegratedPayment.props.api.cvv(document.querySelector('#cvv-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'CVV'})};
-                        IntegratedPayment.props.form.exp = {element:IntegratedPayment.props.api.expiration(document.querySelector('#exp-input-container'), {default: IntegratedPayment.props.inputStyle.default, placeholder: 'Exp Date'})};
-                        IntegratedPayment.props.scheme = IntegratedPayment.props.api.getSupportedSchemes();
-                    },
-                };
-            <?php endif; ?>
-
-            window.addEventListener('checkout:payment:method-activate', (event) => {
-                const MAGEWIRE_STANDARD_ID = '<?= /* @NoEscape */ $magewire->getId() ?>';
-                const MAGEWIRE_STANDARD_SELECTOR = document.querySelector(`[wire\\:id="${ MAGEWIRE_STANDARD_ID }"]`);
-
-                if (event.detail.method == "payplug_payments_standard") {
-                    hyvaCheckout.payment.activate('payplug_payments_standard', {
-                        initialize() {
-                            this.loadHostedLib()
-                                <?php if ($isIntegrated) : ?>
-                                    .then(() => {
-                                        if (!this.isInitialized()) {
-                                            IntegratedPayment.init();
-                                        }
-                                    });
-                                <?php endif; ?>
-                        },
-                        <?php if ($isIntegrated) : ?>
-                            isInitialized() {
-                                return document.body.contains(document.getElementById('cardholder'));
-                            },
-                        <?php endif; ?>
-                        async validate() {
-                            <?php if ($isIntegrated) : ?>
-                                <?php $validationFetchUrl = $escaper->escapeUrl($block->getUrl("payplug_payments/payment/standard", ['_query' => ['should_redirect' => '0', 'integrated' => '1']])); ?>
-
-                                IntegratedPayment.props.api.validateForm();
-                                IntegratedPayment.props.api.onValidateForm(({isFormValid}) => {
-                                    if (isFormValid) {
-                                        hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
-                                            <?php // Simulating a 5 seconds API request ?>
-                                            return new Promise((resolve) => {
-                                                IntegratedPayment.props.api.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
-                                                magewire.plugins.loader.start();
-                                                fetch('<?= $validationFetchUrl ?>')
-                                                    .then(response => response.json())
-                                                    .then(result => {
-                                                        if (result.error) {
-                                                            window.location.replace(response.url);
-                                                            reject();
-                                                        } else {                                                            
-                                                            if (result.payment_id) {
-                                                                const saveCardCheckbox = document.querySelector("#payplug_save_card");
-                                                                const cardIsSaved = saveCardCheckbox && saveCardCheckbox.checked;
-
-                                                                IntegratedPayment.props.api.pay(result.payment_id, 0, { 
-                                                                    save_card: cardIsSaved 
-                                                                });
-
-                                                                IntegratedPayment.props.api.onCompleted(function (event) {
-                                                                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
-                                                                    resolve();
-                                                                });
-
-                                                            } else {
-                                                                window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
-                                                                reject();
-                                                            }
-                                                        }
-                                                });
-                                            });
-                                        });
-
-                                        hyvaCheckout.main.getWireComponent().placeOrder();
-                                        return true;
-                                    }
-                                });
-                            <?php endif; ?>
-
-                            let cardIsSelected = false;
-
-                            if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') != null) {
-                                if (document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked').value) {
-                                    cardIsSelected = true;
-                                }
-                            }
-
-                            if (isOneClick && cardIsSelected) {
-                                const selectedElement = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-                                const cartId = selectedElement.value;
-
-                                await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', cartId);
-                                hyvaCheckout.main.getWireComponent().placeOrder();
-                                resolve();
-                                return true;
-                            } else {
-                                <?php if ($isRedirected) : ?>
-                                    hyvaCheckout.main.getWireComponent().placeOrder();
-                                    resolve();
-                                    return true;
-                                <?php endif; ?>
-
-                                <?php if ($isPopup) : ?>
-                                    const redirectUrl = 'payplug_payments/payment/standard';
-                                    const returnUrl = 'payplug_payments/payment/paymentReturn';
-                                    const closeIframe = Payplug.Form._closeIframe;
-
-                                    function redirectToCancelUrl() {
-                                        const cancelUrl = 'payplug_payments/payment/cancel';
-                                        window.location.replace(`${BASE_URL}${cancelUrl}?form_key=${hyva.getFormKey()}`);
-                                    };
-
-                                    Payplug.Form._closeIframe = () => {
-                                        if (typeof window.redirection_url !== 'undefined' && window.redirection_url) {
-                                            <?php // Payment is completed and redirection is handled by PayPlug form.js ?>
-                                            return;
-                                        }
-
-                                        redirectToCancelUrl();
-                                    };
-
-                                    await hyvaCheckout.main.getWireComponent().placeOrder();
-
-                                    fetch(`${BASE_URL}${redirectUrl}?should_redirect=0`)
-                                        .then(response => response.json())
-                                        .then(({ is_paid, url }) => {
-                                            if (is_paid) {
-                                                window.location.replace(`${BASE_URL}${returnUrl}`);
-                                            } else if (url) {
-                                                Payplug.Form.showPayment(url, isOneClick);
-                                            } else {
-                                                redirectToCancelUrl();
-                                            }
-                                        })
-                                        .catch(console.error);
-                                <?php endif; ?>
-                            }
-                        },
-                        <?php if ($isPopup && !$isOneClick) : ?>
-                            placeOrderViaJs() {
-                                <?php // Disable place order ?>
-                                return true;
-                            },
-                        <?php endif; ?>
-                        loadHostedLib() {
-                            return new Promise(resolve => {
-                                const script = document.createElement('script');
-                                script.type = 'text/javascript';
-                                script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
-                                script.async = true;
-                                script.onload = resolve;
-                                document.head.appendChild(script);
-                            });
-                        },
-                    }, MAGEWIRE_STANDARD_SELECTOR);
-
-                    if (document.querySelector('ul.payplug-payments-cards li') != null) {
-                        document.querySelector('ul.payplug-payments-cards li input').click();
-                        document.querySelector('ul.payplug-payments-cards').addEventListener('change', function () {
-                            var card = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-                            if (card.value === '') {
-                                isOneClick = false;
-
-                                <?php if ($isIntegrated) : ?>
-                                    document.querySelector("#payplug-payment-form").classList.remove("-hide");
-                                <?php endif; ?>
-                            } else {
-                                isOneClick = true;
-
-                                <?php if ($isIntegrated) : ?>
-                                    document.querySelector("#payplug-payment-form").classList.add("-hide");
-                                <?php endif; ?>
-                            }
-                        });
-                    }
-                } else {
-                    var script = document.getElementById("payplug-js");
-                    if (script) {
-                        script.remove();
-                    }
-                    document.querySelector('.btn-primary[x-bind="buttonPlaceOrder()"]').disabled = false;
-                    hyvaCheckout.payment.method = null;
-                }
-            }, {once: true});
-
-            <?php if ($isIntegrated) : ?>
-                const cardholder = document.querySelector('#cardholder-input-container');
-                const pan = document.querySelector('#pan-input-container');
-                const exp = document.querySelector('#exp-input-container');
-                const cvv = document.querySelector('#cvv-input-container');
-                const options = { attributes: true }
-                function callback(mutationList, observer) {
-                    mutationList.forEach(function(mutation) {
-                        if ( mutation.attributeName === 'class' ) {
-                            if (mutation.target.classList.contains("integrated_payment_error")) {
-                                mutation.target.style.border = "1px solid #FF0000";
-                                let id = mutation.target.id
-                                document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "block";
-                            } else {
-                                let id = mutation.target.id
-                                mutation.target.style.border = "1px solid #d5d6d8";
-                                document.querySelector('.error-container.'+id+ ' .invalid-field').style.display = "none";
-                            }
-                        }
-                    })
-                }
-                const observer = new MutationObserver(callback)
-                observer.observe(cardholder, options)
-                observer.observe(pan, options)
-                observer.observe(exp, options)
-                observer.observe(cvv, options)
-            <?php endif; ?>
-        })();
-    </script>
+    <div x-data="magewireStandardPayment"
+         data-is-one-click="<?= !empty($payplugCards) && $isOneClick ? 'true' : 'false' ?>"
+         data-is-integrated="<?= $isIntegrated ? 'true' : 'false' ?>"
+         data-is-redirected="<?= $isRedirected ? 'true' : 'false' ?>"
+         data-is-popup="<?= $isPopup ? 'true' : 'false' ?>"
+         data-is-sandbox="<?= $escaper->escapeHtmlAttr($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>"
+    ></div>
 </div>
