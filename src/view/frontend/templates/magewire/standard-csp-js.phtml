@@ -190,9 +190,12 @@ use Magento\Framework\View\Element\Template;
                                     });
                                 });
                             });
+
+                            hyvaCheckout.main.getWireComponent().placeOrder();
+                            return true;
                         }
 
-                        if (isIntegrated || isRedirected) {
+                        if (isRedirected) {
                             hyvaCheckout.main.getWireComponent().placeOrder();
                             resolve();
                             return true;
