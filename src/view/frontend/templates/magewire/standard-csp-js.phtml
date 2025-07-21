@@ -234,7 +234,7 @@ use Magento\Framework\View\Element\Template;
                     return new Promise(resolve => {
                         const script = document.createElement('script');
                         script.type = 'text/javascript';
-                        script.src =  '<?= $escaper->escapeJs($escaper->escapeUrl('https://cdn.payplug.com/js/integrated-payment/v1@1/index.js')) ?>';
+                        script.src =  '<?= $escaper->escapeJs('https://cdn.payplug.com/js/integrated-payment/v1@1/index.js') ?>';
                         script.async = true;
                         script.onload = resolve;
                         document.head.appendChild(script);
