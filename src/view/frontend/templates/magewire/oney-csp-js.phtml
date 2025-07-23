@@ -16,7 +16,7 @@ use Magento\Framework\View\Element\Template;
 <script>
     'use strict';
 
-    function magewireOneyPayment() {                         
+    function magewireOneyPayment() {                   
         const $wire = this.$wire;
         const $el = this.$el;
 
@@ -30,12 +30,12 @@ use Magento\Framework\View\Element\Template;
             logoFourTimes: logo4x,
         } = this.$el.dataset;
 
-        let selectedOption = null;
+        let selectedOptionValue = '';
         const parsedOptions = JSON.parse(options);
 
-        function updatePlaceOrderButtonLabel (type) {
-            const buttonLabel = type
-                ? label.replace('%1', type)
+        function updatePlaceOrderButtonLabel () {
+            const buttonLabel = selectedOptionValue
+                ? label.replace('%1', selectedOptionValue)
                 : '<?= $escaper->escapeJs(__('Place Order')) ?>';
 
             document.querySelector('.btn-place-order').innerText = buttonLabel;
@@ -106,7 +106,8 @@ use Magento\Framework\View\Element\Template;
                 const isOption = event?.target?.attributes?.name?.nodeValue === 'oney_type';
 
                 if (isOption) {
-                    updatePlaceOrderButtonLabel(event.target.id);
+                    selectedOptionValue = event.target.id;
+                    updatePlaceOrderButtonLabel();
                 }
             });
         }
@@ -124,7 +125,7 @@ use Magento\Framework\View\Element\Template;
                         bindOneyOptionsHandler();
                     },
                     async validate() {
-                        await Magewire.find('checkout.payment.method.' + oneyType).call('setOneyType', selectedOption.dataset.type);
+                        await Magewire.find('checkout.payment.method.' + oneyType).call('setOneyType', selectedOptionValue);
                         return true;
                     }
                 });
