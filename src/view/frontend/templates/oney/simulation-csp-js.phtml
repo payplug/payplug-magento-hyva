@@ -19,7 +19,6 @@ use Magento\Framework\View\Element\Template;
             {},
             {
                 ['initOneySimulation']() {
-
                     var hasError = this.$el.dataset.hyvacsp1;
 
                     function getProductId() {
@@ -35,6 +34,16 @@ use Magento\Framework\View\Element\Template;
                             quantityHasChanged: true,
                             popinIsVisible: false,
                             paymentType: '3x',
+                            init() {
+                                this.isLoading = true;
+                                
+                                this.getPaymentSimulations()
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        this.isEnabled = !data.html.includes('error');
+                                        this.isLoading = false;
+                                    });
+                            },
                             handleClick() {
                                 if (this.quantityHasChanged && !this.popinIsVisible) {
                                     this.isLoading = true;
