@@ -144,12 +144,10 @@ use Magento\Framework\View\Element\Template;
                     const cancelUrl = BASE_URL + 'payplug_payments/payment/cancel';
                     const redirectUrl = BASE_URL + 'payplug_payments/payment/standard';
                     const returnUrl = BASE_URL + 'payplug_payments/payment/paymentReturn';
+                    const selectedInput = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
 
-                    const selectedElement = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
-                    const cardIsSelected = selectedElement && selectedElement.value;
-
-                    if (isOneClick && cardIsSelected) {
-                        const cartId = selectedElement.value;
+                    if (isOneClick) {
+                        const cartId = selectedInput?.dataset?.cardId;
                         await Magewire.find('checkout.payment.method.payplug_payments_standard').call('setAditionalData', cartId);
                         hyvaCheckout.main.getWireComponent().placeOrder();
                         resolve();
@@ -188,9 +186,13 @@ use Magento\Framework\View\Element\Template;
                                     });
                                 });
                             });
+
+                            hyvaCheckout.main.getWireComponent().placeOrder();
+                            resolve();
+                            return true;
                         }
 
-                        if (isIntegrated || isRedirected) {
+                        if (isRedirected) {
                             hyvaCheckout.main.getWireComponent().placeOrder();
                             resolve();
                             return true;
@@ -239,9 +241,9 @@ use Magento\Framework\View\Element\Template;
                     });
                 },
                 bindIntegratedPaymentFormToggle () {
-                    const otherCard = document.querySelector('#other-card');
                     const integratedPaymentForm = document.querySelector('#payplug-payment-form');
                     const radios = document.querySelectorAll('input[name="payment[payplug_payments_standard][customer_card_id]"]');
+                    const otherCard = document.querySelector('#other-card');
 
                     radios.forEach(radio => {
                         radio.addEventListener('change', (event) => {
@@ -249,7 +251,7 @@ use Magento\Framework\View\Element\Template;
                                 isOneClick = false;
                                 integratedPaymentForm.classList.remove('-hide');
                             } else {
-                                isOneClick = false;
+                                isOneClick = true;
                                 integratedPaymentForm.classList.add('-hide');
                             }
                         });
