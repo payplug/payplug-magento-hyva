@@ -101,23 +101,21 @@ use Magento\Framework\View\Element\Template;
         function initStandardPayment () {
             hyvaCheckout.payment.activate('payplug_payments_standard', {
                 initialize() {
-                    if (isIntegrated) {
-                        this.setFieldsError();
-                        this.loadPayplugApi()
-                            .then(() => {
-                                if (!this.isInitialized()) {
-                                    setIntegratedPayment();
+                    this.loadPayplugApi()
+                        .then(() => {
+                            if (isIntegrated && !this.isInitialized()) {
+                                this.setFieldsError();
+                                setIntegratedPayment();
+                            }
+                        })
+                        .catch(error => {
+                            window.dispatchMessages([
+                                {
+                                    type: 'error',
+                                    text: '<?= $escaper->escapeJs(__('The Payplug library could not load correctly')) ?>'
                                 }
-                            })
-                            .catch(error => {
-                                window.dispatchMessages([
-                                    {
-                                        type: 'error',
-                                        text: '<?= $escaper->escapeJs(__('The Payplug library could not load correctly')) ?>'
-                                    }
-                                ], 2000);
-                            });
-                    }
+                            ], 2000);
+                        });
 
                     if (isOneClick) {
                         this.bindIntegratedPaymentFormToggle();
@@ -190,12 +188,9 @@ use Magento\Framework\View\Element\Template;
                                     });
                                 });
                             });
-
-                            hyvaCheckout.main.getWireComponent().placeOrder();
-                            return true;
                         }
 
-                        if (isRedirected) {
+                        if (isIntegrated || isRedirected) {
                             hyvaCheckout.main.getWireComponent().placeOrder();
                             resolve();
                             return true;

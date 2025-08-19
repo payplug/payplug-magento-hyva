@@ -12,7 +12,7 @@
             </arguments>
         </referenceBlock>
         <referenceBlock name="payplug-payments-product-oney-simulation" template="Hyva_CheckoutPayplug::oney/simulation.phtml">
-            <block name="loading" template="Hyva_Theme::ui/loading.phtml" />
+            <block name="simulation-loading" as="loading" template="Hyva_Theme::ui/loading.phtml" />
             <arguments>
                 <argument name="popin_position" xsi:type="string">
                     bottom
