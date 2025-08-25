@@ -112,6 +112,15 @@ use Magento\Framework\View\Element\Template;
             });
         }
 
+        function displayMessage () {     
+            if (message) {
+                const messageEl = document.getElementById('message');
+                if (messageEl) {
+                    messageEl.textContent = message;
+                }
+            }
+        }
+
         function initOneyPayment () {
             <?php // Reset place order button to default value ?>
             if (document.querySelector('.btn-place-order')) {
@@ -123,6 +132,7 @@ use Magento\Framework\View\Element\Template;
                     initialize() {
                         buildOneyOptions();
                         bindOneyOptionsHandler();
+                        displayMessage();
                     },
                     async validate() {
                         await Magewire.find('checkout.payment.method.' + oneyType).call('setOneyType', selectedOptionValue);
