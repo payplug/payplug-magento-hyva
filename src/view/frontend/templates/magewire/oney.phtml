@@ -34,9 +34,10 @@ $oney4xLogo = $icons->renderHtml('oney/4x' . ($isOneyWithoutFees ? '-without-fee
 ?>
 
 <div>
-    <div id="oney-payment" class="oney-payment oney-payment-open"></div>
+    <span id="message" class="text-gray-500 font-medium text-sm" wire:ignore></span>
+    <div id="oney-payment" class="oney-payment oney-payment-open" wire:ignore></div>
     <div class="payment-method-content" wire:ignore></div>
-    <span class="oney-popin <?php if ($hasError): ?>oney-popin-error<?php endif; ?>"></span>
+    <span class="oney-popin <?php if ($hasError): ?>oney-popin-error<?php endif; ?>" wire:ignore></span>
 
     <?php
         $options = array_map(static function($option) use ($pricingHelper) {

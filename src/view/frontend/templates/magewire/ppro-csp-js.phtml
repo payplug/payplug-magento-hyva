@@ -18,30 +18,49 @@ use Magento\Framework\View\Element\Template;
         return {
             ['initMagewirePpro']() {
                 const { 
-                    billingCountryId, 
+                    billingCountryId,
                     shippingCountryId,
                     method
                 } = this.$el.dataset;
 
                 (() => {
-                    window.addEventListener('checkout:payment:method-activate', (event) => {
-                        let data = {
-                            'billingCountry': billingCountryId,
-                            'shippingCountry': shippingCountryId,
-                            'paymentMethod': method,
+                    function getPPROMessage() {
+                        const data = {
+                            billingCountry: billingCountryId,
+                            shippingCountry: shippingCountryId,
+                            paymentMethod: method
                         };
+
                         const body = new URLSearchParams(data);
-                        fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + '?form_key=' + hyva.getFormKey(), {
-                            method: 'post',
+                        const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + 
+                                '?form_key=' + hyva.getFormKey();
+                                
+                        fetch(url, {
+                            method: 'POST',
                             body,
-                            headers: {'contentType': 'application/x-www-form-urlencoded', 'accept': 'application/json'}
-                        }).then(async response => {
-                            let res = await response.json();
-                            if (typeof res.data != "undefined" && typeof res.data.message != "undefined") {
-                                document.getElementById('message').textContent = res.data.message;
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Accept': 'application/json'
                             }
-                        });
-                    }, { once: true });
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(res => {
+                                if (res.data?.message) {
+                                    const messageEl = document.getElementById('message');
+                                    if (messageEl) {
+                                        messageEl.textContent = res.data.message;
+                                    }
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+
+                    getPPROMessage();
                 })();
             }
         }
