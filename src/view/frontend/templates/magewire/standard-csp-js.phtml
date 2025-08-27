@@ -164,6 +164,8 @@ use Magento\Framework\View\Element\Template;
 
                             hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
                                 try {
+                                    magewire.plugins.loader.start();
+                                    
                                     await validateForm();
 
                                     const response = await fetch(`${redirectUrl}?should_redirect=0&integrated=1`);
@@ -187,7 +189,6 @@ use Magento\Framework\View\Element\Template;
                                         });
                                     });
                                 } catch (error) {
-                                    magewire.plugins.loader.stop();
                                     window.location.replace(cancelUrl);
                                     throw error;
                                 }
