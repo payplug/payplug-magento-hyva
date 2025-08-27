@@ -5,18 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.2.0) - 2025-07-XX
+## [2.0.0](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/2.0.0) - 2025-08-28
+
+> [!NOTE]
+>
+> This version has **major backward-incompatible changes** due to the introduction of **CSP support** in Hyvä Checkout >=1.3.0. You must consider adjusting your previous template overrides and your Alpine.js custom developments when upgrading.
+> 
+> Please check the [official Hyvä Documentation](https://docs.hyva.io/hyva-themes/writing-code/csp/index.html) and [Changelog](https://docs.hyva.io/checkout/hyva-checkout/upgrading/upgrading-to-1.3.0.html) for more informations.
 
 ### Main features
 
 - CSP support
-- Standard and Oney payment method sanitization and optimizations
+- Standard and PPRO payments fixes
+- Fix PPRO payment method messages on selection
+- Oney payment method sanitization and optimizations
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.1.1...1.2.0)**
+**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.1.1...2.0.0)**
 
 ### Added
 - Add CSP support on payment methods [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
 - Add Oney options support on checkout [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
+- Add Oney error message [#95](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/95)
+- Add loader on standard payment validation [#95](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/95)
 
 ### Changed
 - Code optimizations and refactoring on standard and Oney payment methods [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
@@ -24,9 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix standard and Oney payment method initialization when preselected [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
-- Fix sandbox variable namming [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
+- Fix sandbox variable namming [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83) 
 - Fix save card render on standard payment method [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
-- Fix integrated payment form validation console error on submit [#92](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/92)
+- Fix integrated payment form validation console error on submit [#92](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/92) [#95](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/95)
+- Fix payment method code update on PPRO payment method selection [#95](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/95)
 
 ### Removed
 - Remove useless OneStepCheckout CSS rules [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
