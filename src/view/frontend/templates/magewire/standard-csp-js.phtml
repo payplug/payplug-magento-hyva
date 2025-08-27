@@ -154,43 +154,51 @@ use Magento\Framework\View\Element\Template;
                         return true;
                     } else {
                         if (isIntegrated) {
-                            hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
-                                magewire.plugins.loader.start();
-                                return new Promise((resolve, reject) => {
-                                    integratedPayment.validateForm();
+                            const validateForm = () =>
+                                new Promise((resolve, reject) => {
                                     integratedPayment.onValidateForm(({ isFormValid }) => {
-                                        if (isFormValid) {
-                                            fetch(redirectUrl + '?should_redirect=0&integrated=1')
-                                                .then(response => response.json())
-                                                .then(({ payment_id, error }) => {
-                                                     if (error) {
-                                                        reject();
-                                                    }
-
-                                                    const saveCard = document.querySelector('#payplug_save_card')?.checked;
-
-                                                    integratedPayment.pay(payment_id, 0, { save_card: saveCard });
-                                                    integratedPayment.onCompleted(function (event) {
-                                                        window.location.replace(returnUrl);
-                                                        resolve();
-                                                    });
-                                                })
-                                                .catch(() => {
-                                                    window.location.replace(cancelUrl);
-                                                    reject();
-                                                });
-                                        } else {
-                                            magewire.plugins.loader.stop();
-                                            document.querySelector('.btn-place-order').disabled = false;
-                                            return false;
-                                        }
+                                        isFormValid ? resolve() : reject();
                                     });
+                                    integratedPayment.validateForm();
                                 });
+
+                            hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', async () => {
+                                try {
+                                    await validateForm();
+
+                                    const response = await fetch(`${redirectUrl}?should_redirect=0&integrated=1`);
+                                    const { payment_id, error } = await response.json();
+
+                                    if (error) throw new Error('Payment error');
+
+                                    const saveCard = document.querySelector('#payplug_save_card')?.checked;
+
+                                    return new Promise((resolve, reject) => {
+                                        integratedPayment.pay(payment_id, 0, { save_card: saveCard });
+
+                                        integratedPayment.onCompleted(() => {
+                                            window.location.replace(returnUrl);
+                                            resolve();
+                                        });
+
+                                        integratedPayment.onError?.(() => {
+                                            window.location.replace(cancelUrl);
+                                            reject();
+                                        });
+                                    });
+                                } catch (error) {
+                                    magewire.plugins.loader.stop();
+                                    window.location.replace(cancelUrl);
+                                    throw error;
+                                }
                             });
 
-                            hyvaCheckout.main.getWireComponent().placeOrder();
-                            resolve();
-                            return true;
+                            <?php // Pre-validation ?>
+                            validateForm()
+                                .then(() => hyvaCheckout.main.getWireComponent().placeOrder())
+                                .catch(console.error);
+
+                            return;
                         }
 
                         if (isRedirected) {
