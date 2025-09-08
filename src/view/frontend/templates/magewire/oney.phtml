@@ -11,9 +11,10 @@ use Magento\Framework\Pricing\Helper\Data;
 use Payplug\Payments\Gateway\Config\OneyWithoutFees;
 
 /** @var Escaper $escaper */
+/** @var PayplugIcons $viewModels */
+/** @var Simulation $block */
 /** @var Template $block */
 /** @var ViewModelRegistry $viewModels */
-/** @var Simulation $block */
 
 $hasError = false;
 $oneySimulation = $block->getOneySimulation();
@@ -23,248 +24,47 @@ if (!$oneySimulation->getSuccess() || !empty($message)) {
     $hasError = true;
 }
 
+$oneyType = $oneySimulation->getMethod();
 $isOneyWithoutFees = $oneySimulation->getMethod() === OneyWithoutFees::METHOD_CODE;
 $pricingHelper = $this->helper(Data::class);
-
-/** @var PayplugIcons $viewModels */
 $icons = $viewModels->require(PayplugIcons::class);
+
+$oney3xLogo = $icons->renderHtml('oney/3x' . ($isOneyWithoutFees ? '-without-fees' : ''), '', 150, 32, ['aria-hidden' => 'true']);
+$oney4xLogo = $icons->renderHtml('oney/4x' . ($isOneyWithoutFees ? '-without-fees' : ''), '', 150, 32, ['aria-hidden' => 'true']);
 ?>
-<div data-oney-container="payplug_payments_oney">
-    <div class="oneyPayment oneyPayment-open"></div>
+
+<div>
+    <span id="message" class="text-gray-500 font-medium text-sm" wire:ignore></span>
+    <div id="oney-payment" class="oney-payment oney-payment-open" wire:ignore></div>
+    <div class="payment-method-content" wire:ignore></div>
+    <span class="oney-popin <?php if ($hasError): ?>oney-popin-error<?php endif; ?>" wire:ignore></span>
+
+    <?php
+        $options = array_map(static function($option) use ($pricingHelper) {
+            $schedules = $option->getSchedules();
+            $keys = array_keys($schedules);
+
+            return [
+                'type' => $option->getType(),
+                'firstDeposit' => $pricingHelper->currency($option->getFirstDeposit(), true, false),
+                'totalAmount' => $pricingHelper->currency($option->getTotalAmount(), true, false),
+
+                'schedules' => array_map(static function($schedule, $i) use ($pricingHelper) {
+                    return [
+                        'amount' => $pricingHelper->currency($schedule->getAmount(), true, false),
+                    ];
+                }, $schedules, $keys),
+            ];
+        }, $oneySimulation->getOptions() ?? []);
+    ?>
+
+    <div x-data="magewireOneyPayment"
+        data-label="<?= $escaper->escapeHtmlAttr(__($isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1')) ?>"
+        data-has-error="<?= $escaper->escapeHtmlAttr($hasError ? 'true' : 'false') ?>"
+        data-message="<?= $escaper->escapeHtmlAttr($message) ?>"
+        data-options="<?= $escaper->escapeHtmlAttr(json_encode($options)) ?>"
+        data-type="<?= $escaper->escapeHtmlAttr($oneyType) ?>"
+        data-logo-three-times="<?= $escaper->escapeHtmlAttr($oney3xLogo) ?>"
+        data-logo-four-times="<?= $escaper->escapeHtmlAttr($oney4xLogo) ?>"
+    ></div>
 </div>
-
-<div class="payment-method-content"></div>
-
-<span class="oneyPopin <?php if ($hasError): ?>oneyPopin-error<?php endif; ?>"></span>
-
-<style>
-    <?php if($isOneyWithoutFees): ?>
-        .oneyLogo-3x {
-            background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/3x')); ?>');
-        }
-        .oneyLogo-4x {
-            background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('oney_without_fees/4x')); ?>');
-        }
-    <?php else: ?>
-        .oneyLogo-3x {
-            background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('3x')); ?>');
-        }
-        .oneyLogo-4x {
-            background-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('4x')); ?>');
-        }
-    <?php endif; ?>
-</style>
-
-<script>
-    const oneyContainer = document.querySelector('[data-oney-container="payplug_payments_oney"]');
-
-    const getScheduleLabel = (days) => {
-        const scheduleLabels = [
-            {days: 30, label: "<?= $escaper->escapeJs(__('In 30 days')); ?>" },
-            {days: 60, label: "<?= $escaper->escapeJs(__('In 60 days')); ?>" },
-            {days: 90, label: "<?= $escaper->escapeJs(__('In 90 days')); ?>" },
-        ];
-        let label = null;
-        scheduleLabels.forEach(function(item) {
-            if (item.days === days) {
-                label = item.label;
-
-                return false;
-            }
-        });
-
-        return label;
-    }
-
-    const selectOneyOption = (option) => {
-        const oneyPayment = oneyContainer.querySelector('.oneyPayment');
-        const oldSelected = oneyPayment.querySelector('.oneyOption-selected');
-        const selectedOption = oneyContainer.querySelector('[data-type="'+ option +'"]');
-
-        oldSelected && oldSelected.classList.remove('oneyOption-selected');
-        selectedOption.classList.add('oneyOption-selected');
-
-        updatePlaceOrderButtonLabel(option);
-    }
-
-    const updatePlaceOrderButtonLabel = (type) => {
-        const buttonLabel = type
-            ? getPaymentTypeLabel().replace('%1', type) 
-            : '<?= $escaper->escapeJs(__('Place Order')); ?>';
-        document.querySelector('.btn-place-order').innerText = buttonLabel;
-    }
-
-    const getPaymentTypeLabel = () => {
-        <?php $label = $isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1'; ?>
-        return '<?= $escaper->escapeJs(__($label)) ?>';
-    }
-
-    const buildOneyDetail = () => {
-        var tmpDiv = document.createElement('div');
-        var optionsWrapper = document.createElement('div');
-        optionsWrapper.classList.add('oneyOption_wrapper');
-
-        var label = getPaymentTypeLabel();
-
-        <?php if ($hasError): ?>
-            var error_is_displayed = document.querySelector("p.oneyPopin_error");
-
-            if (typeof(error_is_displayed) === 'undefined' || error_is_displayed === null ){
-                var error_message = document.createElement('p');
-                error_message.classList.add('oneyPopin_error');
-                error_message.innerHTML = "<?= $escaper->escapeJs($message); ?>";
-                tmpDiv.appendChild(error_message);
-            }
-        <?php else : ?>
-            <?php foreach ($oneySimulation->getOptions() as $option) : ?>
-                var type = "<?= $escaper->escapeJs($option->getType()); ?>";
-                var option = document.createElement('label');
-
-                option.setAttribute('data-type', type);
-                option.classList.add('oneyOption', 'oneyOption-' + type);
-
-                <?php // Title ?>
-                var title =  document.createElement('div');
-                title.classList.add('oneyOption_title');
-
-                var tmpSpan = document.createElement('span');
-                tmpSpan.classList.add('oneyOption_logo', 'oneyLogo', 'oneyLogo-' + type);
-
-                title.append(tmpSpan);
-                title.innerHTML += label.replace('%1', type);
-
-                option.append(title);
-
-                <?php if ($option->getSchedules()) : ?>
-                    var detail = document.createElement('div');
-                    detail.classList.add('oneyOption_prices');
-
-                    var list = document.createElement('ul');
-                    list.classList.add('oneyOption_list');
-
-                    var firstDeposit = document.createElement('li');
-                    var totalAmoutSpan = document.createElement('span');
-
-                    totalAmoutSpan.innerHTML += "<?= $escaper->escapeJs(__('Total order amount')); ?>";
-                    firstDeposit.append(totalAmoutSpan);
-
-                    var oneyOptionSpan = document.createElement('span');
-
-                    oneyOptionSpan.classList.add('oneyOption_price');
-                    oneyOptionSpan.innerHTML += "<?= $escaper->escapeJs($pricingHelper->currency($option->getFirstDeposit(), true, false)); ?>";
-                    firstDeposit.append(oneyOptionSpan);
-                    list.append(firstDeposit);
-
-                    var daysForPayment = 30;
-
-                    <?php foreach ($option->getSchedules() as $i => $schedule): ?>
-                        var scheduleData = "<?= $escaper->escapeJs(__(sprintf('Installment %d:', $i + 1))); ?>";
-                        var schedule = document.createElement('li');
-                        var daysSpan = document.createElement('span');
-
-                        daysSpan.innerHTML += getScheduleLabel(daysForPayment);
-                        schedule.append(daysSpan);
-
-                        var oneyOptionSpan2 = document.createElement('span');
-
-                        oneyOptionSpan2.classList.add('oneyOption_price');
-                        oneyOptionSpan2.innerHTML += "<?= $escaper->escapeJs($pricingHelper->currency($schedule->getAmount(), true, false)); ?>";
-                        schedule.append(oneyOptionSpan2);
-                        list.append(schedule);
-                        daysForPayment += 30;
-                    <?php endforeach; ?>
-
-                    var totalAmout = document.createElement('li');
-                    var totalCostSpanLabel = document.createElement('span');
-                    totalCostSpanLabel.innerHTML += "<?= $escaper->escapeJs(__('Total cost')); ?>";
-
-                    var totalCostSpan = document.createElement('span');
-                    totalCostSpan.classList.add('oneyOption_price');
-                    totalCostSpan.innerHTML += "<?= $escaper->escapeJs($pricingHelper->currency($option->getTotalAmount(), true, false)); ?>";
-
-                    totalAmout.append(totalCostSpanLabel);
-                    totalAmout.append(totalCostSpan);
-
-                    list.append(totalAmout);
-                    detail.append(list);
-                    option.append(detail);
-                <?php endif; ?>
-
-                var radio = document.createElement('div');
-                var radioDiv = document.createElement('div');
-                var radioSpan = document.createElement('span');
-                var radioInput = document.createElement('input');
-
-                radioInput.setAttribute('type', 'radio');
-                radioInput.setAttribute('name', 'oney_type');
-                radioInput.value = type;
-
-                radioSpan.append(radioInput);
-
-                radio.classList.add('oneyOption_radio');
-                radioDiv.classList.add('radio');
-                radioDiv.append(radioSpan);
-                radio.append(radioSpan);
-
-                option.append(radio);
-                optionsWrapper.append(option);
-            <?php endforeach; ?>
-        <?php endif; ?>
-
-        tmpDiv.appendChild(optionsWrapper);
-        oneyContainer.querySelector('.oneyPayment').appendChild(tmpDiv);
-    }
-
-    const oneyOptionsHandler = () => {
-        const oneyOption3x = document.querySelector('.oneyOption-3x');
-        const oneyOption4x = document.querySelector('.oneyOption-4x');
-
-        if (oneyOption3x !== null){
-            oneyOption3x.addEventListener('click', function () {
-                const selected = oneyOption3x.querySelector('input[name="oney_type"]');
-                selectOneyOption(selected.value);
-            });
-        }
-
-        if (oneyOption4x !== null){
-            oneyOption4x.addEventListener('click', function () {
-                const selected = oneyOption4x.querySelector('input[name="oney_type"]');
-                selectOneyOption(selected.value);
-            });
-        }
-    }
-
-    window.addEventListener('checkout:payment:method-activate', (event) => {
-        let oney_type = '';
-
-        <?php // Reset place order button to default value ?>
-        document.querySelector('.btn-place-order').innerText = '<?= $escaper->escapeJs(__('Place Order')); ?>';
-
-        if (event.detail.method == 'payplug_payments_oney' || event.detail.method == 'payplug_payments_oney_without_fees') {
-            switch (event.detail.method){
-                case 'payplug_payments_oney':
-                    oney_type = 'payplug_payments_oney';
-                    break;
-                case 'payplug_payments_oney_without_fees':
-                    oney_type = 'payplug_payments_oney_without_fees';
-                    break;
-                default:
-                    oney_type = 'payplug_payments_oney';
-            }
-
-            hyvaCheckout.payment.activate(oney_type, {
-                async validate() {
-                    const selected = document.querySelector('input[name="oney_type"]:checked');
-                    await Magewire.find('checkout.payment.method.' + oney_type).call('setOneyType', selected.value);
-                    return true;
-                }
-            }, document.getElementById('payplug-payment-form'), 'payment');
-
-            const oney = document.querySelector('.oneyOption_wrapper');
-            oney && document.querySelector('.oneyOption_wrapper').remove();
-
-            buildOneyDetail();
-            oneyOptionsHandler();
-        }
-    });
-</script>

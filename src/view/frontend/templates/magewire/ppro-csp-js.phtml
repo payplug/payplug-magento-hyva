@@ -1,0 +1,74 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+?>
+
+<script>
+    function magewirePpro() {
+        return {
+            ['initMagewirePpro']() {
+                const { 
+                    billingCountryId,
+                    shippingCountryId,
+                    method
+                } = this.$el.dataset;
+
+                (() => {
+                    function getPPROMessage() {
+                        const data = {
+                            billingCountry: billingCountryId,
+                            shippingCountry: shippingCountryId,
+                            paymentMethod: method
+                        };
+
+                        const body = new URLSearchParams(data);
+                        const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + 
+                                '?form_key=' + hyva.getFormKey();
+                                
+                        fetch(url, {
+                            method: 'POST',
+                            body,
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Accept': 'application/json'
+                            }
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(res => {
+                                if (res.data?.message) {
+                                    const messageEl = document.getElementById('message');
+                                    if (messageEl) {
+                                        messageEl.textContent = res.data.message;
+                                    }
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+
+                    getPPROMessage();
+                })();
+            }
+        }
+    }
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('magewirePpro', magewirePpro)
+    }, { once: true });
+</script>
+
+<?php $hyvaCsp->registerInlineScript() ?>
