@@ -13,6 +13,8 @@ $containerCssClasses = $block->getContainerCssClasses();
 ?>
 
 <?php if ($oneyDisplayer->canDisplayOney()): ?>
+<?= $block->getChildHtml('oney.simulation_content') ?>
+
 <div class="oney-wrapper <?= $escaper->escapeHtmlAttr($containerCssClasses); ?>">
     <?= $block->getChildBlock('payplug-payments-product-oney-simulation')->toHtml(); ?>
 </div>

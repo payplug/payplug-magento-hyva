@@ -15,10 +15,10 @@ $containerCssClasses = $block->getContainerCssClasses();
 ?>
 
 <?php if ($oneyDisplayer->canDisplayOney()): ?>
-<div class="oney-wrapper oney-product <?= $escaper->escapeHtmlAttr($containerCssClasses); ?>">
-    <?= $block->getChildBlock('payplug-payments-product-oney-simulation')
-            ->setAmount($price)
-            ->toHtml();
-    ?>
+    <div class="oney-wrapper oney-product <?= $escaper->escapeHtmlAttr($containerCssClasses); ?>">
+        <?= $block->getChildBlock('payplug-payments-product-oney-simulation')
+                ->setAmount($price)
+                ->toHtml();
+        ?>
 </div>
 <?php endif; ?>

@@ -12,13 +12,23 @@
             </arguments>
         </referenceBlock>
         <referenceBlock name="payplug-payments-product-oney-simulation" template="Hyva_CheckoutPayplug::oney/simulation.phtml">
-            <block name="loading" template="Hyva_Theme::ui/loading.phtml" />
+            <block name="simulation-loading" as="loading" template="Hyva_Theme::ui/loading.phtml" />
             <arguments>
                 <argument name="popin_position" xsi:type="string">
                     bottom
                 </argument>
             </arguments>
         </referenceBlock>
+
+        <referenceContainer name="before.body.end">
+            <block name="payplug.checkout.index.script.standard"
+                   template="Hyva_CheckoutPayplug::oney/simulation-csp-js.phtml"
+            />
+            <block name="payplug.checkout.index.script.simulation.content"
+                   template="Hyva_CheckoutPayplug::oney/simulation_content-csp-js.phtml"
+            />
+        </referenceContainer>
+
         <move element="payplug-payments-product-oney-wrapper" destination="product.info.additional" before="-" />
     </body>
 </page>
