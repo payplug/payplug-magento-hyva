@@ -1,3 +1,7 @@
+@import "components/apple-pay.css";
+@import "components/oney.css";
+@import "components/standard.css";
+
 [id*="payment-method-option-payplug_payments"] {
     @apply mt-5 md:!mt-7;
 }
