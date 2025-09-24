@@ -50,8 +50,9 @@ use Magento\Framework\View\Element\Template;
                                 return;
                             }
 
+                            const versionNumber = this.getApplePayVersion();
                             const sessionRequest = this.getApplePaySessionRequest();
-                            const session = new ApplePaySession(3, sessionRequest);
+                            const session = new ApplePaySession(versionNumber, sessionRequest);
 
                             hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', () => {
                                 magewire.plugins.loader.start();
@@ -107,6 +108,9 @@ use Magento\Framework\View\Element\Template;
                                 });
                             });
                         },
+                        getApplePayVersion() {
+                            return ApplePaySession.supportsVersion(14) ? 14 : 3;
+                        },
                         getApplePaySessionRequest() {
                             return {
                                 "countryCode": shippingCountryId,
@@ -127,7 +131,7 @@ use Magento\Framework\View\Element\Template;
                             return new Promise(resolve => {
                                 const script = document.createElement('script');
                                 script.type = 'text/javascript';
-                                script.src =  '<?= $escaper->escapeJs('https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js') ?>';
+                                script.src =  '<?= $escaper->escapeJs('https://applepay.cdn-apple.com/jsapi/1.latest/apple-pay-sdk.js') ?>';
                                 script.async = true;
                                 script.onload = resolve;
                                 document.head.appendChild(script);
