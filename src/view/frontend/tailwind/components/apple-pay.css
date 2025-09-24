@@ -1,0 +1,13 @@
+apple-pay-button {
+    --apple-pay-button-width: auto;
+    --apple-pay-button-border-radius: 0.1875rem;
+    --apple-pay-button-padding: 0.5rem 0rem;
+
+    &.is-disabled {
+        pointer-events: none;
+    }
+}
+
+#payment-method-view-payplug_payments_apple_pay {
+    @apply text-center;
+}
