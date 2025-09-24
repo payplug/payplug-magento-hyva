@@ -14,138 +14,132 @@ use Magento\Framework\View\Element\Template;
 ?>
 
 <script>
-    function magewireApplePay() {
-        return Object.assign(
-            {},
-            {
-                ['initMagewireApplePay']() {
-                    const {
-                        shippingCountryId,
-                        shippingCurrency,
-                        merchantName,
-                        total,
-                        domain
-                    } = this.$el.dataset;
+    'use strict';
 
-                    (() => {
-                        window.addEventListener('checkout:payment:method-activate', (event) => {
-                            if (event.detail.method == "payplug_payments_apple_pay") {
-                                hyvaCheckout.payment.activate('payplug_payments_apple_pay', {
-                                    initialize() {
-                                        this.loadApplePayApi().then(async () => {
-                                            if (this.checkLoadedAP()) {
-                                                document.querySelector('apple-pay-button').addEventListener('click', () => {
-                                                    hyvaCheckout.main.getWireComponent().placeOrder();
-                                                    this.initApplePay();
-                                                });
+    function magewireApplePay() {
+        return {
+            ['initMagewireApplePay']() {
+                const {
+                    shippingCountryId,
+                    shippingCurrency,
+                    merchantName,
+                    total,
+                    domain
+                } = this.$el.dataset;
+
+                (() => {
+                    hyvaCheckout.payment.activate('payplug_payments_apple_pay', {
+                        initialize() {
+                            this.loadApplePayApi().then(async () => {
+                                if (this.checkLoadedAP()) {
+                                    document.querySelector('apple-pay-button').addEventListener('click', () => {
+                                        hyvaCheckout.main.getWireComponent().placeOrder();
+                                        this.initApplePay();
+                                    });
+
+                                    const btnPlaceOrder = document.querySelector('.btn-place-order');
+
+                                    if (btnPlaceOrder) {
+                                        btnPlaceOrder.disabled = true;
+                                    }
+                                }
+                            });
+                        },
+                        initApplePay() {
+                            if (!ApplePaySession) {
+                                return;
+                            }
+
+                            const sessionRequest = this.getApplePaySessionRequest();
+                            const session = new ApplePaySession(3, sessionRequest);
+
+                            hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', () => {
+                                magewire.plugins.loader.start();
+                                return new Promise((resolve) => {
+                                    session.onvalidatemerchant = async () => {
+                                        fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/applepay/getTransactionData")); ?>').then(async response => {
+                                            let res = await response.json();
+                                            if (res.error === true) {
+                                                window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
+                                                reject();
+                                            } else {
+                                                session.completeMerchantValidation(res.merchand_data);
                                             }
                                         });
-                                    },
-                                    initApplePay() {
-                                        if (!ApplePaySession) {
-                                            return;
-                                        }
+                                    };
 
-                                        const sessionRequest = this.getApplePaySessionRequest();
-                                        const session = new ApplePaySession(3, sessionRequest);
-
-                                        hyvaCheckout.evaluation.registerExecutable('make:pay-plug:payment', () => {
-                                            magewire.plugins.loader.start();
-                                            return new Promise((resolve) => {
-                                                session.onvalidatemerchant = async () => {
-                                                    fetch('<?= $escaper->escapeUrl($block->getUrl("payplug_payments/applepay/getTransactionData")); ?>').then(async response => {
-                                                        let res = await response.json();
-                                                        if (res.error === true) {
-                                                            window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
-                                                            reject();
-                                                        } else {
-                                                            session.completeMerchantValidation(res.merchand_data);
-                                                        }
-                                                    });
-                                                };
-
-                                                session.onpaymentauthorized = event => {
-                                                    const body = new URLSearchParams({
-                                                        form_key: hyva.getFormKey(),
-                                                        token: JSON.stringify(event.payment.token)
-                                                    });
-                                                    fetch('<?= $escaper->escapeUrl($block->getUrl("hyva_checkout_payplug/applepay/updateTransaction")); ?>', {
-                                                        method: 'POST',
-                                                        credentials: "include",
-                                                        body,
-                                                        headers: {
-                                                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                                                        }
-                                                    }).then(async response => {
-                                                        let res = await response.json();
-                                                        let applePaySessionStatus = ApplePaySession.STATUS_SUCCESS;
-                                                        if (res.error === true) {
-                                                            applePaySessionStatus = ApplePaySession.STATUS_FAILURE;
-                                                        }
-                                                        session.completePayment({
-                                                            "status": applePaySessionStatus
-                                                        });
-                                                        if (res.error === true) {
-                                                            window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
-                                                            reject();
-                                                        } else {
-                                                            window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
-                                                            resolve();
-                                                        }
-                                                    });
-                                                };
-
-                                                session.oncancel = event => {
-                                                    window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
-                                                };
-
-                                                session.begin();
+                                    session.onpaymentauthorized = event => {
+                                        const body = new URLSearchParams({
+                                            form_key: hyva.getFormKey(),
+                                            token: JSON.stringify(event.payment.token)
+                                        });
+                                        fetch('<?= $escaper->escapeUrl($block->getUrl("hyva_checkout_payplug/applepay/updateTransaction")); ?>', {
+                                            method: 'POST',
+                                            credentials: "include",
+                                            body,
+                                            headers: {
+                                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                                            }
+                                        }).then(async response => {
+                                            let res = await response.json();
+                                            let applePaySessionStatus = ApplePaySession.STATUS_SUCCESS;
+                                            if (res.error === true) {
+                                                applePaySessionStatus = ApplePaySession.STATUS_FAILURE;
+                                            }
+                                            session.completePayment({
+                                                "status": applePaySessionStatus
                                             });
+                                            if (res.error === true) {
+                                                window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
+                                                reject();
+                                            } else {
+                                                window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/paymentReturn')); ?>');
+                                                resolve();
+                                            }
                                         });
-                                    },
-                                    getApplePaySessionRequest() {
-                                        return {
-                                            "countryCode": shippingCountryId,
-                                            "currencyCode": shippingCurrency,
-                                            "merchantCapabilities": ["supports3DS"],
-                                            "supportedNetworks": ["visa", "masterCard"],
-                                            "total": {
-                                                "label": merchantName,
-                                                "type": "final",
-                                                "amount": total
-                                            },
-                                            'applicationData': btoa(JSON.stringify({
-                                                'apple_pay_domain': domain
-                                            }))
-                                        };
-                                    },
-                                    loadApplePayApi() {
-                                        return new Promise(resolve => {
-                                            const script = document.createElement('script');
-                                            script.type = 'text/javascript';
-                                            script.src =  '<?= $escaper->escapeJs('https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js') ?>';
-                                            script.async = true;
-                                            script.onload = resolve;
-                                            document.head.appendChild(script);
-                                        });
-                                    },
-                                    checkLoadedAP: function() {
-                                        return document.body.contains(document.querySelector('apple-pay-button'));
-                                    },
-                                }, document.querySelector('apple-pay-button'));
-                            } else {
-                                var script = document.getElementById("apple_pay_cdn");
-                                if (script) {
-                                    script.remove();
-                                }
-                                document.querySelector('.btn-place-order').disabled = false;
-                                hyvaCheckout.payment.method = null;
-                            }
-                        }, { once: true });
-                    })();
-                },
+                                    };
+
+                                    session.oncancel = event => {
+                                        window.location.replace('<?= $escaper->escapeUrl($block->getUrl('payplug_payments/payment/cancel')); ?>');
+                                    };
+
+                                    session.begin();
+                                });
+                            });
+                        },
+                        getApplePaySessionRequest() {
+                            return {
+                                "countryCode": shippingCountryId,
+                                "currencyCode": 'EUR',
+                                "merchantCapabilities": ["supports3DS"],
+                                "supportedNetworks": ["visa", "masterCard"],
+                                "total": {
+                                    "label": merchantName,
+                                    "type": "final",
+                                    "amount": total
+                                },
+                                'applicationData': btoa(JSON.stringify({
+                                    'apple_pay_domain': domain
+                                }))
+                            };
+                        },
+                        loadApplePayApi() {
+                            return new Promise(resolve => {
+                                const script = document.createElement('script');
+                                script.type = 'text/javascript';
+                                script.src =  '<?= $escaper->escapeJs('https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js') ?>';
+                                script.async = true;
+                                script.onload = resolve;
+                                document.head.appendChild(script);
+                            });
+                        },
+                        checkLoadedAP: function() {
+                            return document.body.contains(document.querySelector('apple-pay-button'));
+                        },
+                    }, document.querySelector('apple-pay-button'));
+                })();
             }
-        )
+        }
     }
 
     window.addEventListener('alpine:init', () => {
