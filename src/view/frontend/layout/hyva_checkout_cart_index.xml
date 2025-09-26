@@ -20,8 +20,17 @@
             </arguments>
         </referenceBlock>
 
+        <referenceBlock name="checkout.cart.methods.button.apple.pay"
+                        template="Hyva_CheckoutPayplug::cart/button-apple-pay.phtml">
+            <block name="button.apple.pay.script" template="Hyva_CheckoutPayplug::js/button-apple-pay.phtml" />
+        </referenceBlock>
+
         <move element="payplug-payments-product-oney-wrapper"
               destination="checkout.cart.totals.container"
+              after="-" />
+
+        <move element="checkout.cart.methods.button.apple.pay"
+              destination="checkout.cart.methods"
               after="-" />
 
         <referenceContainer name="before.body.end">

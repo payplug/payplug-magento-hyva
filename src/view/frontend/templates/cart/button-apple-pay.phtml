@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+
+/**
+ * @var Escaper $escaper
+ */
+
+if ($block->quoteHasBundleProductItem()) {
+    return;
+}
+?>
+
+<?= $block->getChildHtml('button.apple.pay.script') ?>
+
+<script>
+    'use strict';
+
+    function initApplePayCart () {
+        return {
+            workflowType: 'shopping-cart'
+        }
+    }
+</script>
+
+<div x-data="{...initApplePay(), ...initApplePayCart()}"
+     class="pp-apple-pay-button"
+     @private-content-loaded.window="onPrivateContentLoaded($event.detail.data)">
+    <apple-pay-button
+        buttonstyle="black"
+        type="pay"
+        @click="initApplePaySession()"
+        x-show="isVisible"
+        x-cloak>
+    </apple-pay-button>
+</div>
