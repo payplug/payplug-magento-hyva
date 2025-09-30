@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.2](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/2.0.1) - 2025-09-24
+## [2.0.2](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.0.2) - 2025-09-30
 
 > [!NOTE]
 >
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move repository from Gitlab to Github
 - Upgrade Apple Pay JS SDK version to support other browsers
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/2.0.1...2.0.2)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/2.0.1...2.0.2)**
 
 ### Added
 - Add new repository infomations [#1](https://github.com/payplug/payplug-magento-hyva/pull/1)
@@ -25,13 +25,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Payplug module version dependency [#2](https://github.com/payplug/payplug-magento-hyva/pull/2)
 - Upgrade Apple Pay JS SDK version to support other browsers [#1](https://github.com/payplug/payplug-magento-hyva/pull/1)
 
-## [2.0.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/2.0.1) - 2025-09-24
+## [2.0.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.0.1) - 2025-09-24
 
 ### Main features
 
 - Fix Apple Pay payment method
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/2.0.0...2.0.1)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/2.0.0...2.0.1)**
 
 ### Added
 - Add missing use strict [#99](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/99)
@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix Apple Pay button display and behavior [#99](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/99)
 
-## [2.0.0](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/2.0.0) - 2025-09-08
+## [2.0.0](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.0.0) - 2025-09-08
 
 > [!NOTE]
 >
@@ -58,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix PPRO payment method messages on selection
 - Oney payment method sanitization and optimizations
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.1.1...2.0.0)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.1.1...2.0.1)**
 
 ### Added
 - Add CSP support on payment methods [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
@@ -80,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Remove useless OneStepCheckout CSS rules [#83](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/83)
 
-## [1.1.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.1.1) - 2025-03-19
+## [1.1.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.1.1) - 2025-03-19
 
 ### Main features
 
@@ -90,7 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename Payplug icons folder
 - Remove Giropay and Sofort unsupported payment methods
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.1.0...1.1.1)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.1.0...1.1.1)**
 
 ### Added
 - Add checkout Payplug payment methods custom margins [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
@@ -111,13 +111,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove iconPathPrexif configuration override [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77) / Issue [#4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/4)
 - Remove Giropay and Sofort unsupported payment methods [#77](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/77)
 
-## [1.1.0](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.1.0) - 2025-02-03
+## [1.1.0](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.1.0) - 2025-02-03
 
 ### Main features
 
 * Add standard payment method pop-up option
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.6...1.1.0)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.0.6...1.1.0)**
 
 ### Added
 - Add standard payment method pop-up option [#69](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/69)
@@ -126,30 +126,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix PostePay dark version image [#69](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/66)
 
-## [1.0.6](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.6) - 2024-12-12
+## [1.0.6](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.0.6) - 2024-12-12
 
 ### Fixes
 - Hotfix Oney payment place order [#73](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/73)
 - Hotfix standard payment place order [#71](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/71)
 - Fix Payplug integrated lib URL [#71](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/71)
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.5...1.0.6)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.0.5...1.0.6)**
 
-## [1.0.5](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.5) - 2024-11-13
+## [1.0.5](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.0.5) - 2024-11-13
 
 ### Fixes
 - Hotfix missing payplug domain JS variable [#63](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/63)
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.4...1.0.5)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.0.4...1.0.5)**
 
-## [1.0.4](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.4) - 2024-11-06
+## [1.0.4](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.0.4) - 2024-11-06
 
 ### Main features
 
 * Update and optimize (SVG) payment methods logos
 * Update Oney banner behavior on PDP to avoid template override
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.3...1.0.4)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.0.3...1.0.4)**
 
 ### Added
 - Optimisze CB and payment cards SVG files [#58](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/58)
@@ -166,7 +166,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Remove product info template override [#56](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/56) / Issue [#1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/issues/1)
 
-## [1.0.3](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.3) - 2024-09-23
+## [1.0.3](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.0.3) - 2024-09-23
 
 ### Main features
 
@@ -179,7 +179,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Tailwindification various
 * Clean various
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.2...1.0.3)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.0.2...1.0.3)**
 
 ### Added
 
@@ -222,7 +222,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove residual useless script file [#38](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/38)
 - Remove useless svg file [#47](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/47)
 
-## [1.0.2](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.2) - 2024-07-19
+## [1.0.2](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.0.2) - 2024-07-19
 
 ### Features
 
@@ -230,7 +230,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Oney payment optimizations, improvements
 * Security improvements
 
-**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/1.0.1...1.0.2)**
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/1.0.1...1.0.2)**
 
 ### Added
 
@@ -270,13 +270,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove standard payment styles vendor prefixes [#35](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/35)
 - Remove useless Oney popin CSS rules [#32](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/merge_requests/32)
 
-## [1.0.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.1) - 2024-06-20
+## [1.0.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.0.1) - 2024-06-20
 
 ### Features
 
 * Update readme
 
-## [1.0.0](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/1.0.0) - 2024-05-14
+## [1.0.0](https://github.com/payplug/payplug-magento-hyva/releases/tag/1.0.0) - 2024-05-14
 
 ### Features
 
