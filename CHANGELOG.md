@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/2.0.1) - 2025-09-24
+
+> [!NOTE]
+>
+> The [gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/) repository is no longer maintained and is replaced by its new official location: [github.com/payplug/payplug-magento-hyva](https://github.com/payplug/payplug-magento-hyva).
+
+### Main features
+
+- Move repository from Gitlab to Github
+- Upgrade Apple Pay JS SDK version to support other browsers
+
+**[View diff](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/compare/2.0.1...2.0.2)**
+
+### Added
+- Add new repository infomations [#1](https://github.com/payplug/payplug-magento-hyva/pull/1)
+
+### Changed
+- Update Payplug module version dependency [#2](https://github.com/payplug/payplug-magento-hyva/pull/2)
+- Upgrade Apple Pay JS SDK version to support other browsers [#1](https://github.com/payplug/payplug-magento-hyva/pull/1)
+
 ## [2.0.1](https://gitlab.hyva.io/hyva-checkout/checkout-integrations/magento2-hyva-checkout-payplug/-/commits/2.0.1) - 2025-09-24
 
 ### Main features
