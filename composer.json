@@ -1,5 +1,5 @@
 {
-  "name": "hyva-themes/magento2-hyva-checkout-payplug",
+  "name": "payplug/payplug-magento-hyva",
   "description": "Hyv\u00e4 Compatibility module for Payplug_Payments",
   "type": "magento2-module",
   "version": "2.0.1",
@@ -7,7 +7,7 @@
     "hyva-themes/magento2-compat-module-fallback": "*",
     "hyva-themes/magento2-hyva-checkout": ">=1.3.0 <=1.3.4",
     "magento/framework": "*",
-    "payplug/payplug-magento2": "4.5.0"
+    "payplug/payplug-magento2": "4.6.0"
   },
   "authors": [
     {

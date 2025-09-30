@@ -10,7 +10,7 @@ Hyvä Compatibility modules that are tagged as stable can be installed using com
 
 1. Install via composer
     ```
-    composer require hyva-themes/magento2-hyva-checkout-payplug
+    composer require payplug/payplug-magento-hyva
     ```
 2. Enable module
     ```
