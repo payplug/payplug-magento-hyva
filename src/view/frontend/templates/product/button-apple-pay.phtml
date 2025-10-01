@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Payplug\Payments\Block\ApplePay\ProductButton;
+
+/**
+ * @var Escaper $escaper
+ * @var ProductButton $block
+ */
+?>
+
+<?= $block->getChildHtml('button.apple.pay.script') ?>
+
+<script>
+    'use strict';
+
+    function initApplePayProduct () {
+        return {
+            applePayConfig: <?= /* @noEscape */ $block->getConfigJson(); ?>,
+            productFinalPrice: <?= /* @noEscape */ $block->getCurrentProduct()->getFinalPrice(); ?>,
+            isVirtual: <?= $block->getCurrentProduct()->isVirtual() ? 'true' : 'false'; ?>,
+            workflowType: 'product'
+        }
+    }
+</script>
+
+<div x-data="{...initApplePay(), ...initApplePayProduct()}"
+     class="pp-apple-pay-button"
+     @private-content-loaded.window="onPrivateContentLoaded($event.detail.data)">
+    <apple-pay-button
+        buttonstyle="black"
+        type="pay"
+        @click="initApplePaySession()"
+        x-show="isVisible"
+        x-cloak>
+    </apple-pay-button>
+</div>

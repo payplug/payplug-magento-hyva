@@ -32,15 +32,12 @@ use Magento\Framework\Escaper;
             initApplePaySession() {
                 this.clearOrderData();
 
-                const config = window?.checkoutConfig?.payment?.payplug_payments_apple_pay || {};
-                const totalsData = window?.checkoutConfig?.totalsData || {};
-                const currencyCode = totalsData?.quote_currency_code;
+                const config = this.getApplePayConfig();
 
-                this.config = { ...config, currencyCode };
+                this.config = config;
                 this.merchandName = config.merchand_name;
                 this.shippingAmount = config.shipping_amount;
                 this.shippingMethod = null;
-                this.baseAmount = totalsData?.grand_total;
                 const applePayIsAvailable = this.getApplePayAvailability();
 
                 if (!applePayIsAvailable) {
@@ -52,6 +49,23 @@ use Magento\Framework\Escaper;
 
                 this.applePaySession = new ApplePaySession(versionNumber, sessionRequest);
                 this.afterPlaceOrder();
+            },
+            getApplePayConfig() {
+                let config = {};
+
+                if (this.workflowType === 'product') {
+                    this.baseAmount = this.productFinalPrice;
+                    config = this.applePayConfig;
+                } else if (this.workflowType === 'shopping-cart') {
+                    const totalsData = window?.checkoutConfig?.totalsData;
+                    this.baseAmount = totalsData?.grand_total;
+                    const currency = totalsData?.quote_currency_code;
+                    const applePayConfig = window?.checkoutConfig?.payment?.payplug_payments_apple_pay || {};
+
+                    config = { ...applePayConfig, currency };
+                }
+
+                return config;
             },
             loadApplePayApi() {
                 return new Promise(resolve => {
@@ -84,12 +98,12 @@ use Magento\Framework\Escaper;
                     domain,
                     locale,
                     merchand_name: merchandName,
-                    currencyCode
+                    currency
                 } = this.config;
 
                 let paymentRequest = {
                     countryCode: locale.slice(-2),
-                    currencyCode: currencyCode,
+                    currencyCode: currency,
                     merchantCapabilities: ['supports3DS'],
                     supportedNetworks: ['cartesBancaires', 'visa', 'masterCard'],
                     supportedTypes: ['debit', 'credit'],
@@ -163,8 +177,8 @@ use Magento\Framework\Escaper;
                     let formData = new FormData();
 
                     if (this.workflowType === 'product') {
-                        const form = $('#product_addtocart_form');
-                        formData = new FormData(form[0]);
+                        const form = document.getElementById('product_addtocart_form');
+                        formData = new FormData(form);
                     }
 
                     formData.set('btoaevent',  btoa(JSON.stringify(eventData)));
