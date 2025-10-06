@@ -135,8 +135,15 @@ use Magento\Framework\View\Element\Template;
                         displayMessage();
                     },
                     async validate() {
-                        await Magewire.find('checkout.payment.method.' + oneyType).call('setOneyType', selectedOptionValue);
-                        return true;
+                        const activeMethod = document.querySelector('input[name="payment-method-option"]:checked')?.value || '';
+
+                        if (activeMethod === 'payplug_payments_oney' || activeMethod === 'payplug_payments_oney_without_fees') {
+                            await Magewire.find('checkout.payment.method.' + oneyType).call('setOneyType', selectedOptionValue);
+                            return true;
+                        } else {
+                            hyvaCheckout.main.getWireComponent().placeOrder();
+                            return true;
+                        }
                     }
                 });
             }
