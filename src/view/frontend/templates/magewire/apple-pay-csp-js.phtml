@@ -28,6 +28,8 @@ use Magento\Framework\View\Element\Template;
                 } = this.$el.dataset;
 
                 (() => {
+                    let btnPlaceOrder;
+
                     hyvaCheckout.payment.activate('payplug_payments_apple_pay', {
                         initialize() {
                             this.loadApplePayApi().then(async () => {
@@ -37,7 +39,7 @@ use Magento\Framework\View\Element\Template;
                                         this.initApplePay();
                                     });
 
-                                    const btnPlaceOrder = document.querySelector('.btn-place-order');
+                                    btnPlaceOrder = document.querySelector('.btn-place-order');
 
                                     if (btnPlaceOrder) {
                                         btnPlaceOrder.disabled = true;
@@ -141,6 +143,18 @@ use Magento\Framework\View\Element\Template;
                             return document.body.contains(document.querySelector('apple-pay-button'));
                         },
                     }, document.querySelector('apple-pay-button'));
+
+                    window.addEventListener('checkout:payment:method-activate', (event) => {
+                        const methodCode = event?.detail?.method;
+
+                        if (!btnPlaceOrder) {
+                            return null;
+                        }
+
+                        if (methodCode !== 'payplug_payments_apple_pay') {
+                            btnPlaceOrder.disabled = false;
+                        }
+                    });
                 })();
             }
         }

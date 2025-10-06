@@ -19,11 +19,6 @@ use Payplug\Payments\Block\Formjs;
     (() => {
         window.addEventListener('checkout:payment:method-activate', (event) => {
             window.dispatchEvent(new Event('clear-messages'));
-
-            if (event.detail.method !== 'payplug_payments_apple_pay') {
-                const btnPlaceOrder = document.querySelector('.btn-place-order');
-                btnPlaceOrder.disabled = false;
-            }
         });
     })();
 </script>
