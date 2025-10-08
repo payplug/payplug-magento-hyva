@@ -1,56 +1,43 @@
+# Payplug for Hyvä
 
-# magento2-hyva-checkout-payplug
-Hyvä Compatibility module for Payplug_Payments
+Official compatibility module of [Magento 2 Payplug module](https://github.com/payplug/payplug-magento2/) for Hyvä.
 
-## Installation 
+## About Payplug
 
-### Via packagist.com
+[Payplug](https://www.payplug.com/fr/) is a French omnichannel payment solution dedicated to small and medium-sized businesses and enabling the cashing of payments made via Visa, Mastercard, and CB credit cards. 15,000 merchants in Europe trust us daily.
 
-Hyvä Compatibility modules that are tagged as stable can be installed using composer via packagist.com (accessible for all Hyvä Checkout licensees):
+Please refer to https://www.payplug.com/fr for more informations.
 
-1. Install via composer
-    ```
-    composer require payplug/payplug-magento-hyva
-    ```
-2. Enable module
-    ```
-    bin/magento setup:upgrade
-    bin/magento hyva:config:generate
+## Requirements
 
-    #you need to run following command only in production mode 
-   ./bin/magento setup:di:compile
-   ./bin/magento setup:static-content:deploy --force fr_FR it_IT en_US
-   ./bin/magento cache:clean
-    ```
+In order to work, this module requires [Hyvä Themes](https://docs.hyva.io/hyva-themes/getting-started/index.html) and/or [Hyvä Checkout](https://docs.hyva.io/checkout/index.html) licences.
 
+Please refer to https://docs.hyva.io for more instructions.
 
-### Via gitlab
+## Installation
 
-For development of or to contribute to this module, it needs to be installed using composer via gitlab.
-This installation method is not suited for deployments, because gitlab requires SSH key authorization.
+1 - Install the payplug-magento-hyva module via composer:
 
-1. Install Hyva Theme and all dependencies via composer
-    If this is the first time a compatibility module is installed via gitlab, the compat-module-fallback git repository has to be added as a
-    composer repository. This step is only required once.
-    ```
-    composer config repositories.hyva-themes/magento2-theme-module git git@gitlab.hyva.io:hyva-themes/magento2-theme-module.git
-   composer config repositories.hyva-themes/magento2-reset-theme git git@gitlab.hyva.io:hyva-themes/magento2-reset-theme.git
-   composer config repositories.hyva-themes/magento2-email-module git git@gitlab.hyva.io:hyva-themes/magento2-email-module.git
-   composer config repositories.hyva-themes/magento2-default-theme git git@gitlab.hyva.io:hyva-themes/magento2-default-theme.git
-   composer config repositories.hyva-themes/magento2-hyva-checkout-payplug git git@gitlab.hyva.io:hyva-themes/magento2-hyva-checkout-payplug
-    ```
-2. Install Payplug Hyva Checkout
+```bash
+composer require payplug/payplug-magento-hyva
+```
 
-    ```
-   composer require hyva-themes/magento2-hyva-checkout-payplug --prefer-source
+2 - Enable module:
 
-    ```
+```bash
+bin/magento module:enable Hyva_CheckoutPayplug
+bin/magento setup:upgrade
+```
 
-3. Enable module
-    ```
-    ./bin/magento setup:upgrade
-    ./bin/magento hyva:config:generate
-   ./bin/magento setup:di:compile
-   ./bin/magento setup:static-content:deploy --force fr_FR it_IT en_US
-   ./bin/magento cache:clean
-    ```
+3 - Generate Tailwind CSS styles:
+
+```bash
+# Register module to Hyvä Tailwind config
+bin/magento hyva:config:generate
+
+# Replace path by your Hyvä custom theme
+cd path/to/project/app/design/frontend/Vendor/default/web/tailwind
+
+# Compile Tailwind CSS file
+npm run build
+```
