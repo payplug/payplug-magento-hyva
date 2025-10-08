@@ -17,44 +17,8 @@ use Payplug\Payments\Block\Formjs;
     window.PAYPLUG_DOMAIN = '<?= $escaper->escapeJs($block->getPayplugSecureUrl()) ?>';
 
     (() => {
-        window.addEventListener('checkout:step:loaded', (event) => {
-            if (
-                typeof window.ApplePaySession != 'undefined' &&
-                window.ApplePaySession &&
-                ApplePaySession.canMakePayments()
-            ) {
-            } else {
-                if (
-                    typeof document.querySelector('#payment-method-option-payplug_payments_apple_pay') != 'undefined' &&
-                    document.querySelector('#payment-method-option-payplug_payments_apple_pay') != null
-                ) {
-                    document.querySelector('#payment-method-option-payplug_payments_apple_pay').remove();
-                }
-            }
-        });
-
         window.addEventListener('checkout:payment:method-activate', (event) => {
-            if (event.detail.method !== 'payplug_payments_apple_pay') {
-                const btnPlaceOrder = document.querySelector('.btn-place-order');
-                
-                if(btnPlaceOrder) {
-                    btnPlaceOrder.disabled = false;
-                }
-            }
-
-            if (
-                typeof window.ApplePaySession != 'undefined' &&
-                window.ApplePaySession &&
-                ApplePaySession.canMakePayments()
-            ) {
-            } else {
-                if (
-                    typeof document.querySelector('#payment-method-option-payplug_payments_apple_pay') != 'undefined' &&
-                    document.querySelector('#payment-method-option-payplug_payments_apple_pay') != null
-                ) {
-                    document.querySelector('#payment-method-option-payplug_payments_apple_pay').remove();
-                }
-            }
+            window.dispatchEvent(new Event('clear-messages'));
         });
     })();
 </script>
