@@ -36,7 +36,7 @@ use Magento\Framework\Escaper;
 
                 this.config = config;
                 this.merchandName = config.merchand_name;
-                this.shippingAmount = config.shipping_amount;
+                this.shippingAmount = config.shipping_amount || 0;
                 this.shippingMethod = null;
                 const applePayIsAvailable = this.getApplePayAvailability();
 
