@@ -150,18 +150,16 @@ use Magento\Framework\Escaper;
                 this.applePaySession.begin();
             },
             bindOnCompleteMethod() {
-                const self = this;
-
-                this.applePaySession.onpaymentmethodselected = function () {
+                this.applePaySession.onpaymentmethodselected = () => {
                     const updated = {
                         "newTotal": {
-                            "label": self.merchandName,
-                            "amount": self.getTotalAmount(),
+                            "label": this.merchandName,
+                            "amount": this.getTotalAmount(),
                             "type": "final"
                         }
                     };
 
-                    self.applePaySession.completePaymentMethodSelection(updated);
+                    this.applePaySession.completePaymentMethodSelection(updated);
                 };
             },
             bindMarchantValidation() {
@@ -310,27 +308,24 @@ use Magento\Framework\Escaper;
                 };
             },
             bindShippingMethodSelected() {
-                const self = this;
-
                 this.applePaySession.onshippingmethodselected = shippingEvent => {
-
                     if (typeof shippingEvent === 'undefined') {
                         return;
                     }
 
-                    self.shippingMethod = shippingEvent.shippingMethod.identifier;
-                    self.shippingAmount = shippingEvent.shippingMethod.amount;
+                    this.shippingMethod = shippingEvent.shippingMethod.identifier;
+                    this.shippingAmount = shippingEvent.shippingMethod.amount;
 
                     const updated = {
                         "newTotal": {
-                            "label": self.merchandName,
-                            "amount": self.getTotalAmount(),
+                            "label": this.merchandName,
+                            "amount": this.getTotalAmount(),
                             "type": "final",
                             "paymentTiming": "immediate",
                         }
                     }
 
-                    self.applePaySession.completeShippingMethodSelection(updated);
+                    this.applePaySession.completeShippingMethodSelection(updated);
                 };
             },
             // To be removed after the allowedShippingMethods Content-type replacement
@@ -429,14 +424,12 @@ use Magento\Framework\Escaper;
                 });
             },
             cancelPayplugPayment() {
-                const self = this;
-
                 if (this.orderId) {
                     const url = BASE_URL + this.cancelUrl + '?form_key=' + (document.cookie.match(/form_key=([^;]+)/) || [])[1];
 
                     fetch(url, { method: 'GET', credentials: 'same-origin' })
-                        .finally(function () {
-                            self.invalidateMiniCart(true);
+                        .finally(() => {
+                            this.invalidateMiniCart(true);
                         });
                 }
 
