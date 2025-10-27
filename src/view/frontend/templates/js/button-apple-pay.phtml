@@ -194,7 +194,7 @@ use Magento\Framework\Escaper;
                             try {
                                 if (self.workflowType === 'product') {
                                     self.invalidateMiniCart(true);
-                                    self.setBaseAmount(response.base_amount);
+                                    self.baseAmount = response.base_amount;
                                 }
 
                                 self.orderId = response.order_id;
