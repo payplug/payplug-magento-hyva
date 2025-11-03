@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 use Magento\Framework\Escaper;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Payplug\Payments\Block\ApplePay\ProductButton;
 
 /**
  * @var Escaper $escaper
  * @var ProductButton $block
+ * @var HyvaCsp $hyvaCsp
  */
 ?>
 
@@ -26,14 +28,36 @@ use Payplug\Payments\Block\ApplePay\ProductButton;
     }
 </script>
 
-<div x-data="{...initApplePay(), ...initApplePayProduct()}"
+<?php $hyvaCsp->registerInlineScript() ?>
+
+<div x-data="productButtonApplePay"
      class="pp-apple-pay-button mt-4 text-right"
-     @private-content-loaded.window="onPrivateContentLoaded($event.detail.data)">
+     @private-content-loaded.window="productButtonApplePayPrivateContentLoadedWindow">
     <apple-pay-button
         buttonstyle="black"
         type="pay"
-        @click="initApplePaySession()"
+        @click="productButtonApplePayClick"
         x-show="isVisible"
         x-cloak>
     </apple-pay-button>
 </div>
+
+<script>
+    function productButtonApplePay() {
+        return Object.assign(
+            {...initApplePay(), ...initApplePayProduct()},
+            {
+                ['productButtonApplePayClick'](event) {return this.initApplePaySession()},
+                ['productButtonApplePayPrivateContentLoadedWindow'](event) {
+                    return this.onPrivateContentLoaded(this.$event.detail.data)
+                },
+            }
+        )
+    }
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('productButtonApplePay', productButtonApplePay)
+    }, {once: true});
+</script>
+
+<?php $hyvaCsp->registerInlineScript() ?>
