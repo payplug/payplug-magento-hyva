@@ -8,12 +8,17 @@ apple-pay-button {
     }
 }
 
+/* Product view */
+.catalog-product-view {
+    apple-pay-button {
+        --apple-pay-button-height: 2.125rem;
+        --apple-pay-button-padding: 0.25rem;
+        --apple-pay-button-border-radius: 0.5rem;
+    }
+}
+
 /* Cart summary */
 .checkout-methods-items {
-    .pp-apple-pay-button {
-        @apply mb-8;
-    }
-
     apple-pay-button {
         @apply w-full;
         --apple-pay-button-height: 2.125rem;
