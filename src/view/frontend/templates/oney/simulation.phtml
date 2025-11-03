@@ -33,7 +33,7 @@ $icons = $viewModels->require(PayplugIcons::class);
     <?php // Button ?>
     <button type="button"
             @click="clickHandler"
-            class="inline-flex items-center text-left"
+            class="inline-flex items-center justify-end"
             :class="oneyButtonClass()">
         <span class="uppercase text-sm font-bold">
             <?= $block->escapeHtml(__('Or pay in')); ?>
@@ -61,7 +61,7 @@ $icons = $viewModels->require(PayplugIcons::class);
     </button>
 
     <?php // Popin ?>
-    <div class="lg:absolute lg:right-full lg:transform <?= $popinPosition === 'top' ? 'lg:-translate-y-9' : 'lg:translate-y-8 lg:bottom-0' ?> lg:-translate-x-8 lg:w-[350px] p-4 bg-white border-2
+    <div class="lg:absolute lg:right-60 lg:transform <?= $popinPosition === 'top' ? 'lg:-translate-y-9' : 'lg:translate-y-8 lg:bottom-0' ?> lg:-translate-x-8 lg:w-[350px] p-4 bg-white border-2
                 after:hidden lg:after:block after:absolute after:w-6 after:h-6
                 after:transform after:translate-x-2/4 <?= $popinPosition === 'top' ? 'lg:after:top-0 after:translate-y-8' : 'after:bottom-0 after:-translate-y-8' ?> after:rotate-45
                 after:bg-white after:border-l-0 after:border-b-0 after:border-2 after:border-solid after:-right-0.5"

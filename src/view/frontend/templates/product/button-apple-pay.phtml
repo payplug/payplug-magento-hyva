@@ -27,7 +27,7 @@ use Payplug\Payments\Block\ApplePay\ProductButton;
 </script>
 
 <div x-data="{...initApplePay(), ...initApplePayProduct()}"
-     class="pp-apple-pay-button"
+     class="pp-apple-pay-button mt-4 text-right"
      @private-content-loaded.window="onPrivateContentLoaded($event.detail.data)">
     <apple-pay-button
         buttonstyle="black"
