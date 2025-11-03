@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 use Magento\Framework\Escaper;
+use Hyva\Theme\ViewModel\HyvaCsp;
 
 /**
  * @var Escaper $escaper
+ * @var HyvaCsp $hyvaCsp
  */
 
 if ($block->quoteHasBundleProductItem()) {
@@ -25,14 +27,35 @@ if ($block->quoteHasBundleProductItem()) {
     }
 </script>
 
-<div x-data="{...initApplePay(), ...initApplePayCart()}"
+<?php $hyvaCsp->registerInlineScript() ?>
+
+<div x-data="cartButtonApplePay"
      class="pp-apple-pay-button mt-4 mb-8"
-     @private-content-loaded.window="onPrivateContentLoaded($event.detail.data)">
+     @private-content-loaded.window="cartButtonApplePayPrivateContentLoadedWindow1">
     <apple-pay-button
         buttonstyle="black"
         type="pay"
-        @click="initApplePaySession()"
+        @click="cartButtonApplePayClick"
         x-show="isVisible"
         x-cloak>
     </apple-pay-button>
 </div>
+
+<script>
+    function cartButtonApplePay() {
+        return Object.assign(
+            {...initApplePay(), ...initApplePayCart()},
+            {
+                ['cartButtonApplePayClick'](event) {return this.initApplePaySession()},
+                ['cartButtonApplePayPrivateContentLoadedWindow1'](event) {
+                    return this.onPrivateContentLoaded(this.$event.detail.data)
+                },
+            }
+        )
+    }
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('cartButtonApplePay', cartButtonApplePay)
+    }, {once: true});
+</script>
+
+<?php $hyvaCsp->registerInlineScript() ?>
