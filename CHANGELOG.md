@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Clear messages notifications on payment method selection [#8](https://github.com/payplug/payplug-magento-hyva/pull/8)
+- Update Hyva Checkout version to support the latest 1.3.x [#12](https://github.com/payplug/payplug-magento-hyva/pull/12)
 - Update presentation and installation process in README.md file [#9](https://github.com/payplug/payplug-magento-hyva/pull/9)
 
 ### Fixed
