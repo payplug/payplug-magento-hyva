@@ -33,7 +33,7 @@ if ($block->quoteHasBundleProductItem()) {
 
 <div x-data="cartButtonApplePay"
      class="pp-apple-pay-button mt-4 mb-8"
-     @private-content-loaded.window="cartButtonApplePayPrivateContentLoadedWindow1">
+     @private-content-loaded.window="cartButtonApplePayPrivateContentLoadedWindow">
     <apple-pay-button
         buttonstyle="black"
         type="pay"
@@ -49,7 +49,7 @@ if ($block->quoteHasBundleProductItem()) {
             {...initApplePay(), ...initApplePayCart()},
             {
                 ['cartButtonApplePayClick'](event) {return this.initApplePaySession()},
-                ['cartButtonApplePayPrivateContentLoadedWindow1'](event) {
+                ['cartButtonApplePayPrivateContentLoadedWindow'](event) {
                     return this.onPrivateContentLoaded(this.$event.detail.data)
                 },
             }
