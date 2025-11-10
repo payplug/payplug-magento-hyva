@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-use Magento\Framework\Escaper;
+use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
 
 /**
  * @var Escaper $escaper
  * @var HyvaCsp $hyvaCsp
+ * @var ViewModelRegistry $viewModels
  */
 
 if ($block->quoteHasBundleProductItem()) {
