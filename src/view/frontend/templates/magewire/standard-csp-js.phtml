@@ -144,7 +144,13 @@ use Magento\Framework\View\Element\Template;
                     const cancelUrl = BASE_URL + 'payplug_payments/payment/cancel';
                     const redirectUrl = BASE_URL + 'payplug_payments/payment/standard';
                     const returnUrl = BASE_URL + 'payplug_payments/payment/paymentReturn';
-                    const selectedInput = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked');
+                    const activeMethod = document.querySelector('input[name="payment-method-option"]:checked')?.value || '';
+                    const selectedInput = document.querySelector('input[name="payment[payplug_payments_standard][customer_card_id]"]:checked') || null;
+
+                    if (activeMethod !== 'payplug_payments_standard') {
+                        hyvaCheckout.main.getWireComponent().placeOrder();
+                        return true;
+                    }
 
                     if (isOneClick) {
                         const cartId = selectedInput?.dataset?.cardId;

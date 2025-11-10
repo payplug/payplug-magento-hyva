@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.0.3) - 2025-XX-XX
+
+### Main features
+
+- Fix blocked validation on other payment method
+- Fix place order button states on switch between payment methods
+
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/2.0.2...2.0.3)**
+
+### Changed
+- Clear messages notifications on payment method selection [#8](https://github.com/payplug/payplug-magento-hyva/pull/8)
+- Update Hyva Checkout version to support the latest 1.3.x [#12](https://github.com/payplug/payplug-magento-hyva/pull/12)
+- Update presentation and installation process in README.md file [#9](https://github.com/payplug/payplug-magento-hyva/pull/9)
+
+### Fixed
+- Fix blocked validation after select standard or oney payment method [#8](https://github.com/payplug/payplug-magento-hyva/pull/8)
+- Fix place order button states on Apple Pay and Oney updates [#8](https://github.com/payplug/payplug-magento-hyva/pull/8)
+
+### Fixed
+- Remove additional method items vertical spacing [#8](https://github.com/payplug/payplug-magento-hyva/pull/8)
+- Remove useless code legacy [#8](https://github.com/payplug/payplug-magento-hyva/pull/8)
+
 ## [2.0.2](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.0.2) - 2025-09-30
 
 > [!NOTE]
