@@ -3,6 +3,7 @@
     "description": "Hyvä Compatibility module for Payplug_Payments",
     "version": "2.0.3",
     "type": "magento2-module",
+    "keywords": ["Payplug", "Adobe Commerce", "Magento", "Hyvä"],
     "license": "OSL-3.0",
     "authors": [
         {
