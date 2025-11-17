@@ -15,7 +15,7 @@
       "email": "support@payplug.com"
     }
   ],
-  "license": "see LICENSE.md",
+  "license": "OSL-3.0",
   "autoload": {
     "files": [
       "src/registration.php"
