@@ -10,7 +10,7 @@ Please refer to https://www.payplug.com/fr for more informations.
 
 ## Requirements
 
-In order to work, this module requires [Hyvä Themes](https://docs.hyva.io/hyva-themes/getting-started/index.html) and/or [Hyvä Checkout](https://docs.hyva.io/checkout/index.html) licences.
+In order to work, this module requires a [Hyvä Checkout](https://www.hyva.io/hyva-checkout.html) licence.
 
 Please refer to https://docs.hyva.io for more instructions.
 
