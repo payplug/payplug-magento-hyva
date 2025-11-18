@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update Apple Pay button render on product view page [#5](https://github.com/payplug/payplug-magento-hyva/pull/5/)
 
-## [2.0.3](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.0.3) - 2025-XX-XX
+## [2.0.3](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.0.3) - 2025-11-18
 
 ### Main features
 
