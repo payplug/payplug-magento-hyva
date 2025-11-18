@@ -1,27 +1,28 @@
 {
-  "name": "payplug/payplug-magento-hyva",
-  "description": "Hyv\u00e4 Compatibility module for Payplug_Payments",
-  "type": "magento2-module",
-  "version": "2.0.2",
-  "require": {
-    "hyva-themes/magento2-compat-module-fallback": "*",
-    "hyva-themes/magento2-hyva-checkout": ">=1.3.0 <=1.3.4",
-    "magento/framework": "*",
-    "payplug/payplug-magento2": "4.5.0"
-  },
-  "authors": [
-    {
-      "name": "PayPlug",
-      "email": "support@payplug.com"
-    }
-  ],
-  "license": "see LICENSE.md",
-  "autoload": {
-    "files": [
-      "src/registration.php"
+    "name": "payplug/payplug-magento-hyva",
+    "description": "Hyvä Compatibility module for Payplug_Payments",
+    "version": "2.0.3",
+    "type": "magento2-module",
+    "keywords": ["Payplug", "Adobe Commerce", "Magento", "Hyvä"],
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "PayPlug",
+            "email": "support@payplug.com"
+        }
     ],
-    "psr-4": {
-      "Hyva\\CheckoutPayplug\\": "src/"
+    "require": {
+        "hyva-themes/magento2-compat-module-fallback": "*",
+        "hyva-themes/magento2-hyva-checkout": "1.3.5",
+        "magento/framework": "*",
+        "payplug/payplug-magento2": "4.5.0"
+    },
+    "autoload": {
+        "files": [
+            "src/registration.php"
+        ],
+        "psr-4": {
+            "Hyva\\CheckoutPayplug\\": "src/"
+        }
     }
-  }
 }
