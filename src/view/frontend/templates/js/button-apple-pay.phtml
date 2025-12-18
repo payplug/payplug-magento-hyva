@@ -218,6 +218,10 @@ use Magento\Framework\Escaper;
             formatUpdateCartOrderFetchData(event) {
                 const formData = new URLSearchParams();
 
+                if (!event?.payment?.token) {
+                    throw new Error('Invalid Apple Pay event: missing payment token');
+                }
+
                 function appendFields (prefix, obj, fields) {
                     fields.forEach(field => {
                         const value = obj && obj[field] !== undefined && obj[field] !== null ? obj[field] : '';
@@ -261,9 +265,9 @@ use Magento\Framework\Escaper;
                     'postalCode', 'subAdministrativeArea', 'subLocality'
                 ]);
 
-                formData.append('shipping_method', self.shippingMethod || '');
-                formData.append('order_id', self.orderId);
-                formData.append('workflowType', self.workflowType);
+                formData.append('shipping_method', this.shippingMethod || '');
+                formData.append('order_id', this.orderId);
+                formData.append('workflowType', this.workflowType);
 
                 return formData;
             },
@@ -272,16 +276,13 @@ use Magento\Framework\Escaper;
 
                 this.applePaySession.onpaymentauthorized = event => {
                     try {
-                        const data = {
-                            token: event.payment.token,
-                            billing: event.payment.billingContact,
-                            shipping: event.payment.shippingContact,
-                            shipping_method: self.shippingMethod,
-                            order_id: self.orderId,
-                            workflowType: self.workflowType
-                        };
+                        if (!event?.payment?.token) {
+                            console.error('Invalid Apple Pay event: missing payment token');
+                            self.cancelPayplugPaymentWithFailure();
+                            return;
+                        }
 
-                        const formData = this.formatUpdateCartOrderFetchData(data);
+                        const formData = this.formatUpdateCartOrderFetchData(event);
 
                         fetch(BASE_URL + this.updateCartOrder + '?form_key=' + (document.cookie.match(/form_key=([^;]+)/)?.[1] || ''), {
                             method: 'POST',
