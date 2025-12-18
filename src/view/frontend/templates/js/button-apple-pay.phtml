@@ -62,7 +62,7 @@ use Magento\Framework\Escaper;
                     config = this.applePayConfig;
                 } else if (this.workflowType === 'shopping-cart') {
                     const totalsData = window?.checkoutConfig?.totalsData;
-                    this.baseAmount = totalsData?.grand_total;
+                    this.baseAmount = totalsData?.base_subtotal_with_discount;
                     const currency = totalsData?.quote_currency_code;
                     const applePayConfig = window?.checkoutConfig?.payment?.payplug_payments_apple_pay || {};
 
