@@ -7,7 +7,7 @@
         <referenceBlock name="payplug-payments-product-oney-wrapper" template="Hyva_CheckoutPayplug::oney/simulation_wrapper.phtml">
             <arguments>
                 <argument name="container_css_classes" xsi:type="string">
-                    my-2
+                    mt-4
                 </argument>
             </arguments>
         </referenceBlock>
