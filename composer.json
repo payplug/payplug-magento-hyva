@@ -15,7 +15,7 @@
         "hyva-themes/magento2-compat-module-fallback": "*",
         "hyva-themes/magento2-hyva-checkout": "1.3.5",
         "magento/framework": "*",
-        "payplug/payplug-magento2": "4.6.0"
+        "payplug/payplug-magento2": "^4.6"
     },
     "autoload": {
         "files": [
