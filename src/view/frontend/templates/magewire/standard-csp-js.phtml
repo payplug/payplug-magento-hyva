@@ -93,7 +93,7 @@ use Magento\Framework\View\Element\Template;
 
         function setIntegratedPayment () {
             integratedPayment = new Payplug.IntegratedPayment(isSandbox);
-            integratedPayment.setDisplayMode3ds(Payplug.DisplayMode3ds.LIGHTBOX);
+            integratedPayment.setDisplayMode3ds(Payplug.DisplayMode3ds.REDIRECT);
             integratedPayment.getSupportedSchemes();
             setIntegratedFormFields();            
         }
