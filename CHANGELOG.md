@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.1.1) - 2025-02-05
+
+### Main features
+- Add Payplug Magento to 4.6.2 support
+- Update integrated payment 3DS display mode
+
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/2.1.0...2.1.1)**
+
+### Added
+- Add static magento2-default-theme version [#631](https://github.com/payplug/payplug-magento-hyva/commit/c4a7cff2ae82c3882317a93102b6870947671c12)
+
+### Changed
+- Update integrated payment 3DS display mode [#631](https://github.com/payplug/payplug-magento-hyva/commit/22dde694d065903df64a1e2188330698c0b7192c)
+- Upgrade module version and Payplug Magento to 4.6.2 [#616](https://github.com/payplug/payplug-magento-hyva/commit/69c802cba404b6a7d555b5ab3245ab596cfdcc05)
+
 ## [2.1.0](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.1.0) - 2025-12-22
 
 ### Main features
