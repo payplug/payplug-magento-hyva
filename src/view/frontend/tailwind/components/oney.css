@@ -1,5 +1,5 @@
 .oney-checkout-error {
-    @apply text-[#b2b2b2];
+    @apply text-oney-error;
 
     &.active {
         @apply mb-[15px];
@@ -7,11 +7,7 @@
 }
 
 .oney-payment {
-    @apply relative pt-[90px];
-
-    @screen md {
-        @apply flex gap-4 justify-between pt-0 overflow-hidden;
-    }
+    @apply relative pt-[90px] md:flex md:gap-4 md:justify-between md:pt-0 md:overflow-hidden;
 
     .field {
         @apply flex-1 mt-0;
@@ -29,9 +25,7 @@
                             @apply border-b-oney;
                         }
 
-                        @screen md {
-                            @apply border-oney after:opacity-100 bg-oney bg-opacity-20;
-                        }
+                        @apply md:border-oney md:after:opacity-100 md:bg-oney/20;
                     } 
                 }
             }
@@ -43,62 +37,50 @@
             }
         }
     }
+}
 
-    &-error {
-        @apply text-sm italic font-normal;
-    }
+.oney-payment-error {
+    @apply text-sm italic font-normal;
 }
 
 .oney-option {
-    @apply flex flex-col items-center h-full m-0 bg-white cursor-pointer;
+    @apply flex flex-col items-center h-full m-0 bg-white cursor-pointer md:p-6 md:border md:border-solid md:border-oney-lighter md:hover:border-oney md:after:hover:opacity-100;
+}
 
-    @screen md {
-        @apply p-6 border border-solid border-oney-lighter hover:border-oney after:hover:opacity-100;
-    }
+.oney-option-title {
+    @apply flex flex-col justify-center items-center h-[90px] absolute top-0 left-0 w-1/2 p-3 bg-white border border-oney-lighter border-b-white border-b-[5px] text-sm font-medium md:static md:top-auto md:left-auto md:right-auto md:w-full md:pt-0 md:pb-[35px] md:px-0 md:bg-transparent md:border-0;
+}
 
-    &-title {
-        @apply flex flex-col justify-center items-center h-[90px] absolute top-0 left-0 w-1/2 p-3 bg-white border border-oney-lighter border-b-white border-b-[5px] text-sm font-medium;
+.oney-option-prices {
+    @apply hidden flex-col justify-between h-full w-full border p-4 md:flex md:border-0 md:p-0;
 
-        @screen md {
-            @apply static top-auto left-auto right-auto w-full pt-0 pb-[35px] px-0 bg-transparent border-0;
-        }
-    }
+    ul {
+        @apply flex flex-col h-full w-full text-[#2f2930] font-semibold m-0 pl-0;
 
-    &-prices {
-        @apply hidden flex-col justify-between h-full w-full border p-4;
+        li {
+            @apply flex justify-between flex-wrap leading-5 pt-0 pb-4 px-0 border-b border-b-oney-lighter;
 
-        @screen md {
-            @apply flex border-0 p-0;
-        }
+            & + li {
+                @apply px-0 py-4;
+            }
 
-        ul {
-            @apply flex flex-col h-full w-full text-[#2f2930] font-semibold m-0 pl-0;
+            &:last-child {
+                @apply mt-auto mb-0 mx-0 pt-4 pb-0 px-0 border-0;
+            }
 
-            li {
-                @apply flex justify-between flex-wrap leading-5 pt-0 pb-4 px-0 border-b border-b-oney-lighter;
+            span {
+                @apply flex font-semibold max-w-[50%] first:font-medium;
+            }
 
-                & + li {
-                    @apply px-0 py-4;
-                }
-
-                &:last-child {
-                    @apply mt-auto mb-0 mx-0 pt-4 pb-0 px-0 border-0;
-                }
-
-                span {
-                    @apply flex font-semibold max-w-[50%] first:font-medium;
-                }
-
-                small {
-                    @apply block w-full;
-                }
+            small {
+                @apply block w-full;
             }
         }
     }
-    
-    &-radio {
-        @apply sr-only;
-    }
+}
+
+.oney-option-radio {
+    @apply sr-only;
 }
 
 .save-card-container {
