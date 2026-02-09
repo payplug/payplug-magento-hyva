@@ -38,6 +38,12 @@ bin/magento hyva:config:generate
 # Replace path by your Hyvä custom theme
 cd path/to/project/app/design/frontend/Vendor/default/web/tailwind
 
+# Switch to the good Node.js version
+nvm use
+
+# Install dependencies
+nvm use
+
 # Compile Tailwind CSS file
 npm run build
 ```
