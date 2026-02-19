@@ -14,24 +14,20 @@ use Magento\Framework\View\Element\Template;
 ?>
 
 <script>
-    'use strict';
-
-    function magewirePpro() {
-        return {
-            ['initMagewirePpro']() {
-                const { 
-                    billingCountryId,
-                    shippingCountryId,
-                    method
-                } = this.$el.dataset;
-
-                (() => {
-                    function getPPROMessage() {
-                        const data = {
+    (() => {
+        hyvaCheckout.api.after(() => {
+            hyvaCheckout.payment.registerMethod({
+                code: 'payplug_payments_ppro',
+                method: {
+                    initialize: async function () {
+                        this.oneyPaymentData = document.getElementById('pp-ppro-payment').dataset;
+                    },
+                    getPPROMessage: function() {
+                        const {
                             billingCountry: billingCountryId,
                             shippingCountry: shippingCountryId,
                             paymentMethod: method
-                        };
+                        } = this.oneyPaymentData;
 
                         const body = new URLSearchParams(data);
                         const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + 
@@ -61,16 +57,9 @@ use Magento\Framework\View\Element\Template;
                             })
                             .catch(error => console.error('Error:', error));
                     }
-
-                    getPPROMessage();
-                })();
-            }
-        }
-    }
-
-    window.addEventListener('alpine:init', () => {
-        Alpine.data('magewirePpro', magewirePpro)
-    }, { once: true });
+                }
+            });
+        });
+    })();
 </script>
-
 <?php $hyvaCsp->registerInlineScript() ?>

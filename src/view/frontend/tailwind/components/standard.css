@@ -43,7 +43,7 @@
     &.-pan,
     &.-exp,
     &.-cvv {
-        @apply h-10 rounded-sm py-0 pr-4 pl-12 border border-solid border-[#d5d6d8] bg-white leading-[40px] cursor-text;
+        @apply h-10 rounded-sm py-0 pr-4 pl-12 border border-solid border-[#d5d6d8] bg-white leading-10 cursor-text;
 
         &::before {
             @apply content-[''] absolute w-6 h-6 left-4 top-[20%];

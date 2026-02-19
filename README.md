@@ -42,7 +42,7 @@ cd path/to/project/app/design/frontend/Vendor/default/web/tailwind
 nvm use
 
 # Install dependencies
-nvm use
+nvm i
 
 # Compile Tailwind CSS file
 npm run build

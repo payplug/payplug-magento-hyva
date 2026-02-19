@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.payment.methods">
+            <block name="checkout.payment.method.payplug-apple-pay"
+                   as="payplug_payments_apple_pay"
+                   class="Hyva\CheckoutPayplug\Block\ApplePay"
+                   template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/apple-pay.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\ApplePay</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="src" xsi:type="string">Payplug_Payments::images/logos/apple_pay.svg</item>
+                            <item name="attributes" xsi:type="array">
+                                <item name="width" xsi:type="number">50</item>
+                                <item name="height" xsi:type="number">34</item>
+                                <item name="loading" xsi:type="string">lazy</item>
+                                <item name="alt" xsi:type="string">Apple Pay</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block name="checkout.payment.method.payplug_payments_oney"
+                   as="payplug_payments_oney"
+                   class="Payplug\Payments\Block\Oney\Simulation"
+                   template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/oney.phtml">
+                 <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="src" xsi:type="string">Payplug_Payments::images/logos/oney_3x_4x.svg</item>
+                            <item name="attributes" xsi:type="array">
+                                <item name="width" xsi:type="number">136</item>
+                                <item name="height" xsi:type="number">28</item>
+                                <item name="loading" xsi:type="string">lazy</item>
+                                <item name="alt" xsi:type="string">Oney</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block name="checkout.payment.method.payplug_payments_oney_without_fees"
+                   as="payplug_payments_oney_without_fees"
+                   class="Payplug\Payments\Block\Oney\Simulation"
+                   template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/oney.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Oney</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="src" xsi:type="string">Payplug_Payments::images/logos/oney_3x_4x.svg</item>
+                            <item name="attributes" xsi:type="array">
+                                <item name="width" xsi:type="number">136</item>
+                                <item name="height" xsi:type="number">28</item>
+                                <item name="loading" xsi:type="string">lazy</item>
+                                <item name="alt" xsi:type="string">Oney</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block name="checkout.payment.method.payplug_payments_ideal"
+                   as="payplug_payments_ideal"
+                   template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/ppro.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="src" xsi:type="string">Payplug_Payments::images/logos/ideal.svg</item>
+                            <item name="attributes" xsi:type="array">
+                                <item name="width" xsi:type="number">30</item>
+                                <item name="height" xsi:type="number">34</item>
+                                <item name="loading" xsi:type="string">lazy</item>
+                                <item name="alt" xsi:type="string">iDEAL</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block name="checkout.payment.method.payplug_payments_mybank"
+                   as="payplug_payments_mybank"
+                   template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/ppro.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="src" xsi:type="string">Payplug_Payments::images/logos/mybank.svg</item>
+                            <item name="attributes" xsi:type="array">
+                                <item name="width" xsi:type="number">53</item>
+                                <item name="height" xsi:type="number">30</item>
+                                <item name="loading" xsi:type="string">lazy</item>
+                                <item name="alt" xsi:type="string">MyBank</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block name="checkout.payment.method.payplug_payments_satispay"
+                   as="payplug_payments_satispay"
+                   template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/ppro.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Ppro</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="src" xsi:type="string">Payplug_Payments::images/logos/satispay.svg</item>
+                            <item name="attributes" xsi:type="array">
+                                <item name="width" xsi:type="number">127</item>
+                                <item name="height" xsi:type="number">30</item>
+                                <item name="loading" xsi:type="string">lazy</item>
+                                <item name="alt" xsi:type="string">Satispay</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block name="checkout.payment.method.payplug_payments_standard"
+                   as="payplug_payments_standard"
+                   class="Hyva\CheckoutPayplug\Block\Standard"
+                   template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/standard.phtml">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">\Hyva\CheckoutPayplug\Magewire\Standard</argument>
+                    <argument name="metadata" xsi:type="array">
+                        <item name="icon" xsi:type="array">
+                            <item name="src" xsi:type="string">Payplug_Payments::images/standard/payment-cards.svg</item>
+                            <item name="attributes" xsi:type="array">
+                                <item name="width" xsi:type="number">136</item>
+                                <item name="height" xsi:type="number">28</item>
+                                <item name="loading" xsi:type="string">lazy</item>
+                                <item name="alt" xsi:type="string">CB Visa Mastercard</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

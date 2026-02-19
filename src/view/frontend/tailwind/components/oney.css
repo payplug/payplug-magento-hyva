@@ -55,7 +55,7 @@
     @apply hidden flex-col justify-between h-full w-full border p-4 md:flex md:border-0 md:p-0;
 
     ul {
-        @apply flex flex-col h-full w-full text-[#2f2930] font-semibold m-0 pl-0;
+        @apply flex flex-col h-full w-full text-oney-darker font-semibold m-0 pl-0;
 
         li {
             @apply flex justify-between flex-wrap leading-5 pt-0 pb-4 px-0 border-b border-b-oney-lighter;
