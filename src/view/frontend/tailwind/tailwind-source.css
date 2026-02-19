@@ -4,6 +4,8 @@
 
 @theme {
   /* Custom colors */
+  --color-payplug: #212225;
+
   --color-oney: #81BC00;
   --color-oney-lighter: #ECF5D9;
   --color-oney-darker: #2F2930;
