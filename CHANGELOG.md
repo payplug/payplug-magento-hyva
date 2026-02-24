@@ -5,7 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.1.1) - 2025-02-05
+## [3.0.0](https://github.com/payplug/payplug-magento-hyva/releases/tag/3.0.0) - 2026-03-03
+
+> [!NOTE]
+>
+> This release brings important updates with the support of Tailwind V4 since [version 1.4.0](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-4-0.html) of Hyvä default theme and the replacement of [deprecated methods](https://docs.hyva.io/hyva-checkout/devdocs/frontend-api/V1/payment.html#deprecated-methods) since [version 1.3.6](https://docs.hyva.io/hyva-checkout/upgrading/upgrading-to-1.3.6.html) of Hyvä Checkout.
+>
+> Please check [the diff](https://github.com/payplug/payplug-magento-hyva/compare/2.1.1...3.0.0) since last version and the [official Hyvä Checkout documentation](https://docs.hyva.io/hyva-checkout/index.html) to upgrade.
+
+### Main feature
+- Add Hyva theme v1.4.3 and Hyva Checkout v1.3.9 support
+
+### Added
+- Add Hyva theme v1.4.3 and Hyva Checkout v1.3.9 support [#616](https://github.com/payplug/payplug-magento-hyva/commit/96f9761a5ee72a04331ab3dadf418d57df9aff0c)
+- Add Payplug Copyright comments [#643](https://github.com/payplug/payplug-magento-hyva/commit/9a89802a8484189b5c3daa4c2cd5f4da3879890c)
+
+### Changed
+- Update CSS to support Tailwind V4 [#642](https://github.com/payplug/payplug-magento-hyva/commit/1892c1cfafb78df8f1ed0afec92fab74905d553c)
+- Replace deprecated Hyva Checkout JS API methods [#642](https://github.com/payplug/payplug-magento-hyva/commit/ec85fe1e0ec4ba7cd2166aa97b7270c18d05233f)
+
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/2.1.1...3.0.0)**
+
+## [2.1.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/2.1.1) - 2026-02-05
 
 ### Main features
 - Add Payplug Magento to 4.6.2 support
