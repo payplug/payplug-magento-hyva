@@ -1,4 +1,9 @@
 <?php
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
 
 declare(strict_types=1);
 
@@ -26,7 +31,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 <div x-data="checkoutOneySimulationContent">
 
 <?php if (!$oneySimulation->getSuccess() || !empty($message)): ?>
-    <p class="error text-sm text-primary">
+    <p class="error text-sm text-gray-500">
         <?= /* @noEscape */ $message; ?>
     </p>
 <?php else: ?>
@@ -97,7 +102,7 @@ $icons = $viewModels->require(PayplugIcons::class);
                  aria-labelledby="tab-<?= /* @noEscape */ $option->getType(); ?>"
                  tabindex="0"
                  x-cloak>
-                <ul class="space-y-0.5 text-primary text-xs">
+                <ul class="space-y-0.5 text-xs">
                     <li class="flex justify-between">
                         <span class="font-bold text-sm">
                             <?= $block->escapeHtml(__('For an amount of:')); ?>

@@ -1,235 +1,147 @@
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
+
 .error-container {
-    &.cardholder-input-container,
-    &.pan-input-container,
-    &.exp-input-container,
-    &.cvv-input-container {
+    .cardholder-input-container,
+    .pan-input-container,
+    .exp-input-container,
+    .cvv-input-container {
         @apply text-sm;
     }
 }
 
-#payplug-payment-form {
-    &.IntegratedPayment {
-        .exp-cvv-container {
-            @apply flex gap-3 justify-between mt-3;
-        }
+.pp-integrated-payment {
+    @apply block justify-between w-[300px] mb-0;
 
-        .transaction-secured {
-            @apply flex justify-center items-center gap-3 w-full mt-3 text-[#212225];
+    .exp-cvv-container {
+        @apply flex gap-3 justify-between mt-3;
+    }
 
-            img {
-                @apply h-4;
+    .transaction-secured {
+        @apply flex justify-center items-center gap-3 w-full mt-3 text-payplug text-sm text-center leading-5;
 
-                &.payplug-logo {
-                    @apply min-w-[90px];
-                }
+        img {
+            @apply h-4;
+
+            &.payplug-logo {
+                @apply min-w-[90px];
             }
         }
+    }
 
-        .transaction-secured,
-        .policy {
-            @apply w-full text-sm text-center leading-[21px];
-        }
-
-        .policy {
-            a {
-                @apply block underline text-[#909192];
-            }
-        }
-
-        .invalid-field,
-        .empty-field {
-            @apply hidden text-[#e91932];
-        }
+    .invalid-field,
+    .empty-field { 
+        @apply hidden text-standard-error;
     }
 }
 
-.IntegratedPayment {
-    @apply block justify-between w-[300px] mb-0;
+.pp-integrated-payment_select {
+    @apply h-9 w-full rounded-md py-0 px-2 mt-0 mx-0 mb-3 border border-solid border-[#ccc];
+}
 
-    &_select {
-        @apply h-9 w-full rounded-md py-0 px-2 mt-0 mx-0 mb-3 border border-solid border-[#ccc];
-    }
+.pp-integrated-payment_container {
+    @apply relative flex w-full p-0 m-0;
 
-    &_container {
-        @apply relative flex w-full p-0 m-0;
+    &.-cardHolder,
+    &.-pan,
+    &.-exp,
+    &.-cvv {
+        @apply h-10 rounded-sm py-0 pr-4 pl-12 border border-solid border-[#d5d6d8] bg-white leading-10 cursor-text;
 
-        &.-cardHolder,
-        &.-pan,
-        &.-exp,
-        &.-cvv {
-            @apply h-10 rounded-sm py-0 pr-4 pl-12 border border-solid border-[#d5d6d8] bg-white leading-[40px] cursor-text;
-
-            &::before {
-                @apply content-[''] absolute w-6 h-6 left-4 top-[20%];
-                background: rgb(149, 153, 158) 50% center / 100% no-repeat;
-            }
+        &::before {
+            @apply content-[''] absolute w-6 h-6 left-4 top-[20%];
+            background: rgb(149, 153, 158) 50% center / 100% no-repeat;
         }
 
-        &.-cardHolder.-focus,
-        &.-pan.-focus,
-        &.-exp.-focus,
-        &.-cvv.-focus {
+        &.-focus {
             @apply border-[#2b343d];
         }
 
-        &.-cardHolder.-invalid,
-        &.-pan.-invalid,
-        &.-exp.-invalid,
-        &.-cvv.-invalid {
+        &.-invalid {
             @apply border-[#e91932];
         }
-
-        &.-scheme {
-            @apply justify-between items-center h-[22px] my-3 mx-0 text-sm font-bold uppercase;
-        }
-
-        &.-saveCard {
-            @apply flex h-auto items-center pt-0 pb-0 px-0;
-        }
-
-        &.-saveCard label {
-            @apply m-0 cursor-pointer text-xs text-[#918f8f];
-
-            &:hover {
-                @apply transition text-[#2b343d];
-
-                span {
-                    @apply border-[#2b343d] transition;
-
-                    &::before {
-                        @apply opacity-100;
-                    }
-                }
-            }
-
-            input {
-                @apply hidden;
-            }
-
-            span {
-                @apply inline-block relative h-4 w-4 rounded-sm ml-0 mr-2.5 mt-0 border-solid border-[#d5d6d8] transition-[border] duration-[0.4s] cursor-pointer;
-
-                &::before {
-                    @apply content-[''] w-[9px] h-[3px] -translate-x-2/4 translate-y-[-55%] rotate-[-48deg] transition-opacity duration-[0.4s] border-[2.5px] border-solid border-[#2b343d];
-                } 
-            }
-        }
-
-        &.-deferred {
-            @apply block my-3 mx-0 py-1 px-4 text-xs text-center text-[#2b343d] bg-[#e9eaeb];
-        }
-
-        &.-transaction {
-            @apply inline-block mt-3;
-        }
-
-        &.-privacy-policy {
-            @apply inline-block text-center;
-        }
-
-        &.-privacy-policy a {
-            @apply text-sm text-[#918f8f];
-        }
-
-        img.lock-icon {
-            @apply !float-left w-[18px];
-        }
-
-        .transaction-label {
-            @apply align-super text-xs ml-1;
-        }
-
-        .payplug-logo {
-            @apply inline-block w-20 h-auto align-text-top ml-[6px];
-            float: inherit !important;
-        }
     }
 
-    &_error {
-        @apply w-full mx-0 -mt-3 mb-3 pl-1 text-xs text-[#e91932] leading-[18px];
+    &.-scheme {
+        @apply justify-between items-center h-[22px] my-3 mx-0 text-sm font-bold uppercase;
+    }
 
-        &.-cardHolder {
-            @apply mx-0 -mt-3 mb-0;
-        }
+    &.-transaction {
+        @apply inline-block mt-3;
+    }
 
-        &.-exp,
-        &.-cvv {
-            @apply w-full;
-            max-width: calc(49%);
-        }
+    img.lock-icon {
+        @apply !float-left w-[18px];
+    }
 
-        &.-cvv {
-            @apply self-end -mt-3 mr-0 mb-3 ml-auto;
-        }
+    .transaction-label {
+        @apply align-super text-xs ml-1;
+    }
 
-        &.-payment,
-        &.-fields,
-        &.-api {
-            @apply hidden items-center justify-center w-full mt-3 mx-0 mb-0 py-1 px-0 leading-[18px] text-center text-[#e91932];
-            background: rgba(233, 25, 50, 0.08);
-        }
+    .payplug-logo {
+        @apply inline-block w-20 h-auto align-text-top ml-[6px];
+        float: inherit !important;
+    }
+}
 
-        &.-payment.-show,
-        &.-fields.-show,
-        &.-api.-show {
+.pp-integrated-payment_error {
+    @apply w-full mx-0 -mt-3 mb-3 pl-1 text-xs text-standard-error leading-[18px];
+
+    &.-cardHolder {
+        @apply mx-0 -mt-3 mb-0;
+    }
+
+    &.-exp,
+    &.-cvv {
+        @apply w-full;
+        max-width: calc(49%);
+    }
+
+    &.-cvv {
+        @apply self-end -mt-3 mr-0 mb-3 ml-auto;
+    }
+
+    &.-payment,
+    &.-fields,
+    &.-api {
+        @apply hidden items-center justify-center w-full mt-3 mx-0 mb-0 py-1 px-0 leading-[18px] text-center text-standard-error;
+        background: rgba(233, 25, 50, 0.08);
+
+        &.-show {
             @apply flex;
-        }
-    }
-
-    &_scheme {
-        @apply m-0;
-
-        span {
-            @apply block w-[33px] h-[22px] cursor-pointer;
-            background: 50% no-repeat;
-            background-size: 100% auto;
-
-            &::before {
-                @apply content-[''] block w-full h-full opacity-0;
-                background: 50% no-repeat;
-                background-size: 100% auto;
-            }
-        }
-    }
-
-    &_schemes {
-        @apply flex justify-between items-center flex-wrap w-[115px];
-    }
-
-    .ipOverlay {
-        @apply fixed left-0 top-0 w-full h-full z-[100];
-        background-color: rgba(25, 25, 25, 0.5);
-
-        &_inner {
-            @apply absolute left-0 top-0 w-full h-full;
-        }
-
-        &_content {
-            @apply absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
-        }
-
-        &_spinner {
-            @apply fixed top-1/2 left-1/2 inline-block w-[75px] h-[75px] border-2 border-t-white rounded-full border-solid;
-            border-color: rgba(255, 255, 255, 0.05);
-            animation: spin 1s infinite linear;
         }
     }
 }
 
-.payplugIntegratedPayment_schemes label {
-    @apply table-cell;
+.pp-integrated-payment_scheme {
+    @apply m-0;
+
+    span {
+        @apply block w-[33px] h-[22px] cursor-pointer;
+        background: 50% no-repeat;
+        background-size: 100% auto;
+
+        &::before {
+            @apply content-[''] block w-full h-full opacity-0;
+            background: 50% no-repeat;
+            background-size: 100% auto;
+        }
+    }
+}
+
+.pp-integrated-payment_schemes {
+    @apply flex justify-between items-center flex-wrap w-[115px];
+}
+
+.payplugIntegratedPayment_schemes {
+    label {
+        @apply table-cell;
+    }
 }
 
 .-hide {
     @apply hidden;
-}
-
-@keyframes spin {
-    .IntegratedPayment .ipOverlay 0% {
-        @apply rotate-0;
-    }
-
-    .IntegratedPayment .ipOverlay 100% {
-        @apply rotate-[360deg];
-    }
 }

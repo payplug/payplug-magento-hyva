@@ -1,4 +1,9 @@
 <?php
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
 
 declare(strict_types=1);
 
@@ -11,15 +16,14 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 ?>
 
-<div>
+<div wire:ignore>
     <apple-pay-button 
         buttonstyle="black" 
         type="pay" 
         locale="en"
     ></apple-pay-button>
 
-    <div x-data="magewireApplePay"
-         x-init="initMagewireApplePay"
+    <div id="pp-apple-pay-payment"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getShippingAddress()->getCountryId()); ?>"
          data-shipping-currrency="<?= $escaper->escapeHtmlAttr($magewire->getShipping()->getData('quote_currency_code')); ?>"
          data-merchant-name="<?= $escaper->escapeHtmlAttr($block->getConfig()['payment']['payplug_payments_apple_pay']['merchand_name']); ?>"

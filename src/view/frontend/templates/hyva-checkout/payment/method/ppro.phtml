@@ -1,4 +1,9 @@
 <?php
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
 
 declare(strict_types=1);
 
@@ -19,8 +24,7 @@ $icons = $viewModels->require(PayplugIcons::class);
 <div>
     <span id="message" class="text-gray-500 font-medium text-sm"></span>
 
-    <div x-data="magewirePpro"
-         x-init="initMagewirePpro"
+    <div id="pp-ppro-payment"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"
          data-method="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getPayment()->getMethod()) ?>"

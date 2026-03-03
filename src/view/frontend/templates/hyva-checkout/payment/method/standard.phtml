@@ -1,4 +1,9 @@
 <?php
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
 
 declare(strict_types=1);
 
@@ -84,15 +89,15 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
 
     <?php if ($isIntegrated) : ?>
         <div id="payplug-payment-form"
-             class="payplug IntegratedPayment -loaded <?= !empty($payplugCards) && $isOneClick ? 'ml-[46px] pt-3 -hide' : '' ?>"
+             class="payplug pp-integrated-payment -loaded <?= !empty($payplugCards) && $isOneClick ? 'ml-[46px] pt-3 -hide' : '' ?>"
              wire:ignore>
-            <div id="cardholder-input-container" class="payplug IntegratedPayment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
+            <div id="cardholder-input-container" class="payplug pp-integrated-payment_container -cardHolder cardHolder-input-container" data-e2e-name="cardHolder">
             </div>
             <div class="error-container cardholder-input-container">
                 <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid Name and/or Last Name.')); ?></span></div>
                 <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
             </div>
-            <div class="payplug IntegratedPayment_container -scheme">
+            <div class="payplug pp-integrated-payment_container -scheme">
                 <div>
                     <?= $escaper->escapeHtml(__('Your card')); ?>
                 </div>
@@ -147,14 +152,14 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                     </label>
                 </div>
             </div>
-            <div id="pan-input-container" class="payplug IntegratedPayment_container -pan pan-input-container" data-e2e-name="pan"></div>
+            <div id="pan-input-container" class="payplug pp-integrated-payment_container -pan pan-input-container" data-e2e-name="pan"></div>
             <div class="error-container pan-input-container">
                 <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid card number.')); ?></span></div>
                 <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
             </div>
             <div class="exp-cvv-container">
                 <div>
-                    <div id="exp-input-container" class="payplug IntegratedPayment_container -exp exp-input-container" data-e2e-name="expiration"></div>
+                    <div id="exp-input-container" class="payplug pp-integrated-payment_container -exp exp-input-container" data-e2e-name="expiration"></div>
                     <div class="error-container exp-input-container">
                         <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid expiration date.')); ?></span></div>
                         <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
@@ -162,7 +167,7 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
                 </div>
 
                 <div>
-                    <div id="cvv-input-container" class="payplug IntegratedPayment_container -cvv cvv-input-container" data-e2e-name="cvv"></div>
+                    <div id="cvv-input-container" class="payplug pp-integrated-payment_container -cvv cvv-input-container" data-e2e-name="cvv"></div>
                     <div class="error-container cvv-input-container">
                         <div class="invalid-field"><span><?= $escaper->escapeHtml(__('Invalid CVV.')); ?></span></div>
                         <div class="empty-field"><span><?= $escaper->escapeHtml(__('Mandatory field.')); ?></span></div>
@@ -184,39 +189,39 @@ if (isset($paymentConfig["payplug_payments_standard"])) {
         </div>
 
         <style>
-            .IntegratedPayment_container.-cardHolder::before {
+            .pp-integrated-payment_container.-cardHolder::before {
                 mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
                 -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('account')); ?>');
             }
 
-            .IntegratedPayment_container.-pan::before {
+            .pp-integrated-payment_container.-pan::before {
                 -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
                 mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('card')); ?>');
             }
 
-            .IntegratedPayment_container.-exp,
-            .IntegratedPayment_container.-cvv {
+            .pp-integrated-payment_container.-exp,
+            .pp-integrated-payment_container.-cvv {
                 display: block;
                 max-width: calc(140px);
             }
 
-            .IntegratedPayment_container.-cvv::before {
+            .pp-integrated-payment_container.-cvv::before {
                 mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
                 -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('lock')); ?>');
             }
 
-            .IntegratedPayment_container.-exp::before {
+            .pp-integrated-payment_container.-exp::before {
                 mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
                 -webkit-mask-image: url('data:image/svg+xml,<?= rawurlencode($icons->renderHtml('calendar')); ?>');
             }
         </style>
     <?php endif; ?>
 
-    <div x-data="magewireStandardPayment"
-         data-is-one-click="<?= !empty($payplugCards) && $isOneClick ? 'true' : 'false' ?>"
+    <div id="pp-standard-payment"
          data-is-integrated="<?= $isIntegrated ? 'true' : 'false' ?>"
-         data-is-redirected="<?= $isRedirected ? 'true' : 'false' ?>"
+         data-is-one-click="<?= !empty($payplugCards) && $isOneClick ? 'true' : 'false' ?>"
          data-is-popup="<?= $isPopup ? 'true' : 'false' ?>"
+         data-is-redirected="<?= $isRedirected ? 'true' : 'false' ?>"
          data-is-sandbox="<?= $escaper->escapeHtmlAttr($paymentConfig['payplug_payments_standard']['is_sandbox']); ?>"
     ></div>
 </div>

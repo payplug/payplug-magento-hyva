@@ -1,4 +1,9 @@
 <?php
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
 
 declare(strict_types=1);
 
@@ -33,11 +38,11 @@ $oney3xLogo = $icons->renderHtml('oney/3x' . ($isOneyWithoutFees ? '-without-fee
 $oney4xLogo = $icons->renderHtml('oney/4x' . ($isOneyWithoutFees ? '-without-fees' : ''), '', 150, 32, ['aria-hidden' => 'true']);
 ?>
 
-<div>
-    <span id="message" class="text-gray-500 font-medium text-sm" wire:ignore></span>
-    <div id="oney-payment" class="oney-payment oney-payment-open" wire:ignore></div>
-    <div class="payment-method-content" wire:ignore></div>
-    <span class="oney-popin <?php if ($hasError): ?>oney-popin-error<?php endif; ?>" wire:ignore></span>
+<div wire:ignore>
+    <span id="message" class="text-gray-500 font-medium text-sm"></span>
+    <div id="oney-payment" class="oney-payment oney-payment-open"></div>
+    <div class="payment-method-content"></div>
+    <span class="oney-popin <?php if ($hasError): ?>oney-popin-error<?php endif; ?>"></span>
 
     <?php
         $options = array_map(static function($option) use ($pricingHelper) {
@@ -58,7 +63,7 @@ $oney4xLogo = $icons->renderHtml('oney/4x' . ($isOneyWithoutFees ? '-without-fee
         }, $oneySimulation->getOptions() ?? []);
     ?>
 
-    <div x-data="magewireOneyPayment"
+    <div id="pp-oney-payment"
         data-label="<?= $escaper->escapeHtmlAttr(__($isOneyWithoutFees ? 'Payment in %1 without fees' : 'Payment in %1')) ?>"
         data-has-error="<?= $escaper->escapeHtmlAttr($hasError ? 'true' : 'false') ?>"
         data-message="<?= $escaper->escapeHtmlAttr($message) ?>"

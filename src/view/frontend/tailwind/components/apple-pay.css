@@ -1,19 +1,17 @@
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
+
 apple-pay-button {
     --apple-pay-button-width: auto;
-    --apple-pay-button-border-radius: 0.1875rem;
-    --apple-pay-button-padding: 0.5rem 0rem;
+    --apple-pay-button-height: 2.25rem;
+    --apple-pay-button-padding: 0.25rem;
+    --apple-pay-button-border-radius: 0.5rem;
 
     &.is-disabled {
         pointer-events: none;
-    }
-}
-
-/* Product view */
-.catalog-product-view {
-    apple-pay-button {
-        --apple-pay-button-height: 2.125rem;
-        --apple-pay-button-padding: 0.25rem;
-        --apple-pay-button-border-radius: 0.5rem;
     }
 }
 
@@ -21,13 +19,14 @@ apple-pay-button {
 .checkout-methods-items {
     apple-pay-button {
         @apply w-full;
-        --apple-pay-button-height: 2.125rem;
-        --apple-pay-button-padding: 0.85rem 0rem;
-        --apple-pay-button-border-radius: 0.5rem;
     }
 }
 
 /* Checkout item */
 #payment-method-view-payplug_payments_apple_pay {
     @apply text-center;
+
+    apple-pay-button {
+        --apple-pay-button-height: 2rem;
+    }
 }
