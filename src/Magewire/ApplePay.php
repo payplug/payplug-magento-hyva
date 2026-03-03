@@ -1,4 +1,9 @@
 <?php
+/**
+ * Payplug - https://www.payplug.com/
+ * Copyright © Payplug. All rights reserved.
+ * See LICENSE for license details.
+ */
 
 declare(strict_types=1);
 
@@ -8,7 +13,6 @@ use Hyva\Checkout\Magewire\Main;
 
 class ApplePay extends Main
 {
-
     /**
      *
      * @param string $oney_type
@@ -19,5 +23,4 @@ class ApplePay extends Main
         $quote = $this->sessionCheckout->getQuote();
         return $quote;
     }
-
 }
