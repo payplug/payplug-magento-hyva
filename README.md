@@ -1,3 +1,6 @@
+> ⚠️ **Warning:**  
+> This is a temporary version intended only for use if you cannot install the [latest version of Hyvä Theme](https://github.com/hyva-themes/magento2-default-theme) (which includes Tailwind V4) directly. Use with caution in production environments.
+
 # Payplug for Hyvä
 
 Official compatibility module of [Magento 2 Payplug module](https://github.com/payplug/payplug-magento2/) for Hyvä.
@@ -19,7 +22,7 @@ Please refer to https://docs.hyva.io for more instructions.
 1 - Install the payplug-magento-hyva module via composer:
 
 ```bash
-composer require payplug/payplug-magento-hyva
+composer require payplug/payplug-magento-hyva:dev-feature/hyva-checkout-1.3.6
 ```
 
 2 - Enable module:
