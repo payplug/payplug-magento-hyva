@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+> **⚠️ WARNING: THIS MODULE IS DEPRECATED**
+>
+> This repository is no longer actively maintained and should not be used for new projects.
+> 
+> - For Hyvä Theme compatibility, please now use [`payplug-magento-hyva-theme`](https://github.com/payplug/payplug-magento-hyva-theme).
+> - For Hyvä Checkout compatibility, please now use [`payplug-magento-hyva-checkout`](https://github.com/payplug/payplug-magento-hyva-checkout).
+>
+> **Use this module only if you depend on legacy implementations.**
+
+## [3.0.2](https://github.com/payplug/payplug-magento-hyva/releases/tag/3.0.2) - 2026-06-01
+
+### Main feature
+- Add deprecated warning
+
 ## [3.0.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/3.0.1) - 2026-05-28
 
 ### Main feature
