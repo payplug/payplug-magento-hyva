@@ -1,6 +1,15 @@
-# Payplug for Hyvä
+# Payplug for Hyvä (DEPRECATED)
 
 Official compatibility module of [Magento 2 Payplug module](https://github.com/payplug/payplug-magento2/) for Hyvä.
+
+> **⚠️ WARNING: THIS MODULE IS DEPRECATED**
+>
+> This repository is no longer actively maintained and should not be used for new projects.
+> 
+> - For Hyvä Theme compatibility, please now use [`payplug-magento-hyva-theme`](https://github.com/payplug/payplug-magento-hyva-theme).
+> - For Hyvä Checkout compatibility, please now use [`payplug-magento-hyva-checkout`](https://github.com/payplug/payplug-magento-hyva-checkout).
+>
+> **Use this module only if you depend on legacy implementations.**
 
 ## About Payplug
 

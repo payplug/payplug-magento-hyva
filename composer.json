@@ -1,8 +1,9 @@
 {
     "name": "payplug/payplug-magento-hyva",
-    "description": "Hyvä Compatibility module for Payplug_Payments",
-    "version": "3.0.0",
+    "description": "[DEPRECATED] Hyvä Compatibility module for Payplug_Payments",
+    "version": "3.0.1",
     "type": "magento2-module",
+    "abandoned": true,
     "keywords": ["Payplug", "Adobe Commerce", "Magento", "Hyvä"],
     "license": "OSL-3.0",
     "authors": [
