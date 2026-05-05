@@ -35,7 +35,7 @@ use Magento\Framework\View\Element\Template;
                         } = this.oneyPaymentData;
 
                         const body = new URLSearchParams(data);
-                        const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + 
+                        const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/apm/isAvailable")); ?>' + 
                                 '?form_key=' + hyva.getFormKey();
                                 
                         fetch(url, {
