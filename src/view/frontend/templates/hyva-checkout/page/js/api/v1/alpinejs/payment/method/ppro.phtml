@@ -21,50 +21,61 @@ use Magento\Framework\View\Element\Template;
 <script>
     (() => {
         hyvaCheckout.api.after(() => {
-            hyvaCheckout.payment.registerMethod({
-                code: 'payplug_payments_ppro',
-                method: {
-                    initialize: async function () {
-                        this.oneyPaymentData = document.getElementById('pp-ppro-payment').dataset;
-                    },
-                    getPPROMessage: function() {
-                        const {
-                            billingCountry: billingCountryId,
-                            shippingCountry: shippingCountryId,
-                            paymentMethod: method
-                        } = this.oneyPaymentData;
+            const pproPayments = ['ideal', 'mybank', 'satispay']; // To be dynamized later
 
-                        const body = new URLSearchParams(data);
-                        const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/apm/isAvailable")); ?>' + 
-                                '?form_key=' + hyva.getFormKey();
-                                
-                        fetch(url, {
-                            method: 'POST',
-                            body,
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                                'Accept': 'application/json'
-                            }
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error ${response.status}`);
+            pproPayments.forEach((method) => {
+                hyvaCheckout.payment.registerMethod({
+                    code: `payplug_payments_${method}`,
+                    method: {
+                        validate: async function() {
+                            const redirectUrl = BASE_URL + 'payplug_payments/payment/standard';
+
+                            return new Promise(resolve => {
+                                const pproPaymentData = document.getElementById('pp-ppro-payment').dataset;
+                                const data = {
+                                    'billingCountry': pproPaymentData.billingCountryId,
+                                    'shippingCountry': pproPaymentData.shippingCountryId,
+                                    'paymentMethod': pproPaymentData.method,
                                 }
-                                return response.json();
-                            })
-                            .then(res => {
-                                if (res.data?.message) {
-                                    const messageEl = document.getElementById('message');
-                                    if (messageEl) {
-                                        messageEl.textContent = res.data.message;
+                                const body = new URLSearchParams(data);
+                                const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/apm/isAvailable")); ?>' + 
+                                        '?form_key=' + hyva.getFormKey();
+                                        
+                                try {
+                                    const response = await fetch(url, {
+                                        method: 'POST',
+                                        body,
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                            'Accept': 'application/json'
+                                        }
+                                    });
+
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error ${response.status}`);
                                     }
+
+                                    resolve(true);
+                                    window.location.replace(redirectUrl);
+
+                                    const res = await response.json();
+                                    
+                                    if (res.data?.message) {
+                                        const messageEl = document.getElementById('message');
+                                        if (messageEl) {
+                                            messageEl.textContent = res.data.message;
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
                                 }
-                            })
-                            .catch(error => console.error('Error:', error));
+                            });
+                        }
                     }
-                }
+                });
             });
         });
     })();
 </script>
+
 <?php $hyvaCsp->registerInlineScript() ?>
