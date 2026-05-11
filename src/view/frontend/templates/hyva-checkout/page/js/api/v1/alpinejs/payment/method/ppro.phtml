@@ -21,17 +21,19 @@ use Magento\Framework\View\Element\Template;
 <script>
     (() => {
         hyvaCheckout.api.after(() => {
+            const btnPlaceOrder = document.querySelector('.btn-place-order');
             const pproPayments = ['ideal', 'mybank', 'satispay']; // To be dynamized later
 
             pproPayments.forEach((method) => {
                 hyvaCheckout.payment.registerMethod({
                     code: `payplug_payments_${method}`,
+                    message: '',
                     method: {
-                        validate: async function() {
+                        isAvailable: true,
+                        initialize: async function() {
                             const redirectUrl = BASE_URL + 'payplug_payments/payment/standard';
 
-                            return new Promise(resolve => {
-                                const pproPaymentData = document.getElementById('pp-ppro-payment').dataset;
+                            const pproPaymentData = document.getElementById('pp-ppro-payment').dataset;
                                 const data = {
                                     'billingCountry': pproPaymentData.billingCountryId,
                                     'shippingCountry': pproPaymentData.shippingCountryId,
@@ -55,18 +57,48 @@ use Magento\Framework\View\Element\Template;
                                         throw new Error(`HTTP error ${response.status}`);
                                     }
 
-                                    resolve(true);
-
                                     const res = await response.json();
                                     
-                                    if (res.data?.message) {
+                                    if (res.data?.message === null) {
+                                        return;
+                                    }
+
+                                    this.message = res.data?.message;
+
+                                    if (this.message) {
                                         const messageEl = document.getElementById('message');
+
                                         if (messageEl) {
-                                            messageEl.textContent = res.data.message;
+                                            messageEl.textContent = this.message;
+                                            this.disablePlaceOrderBtn();
+                                            this.isAvailable = false;
                                         }
                                     }
                                 } catch (error) {
                                     console.error('Error:', error);
+                                }
+                        },
+                        uninitialize: async function () {
+                            this.enablePlaceOrderBtn();
+                        },
+                        disablePlaceOrderBtn() {
+                            if (btnPlaceOrder) {
+                                btnPlaceOrder.disabled = true;
+                            }
+                        },
+                        enablePlaceOrderBtn() {
+                            if (btnPlaceOrder) {
+                                btnPlaceOrder.disabled = false;
+                            }
+                        },
+                        validate: function() {
+                            return new Promise((resolve) => {
+                                if (this.isAvailable) {
+                                    resolve(true);
+                                } else {
+                                    const text = message ?? '';
+                                    hyvaCheckout.message.dialog(text);
+                                    resolve(false);
                                 }
                             });
                         }
@@ -76,5 +108,6 @@ use Magento\Framework\View\Element\Template;
         });
     })();
 </script>
+
 
 <?php $hyvaCsp->registerInlineScript() ?>
