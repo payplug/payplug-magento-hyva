@@ -20,16 +20,21 @@ use Magento\Framework\View\Element\Template;
 
 <script>
     (() => {
+        let btnPlaceOrder;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            btnPlaceOrder = document.querySelector('.btn-place-order');
+        });
+
         hyvaCheckout.api.after(() => {
-            const btnPlaceOrder = document.querySelector('.btn-place-order');
             const pproPayments = ['ideal', 'mybank', 'satispay']; // To be dynamized later
 
             pproPayments.forEach((method) => {
                 hyvaCheckout.payment.registerMethod({
                     code: `payplug_payments_${method}`,
-                    message: '',
                     method: {
                         isAvailable: true,
+                        message: '',
                         initialize: async function() {
                             const redirectUrl = BASE_URL + 'payplug_payments/payment/standard';
 
@@ -108,6 +113,5 @@ use Magento\Framework\View\Element\Template;
         });
     })();
 </script>
-
 
 <?php $hyvaCsp->registerInlineScript() ?>
