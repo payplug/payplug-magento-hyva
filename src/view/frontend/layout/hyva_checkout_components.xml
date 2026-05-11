@@ -30,7 +30,7 @@
                 </arguments>
             </block>
 
-            <block name="checkout.payment.method.payplug-oney"
+            <block name="checkout.payment.method.payplug_payments_oney"
                    as="payplug_payments_oney"
                    class="Payplug\Payments\Block\Oney\Simulation"
                    template="Hyva_CheckoutPayplug::hyva-checkout/payment/method/oney.phtml">

@@ -19,12 +19,15 @@ use Magento\Framework\View\Element\Template;
 <script>
     (() => {
         hyvaCheckout.api.after(() => {
+            let oneyType = '';
+
             hyvaCheckout.payment.registerMethod({
                 code: 'payplug_payments_oney',
                 method: {
                     initialize: async function () {
                         this.oneyPaymentData = document.getElementById('pp-oney-payment').dataset;
                         this.selectedOptionValue = '';
+                        oneyType = this.oneyPaymentData.type;
 
                         this.buildOneyOptions();
                         this.bindOneyOptionsHandler();
@@ -131,13 +134,6 @@ use Magento\Framework\View\Element\Template;
                         this.updatePlaceOrderButtonLabel();  
                     },
                     validate: async function() {
-                        const activeMethod = document.querySelector('input[name="payment-method-option"]:checked')?.value || '';
-                        const isOneyActive = activeMethod === 'payplug_payments_oney' || activeMethod === 'payplug_payments_oney_without_fees';
-
-                        if (!isOneyActive) {
-                            return true;
-                        }
-
                         const selectedRadio = document.querySelector('input[name="oney_type"]:checked');
                         const selectedOptionValue = selectedRadio ? (selectedRadio.value || selectedRadio.id) : '';
 
@@ -145,20 +141,16 @@ use Magento\Framework\View\Element\Template;
                             return false;
                         }
 
-                        const componentId = activeMethod === 'payplug_payments_oney'
-                            ? 'checkout.payment.method.oney'
-                            : 'checkout.payment.method.' + activeMethod;
-
                         try {
-                            const component = Magewire.find(componentId);
-                            if (component && typeof component.call === 'function') {
-                                await component.call('setOneyType', selectedOptionValue);
-                            }
+                            const componentId = 'checkout.payment.method.' + oneyType;
+                            await Magewire.find(componentId).call('setOneyType', selectedOptionValue);
                         } catch (e) {
                             console.warn('Hyva Checkout Payplug Oney: Magewire setOneyType not available', e);
                         }
 
-                        return true;
+                        return new Promise(resolve => {
+                            resolve(true);    
+                        });
                     }
                 }
             });
