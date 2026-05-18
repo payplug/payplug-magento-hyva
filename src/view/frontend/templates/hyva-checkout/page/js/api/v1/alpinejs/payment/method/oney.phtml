@@ -20,139 +20,142 @@ use Magento\Framework\View\Element\Template;
     (() => {
         hyvaCheckout.api.after(() => {
             let oneyType = '';
+            const oneyPayments = ['oney', 'oney_without_fees']; // To be dynamized later
 
-            hyvaCheckout.payment.registerMethod({
-                code: 'payplug_payments_oney',
-                method: {
-                    initialize: async function () {
-                        this.oneyPaymentData = document.getElementById('pp-oney-payment').dataset;
-                        this.selectedOptionValue = '';
-                        oneyType = this.oneyPaymentData.type;
+            oneyPayments.forEach((oneyPaymentType) => {
+                hyvaCheckout.payment.registerMethod({
+                    code: `payplug_payments_${oneyPaymentType}`,
+                    method: {
+                        initialize: async function () {
+                            this.oneyPaymentData = document.getElementById('pp-oney-payment').dataset;
+                            this.selectedOptionValue = '';
+                            oneyType = this.oneyPaymentData.type;
 
-                        this.buildOneyOptions();
-                        this.bindOneyOptionsHandler();
-                        this.displayMessage();
-                    },
-                    buildOneyOptions: function () {
-                        const {
-                            options,
-                            type : oneyType,
-                            logoThreeTimes: logo3x,
-                            logoFourTimes: logo4x,
-                        } = this.oneyPaymentData;
+                            this.buildOneyOptions();
+                            this.bindOneyOptionsHandler();
+                            this.displayMessage();
+                        },
+                        buildOneyOptions: function () {
+                            const {
+                                options,
+                                type : oneyType,
+                                logoThreeTimes: logo3x,
+                                logoFourTimes: logo4x,
+                            } = this.oneyPaymentData;
 
-                        const parsedOptions = JSON.parse(options);
+                            const parsedOptions = JSON.parse(options);
 
-                        parsedOptions.forEach(({ firstDeposit, schedules, totalAmount, type }) => {
-                            const htmlSchedulesTemplate = this.getHtmlSchedules(schedules);
-                            const logo = type === '3x' ? logo3x : logo4x;
-                            const title = "<?= $escaper->escapeJs(__('Payment in %1 at no cost')) ?>".replace('%1', type);
+                            parsedOptions.forEach(({ firstDeposit, schedules, totalAmount, type }) => {
+                                const htmlSchedulesTemplate = this.getHtmlSchedules(schedules);
+                                const logo = type === '3x' ? logo3x : logo4x;
+                                const title = "<?= $escaper->escapeJs(__('Payment in %1 at no cost')) ?>".replace('%1', type);
+                                
+                                const htmlTemplate = `
+                                    <div class="field">
+                                        <input type="radio" id="${type}" name="oney_type" value="${type}" class="sr-only" />
+                                        <label data-type="${type}" for="${type}" class="oney-option oney-option-${type}">
+                                            <div class="oney-option-title">
+                                                ${logo}
+                                                ${oneyType === 'payplug_payments_oney_without_fees' ? title : ''}
+                                            </div>
+                                            <div class="oney-option-prices">
+                                                <ul class="oney-option-list">
+                                                    <li>
+                                                        <span>Montant à payer à la commande</span>
+                                                        <span class="oney-option-price">${firstDeposit}</span>
+                                                    </li>
+                                                    ${htmlSchedulesTemplate}
+                                                    <li>
+                                                        <span>Total</span>
+                                                        <span class="oney-option-price">${totalAmount}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </label>
+                                    </div>
+                                `;
+
+                                const template = document.createElement('template');
+                                template.innerHTML = htmlTemplate.trim();
+                                const node = template.content.firstElementChild;
+                                document.querySelector('#oney-payment').appendChild(node);
+                            });
+                        },
+                        bindOneyOptionsHandler: function () {
+                            document.addEventListener('click', (event) => {
+                                const isOption = event?.target?.attributes?.name?.nodeValue === 'oney_type';
+
+                                if (isOption) {
+                                    this.selectedOptionValue = event.target.id;
+                                    this.updatePlaceOrderButtonLabel();
+                                }
+                            });
+                        },
+                        displayMessage: function () {   
+                            const { message } = this.oneyPaymentData;
                             
-                            const htmlTemplate = `
-                                <div class="field">
-                                    <input type="radio" id="${type}" name="oney_type" value="${type}" class="sr-only" />
-                                    <label data-type="${type}" for="${type}" class="oney-option oney-option-${type}">
-                                        <div class="oney-option-title">
-                                            ${logo}
-                                            ${oneyType === 'payplug_payments_oney_without_fees' ? title : ''}
-                                        </div>
-                                        <div class="oney-option-prices">
-                                            <ul class="oney-option-list">
-                                                <li>
-                                                    <span>Montant à payer à la commande</span>
-                                                    <span class="oney-option-price">${firstDeposit}</span>
-                                                </li>
-                                                ${htmlSchedulesTemplate}
-                                                <li>
-                                                    <span>Total</span>
-                                                    <span class="oney-option-price">${totalAmount}</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </label>
-                                </div>
-                            `;
-
-                            const template = document.createElement('template');
-                            template.innerHTML = htmlTemplate.trim();
-                            const node = template.content.firstElementChild;
-                            document.querySelector('#oney-payment').appendChild(node);
-                        });
-                    },
-                    bindOneyOptionsHandler: function () {
-                        document.addEventListener('click', (event) => {
-                            const isOption = event?.target?.attributes?.name?.nodeValue === 'oney_type';
-
-                            if (isOption) {
-                                this.selectedOptionValue = event.target.id;
-                                this.updatePlaceOrderButtonLabel();
+                            if (message) {
+                                const messageEl = document.getElementById('message');
+                                if (messageEl) {
+                                    messageEl.textContent = message;
+                                }
                             }
-                        });
-                    },
-                    displayMessage: function () {   
-                        const { message } = this.oneyPaymentData;
-                        
-                        if (message) {
-                            const messageEl = document.getElementById('message');
-                            if (messageEl) {
-                                messageEl.textContent = message;
+                        },
+                        getHtmlSchedules: function (schedules) {
+                            let htmlSchedulesTemplate = ``;
+                            const step = 30;
+                            let days = step;
+
+                            for (const schedule of schedules) {
+                                const { amount } = schedule;
+                                const dueDate = '<?= $escaper->escapeJs(__('In %1 days', '%1')) ?>'.replace('%1', days);
+
+                                htmlSchedulesTemplate += `
+                                    <li>
+                                        <span>${dueDate}</span>
+                                        <span class="oney-option-price">${amount}</span>
+                                    </li>
+                                `;
+
+                                days += step;
                             }
+
+                            return htmlSchedulesTemplate;
+                        },
+                        updatePlaceOrderButtonLabel: function () {
+                            const { label } = this.oneyPaymentData;
+
+                            const buttonLabel = this.selectedOptionValue
+                                ? label.replace('%1', this.selectedOptionValue)
+                                : '<?= $escaper->escapeJs(__('Place Order')) ?>';
+
+                            document.querySelector('.btn-place-order').innerText = buttonLabel;
+                        },
+                        uninitialize: async function () {
+                            this.selectedOptionValue = '';
+                            this.updatePlaceOrderButtonLabel();  
+                        },
+                        validate: async function() {
+                            const selectedRadio = document.querySelector('input[name="oney_type"]:checked');
+                            const selectedOptionValue = selectedRadio ? (selectedRadio.value || selectedRadio.id) : '';
+
+                            if (!selectedOptionValue) {
+                                return false;
+                            }
+
+                            try {
+                                const componentId = 'checkout.payment.method.' + oneyType;
+                                await Magewire.find(componentId).call('setOneyType', selectedOptionValue);
+                            } catch (e) {
+                                console.warn('Hyva Checkout Payplug Oney: Magewire setOneyType not available', e);
+                            }
+
+                            return new Promise(resolve => {
+                                resolve(true);    
+                            });
                         }
-                    },
-                    getHtmlSchedules: function (schedules) {
-                        let htmlSchedulesTemplate = ``;
-                        const step = 30;
-                        let days = step;
-
-                        for (const schedule of schedules) {
-                            const { amount } = schedule;
-                            const dueDate = '<?= $escaper->escapeJs(__('In %1 days', '%1')) ?>'.replace('%1', days);
-
-                            htmlSchedulesTemplate += `
-                                <li>
-                                    <span>${dueDate}</span>
-                                    <span class="oney-option-price">${amount}</span>
-                                </li>
-                            `;
-
-                            days += step;
-                        }
-
-                        return htmlSchedulesTemplate;
-                    },
-                    updatePlaceOrderButtonLabel: function () {
-                        const { label } = this.oneyPaymentData;
-
-                        const buttonLabel = this.selectedOptionValue
-                            ? label.replace('%1', this.selectedOptionValue)
-                            : '<?= $escaper->escapeJs(__('Place Order')) ?>';
-
-                        document.querySelector('.btn-place-order').innerText = buttonLabel;
-                    },
-                    uninitialize: async function () {
-                        this.selectedOptionValue = '';
-                        this.updatePlaceOrderButtonLabel();  
-                    },
-                    validate: async function() {
-                        const selectedRadio = document.querySelector('input[name="oney_type"]:checked');
-                        const selectedOptionValue = selectedRadio ? (selectedRadio.value || selectedRadio.id) : '';
-
-                        if (!selectedOptionValue) {
-                            return false;
-                        }
-
-                        try {
-                            const componentId = 'checkout.payment.method.' + oneyType;
-                            await Magewire.find(componentId).call('setOneyType', selectedOptionValue);
-                        } catch (e) {
-                            console.warn('Hyva Checkout Payplug Oney: Magewire setOneyType not available', e);
-                        }
-
-                        return new Promise(resolve => {
-                            resolve(true);    
-                        });
                     }
-                }
+                });
             });
         });
     })();

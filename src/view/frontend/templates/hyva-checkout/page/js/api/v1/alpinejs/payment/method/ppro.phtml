@@ -20,8 +20,13 @@ use Magento\Framework\View\Element\Template;
 
 <script>
     (() => {
+        let btnPlaceOrder;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            btnPlaceOrder = document.querySelector('.btn-place-order');
+        });
+
         hyvaCheckout.api.after(() => {
-            const btnPlaceOrder = document.querySelector('.btn-place-order');
             const pproPayments = ['ideal', 'mybank', 'satispay']; // To be dynamized later
 
             pproPayments.forEach((method) => {
