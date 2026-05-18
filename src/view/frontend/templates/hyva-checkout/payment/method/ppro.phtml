@@ -7,25 +7,18 @@
 
 declare(strict_types=1);
 
-use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\CheckoutPayplug\Block\Standard;
-use Hyva\CheckoutPayplug\Magewire\Ppro;
-use Hyva\CheckoutPayplug\ViewModel\PayplugIcons;
+use Payplug\PaymentsHyvaCheckout\Magewire\Ppro;
 use Magento\Framework\Escaper;
 
-/** @var ViewModelRegistry $viewModels */
 /** @var Ppro $magewire */
 /** @var Escaper $escaper */
-/** @var Standard $block */
-
-$icons = $viewModels->require(PayplugIcons::class);
 ?>
 
 <div>
     <span id="message" class="text-gray-500 font-medium text-sm"></span>
 
     <div id="pp-ppro-payment"
-         data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"
+         data-billing-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getBillingAddress()->getCountryId()) ?>"     
          data-shipping-country-id="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getShippingAddress()->getCountryId()) ?>"
          data-method="<?= $escaper->escapeHtmlAttr($magewire->getQuote()->getPayment()->getMethod()) ?>"
     ></div>
