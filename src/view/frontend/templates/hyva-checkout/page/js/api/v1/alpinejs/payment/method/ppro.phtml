@@ -21,50 +21,96 @@ use Magento\Framework\View\Element\Template;
 <script>
     (() => {
         hyvaCheckout.api.after(() => {
-            hyvaCheckout.payment.registerMethod({
-                code: 'payplug_payments_ppro',
-                method: {
-                    initialize: async function () {
-                        this.oneyPaymentData = document.getElementById('pp-ppro-payment').dataset;
-                    },
-                    getPPROMessage: function() {
-                        const {
-                            billingCountry: billingCountryId,
-                            shippingCountry: shippingCountryId,
-                            paymentMethod: method
-                        } = this.oneyPaymentData;
+            let btnPlaceOrder;
+            let isAvailable = true;
+            let message = '';
+            const pproPayments = ['ideal', 'mybank', 'satispay']; // To be dynamized later
 
-                        const body = new URLSearchParams(data);
-                        const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/ppro/isAvailable")); ?>' + 
-                                '?form_key=' + hyva.getFormKey();
-                                
-                        fetch(url, {
-                            method: 'POST',
-                            body,
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                                'Accept': 'application/json'
-                            }
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error ${response.status}`);
+            pproPayments.forEach((method) => {
+                hyvaCheckout.payment.registerMethod({
+                    code: `payplug_payments_${method}`,
+                    method: {
+                        initialize: async function() {
+                            const redirectUrl = BASE_URL + 'payplug_payments/payment/standard';
+
+                            const pproPaymentData = document.getElementById('pp-ppro-payment').dataset;
+                                const data = {
+                                    'billingCountry': pproPaymentData.billingCountryId,
+                                    'shippingCountry': pproPaymentData.shippingCountryId,
+                                    'paymentMethod': pproPaymentData.method,
                                 }
-                                return response.json();
-                            })
-                            .then(res => {
-                                if (res.data?.message) {
-                                    const messageEl = document.getElementById('message');
-                                    if (messageEl) {
-                                        messageEl.textContent = res.data.message;
+                                const body = new URLSearchParams(data);
+                                const url = '<?= $escaper->escapeUrl($block->getUrl("payplug_payments/apm/isAvailable")); ?>' + 
+                                        '?form_key=' + hyva.getFormKey();
+                                        
+                                try {
+                                    const response = await fetch(url, {
+                                        method: 'POST',
+                                        body,
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                            'Accept': 'application/json'
+                                        }
+                                    });
+
+                                    if (!btnPlaceOrder) {
+                                        btnPlaceOrder = document.querySelector('.btn-place-order');
                                     }
+
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error ${response.status}`);
+                                    }
+
+                                    const res = await response.json();
+                                    
+                                    if (res.data?.message === null) {
+                                        return;
+                                    }
+
+                                    message = res.data?.message;
+
+                                    if (message) {
+                                        const messageEl = document.getElementById('message');
+
+                                        if (messageEl) {
+                                            messageEl.textContent = message;
+                                            this.disablePlaceOrderBtn();
+                                            isAvailable = false;
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
                                 }
-                            })
-                            .catch(error => console.error('Error:', error));
+                        },
+                        uninitialize: async function() {
+                            this.enablePlaceOrderBtn();
+                        },
+                        disablePlaceOrderBtn() {
+                            if (btnPlaceOrder) {
+                                btnPlaceOrder.disabled = true;
+                            }
+                        },
+                        enablePlaceOrderBtn() {
+                            if (btnPlaceOrder) {
+                                btnPlaceOrder.disabled = false;
+                            }
+                        },
+                        validate: function() {
+                            return new Promise((resolve) => {
+                                if (isAvailable) {
+                                    resolve(true);
+                                } else {
+                                    const text = message ?? '';
+                                    hyvaCheckout.message.dialog(text);
+                                    resolve(false);
+                                }
+                            });
+                        }
                     }
-                }
+                });
             });
         });
     })();
 </script>
+
 <?php $hyvaCsp->registerInlineScript() ?>
