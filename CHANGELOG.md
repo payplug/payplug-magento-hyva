@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1](https://github.com/payplug/payplug-magento-hyva/releases/tag/3.0.1) - 2026-05-28
+
+### Main feature
+- Fix PPRO and Oney payments initialization
+
+### Fixed
+- Fix PPRO payments initialization [#709](https://github.com/payplug/payplug-magento-hyva/commit/54a801714af393b068f7ba4742736fed43cef164)
+- Fix Oney payments initialization [#721](https://github.com/payplug/payplug-magento-hyva/commit/88947d99586ca8b47b15d747828128a6e855088a)
+
+**[View diff](https://github.com/payplug/payplug-magento-hyva/compare/3.0.0...3.0.1)**
+
 ## [3.0.0](https://github.com/payplug/payplug-magento-hyva/releases/tag/3.0.0) - 2026-03-03
 
 > [!NOTE]
